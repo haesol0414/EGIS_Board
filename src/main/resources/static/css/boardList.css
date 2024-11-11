@@ -1,0 +1,82 @@
+.board-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px 5px 15px 5px;
+}
+
+.board-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #666666;
+}
+
+.write-btn i {
+    font-size: 24px;
+    color: #666666;
+}
+
+
+.write-btn i:hover {
+    color: #007bee;
+}
+
+
+
+.bord-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.col, .row {
+    border: 1px solid #dddddd;
+    padding: 25px;
+    text-align: center;
+}
+
+.col {
+    background-color: #f2f2f2;
+}
+
+.board-num { /* '조회수' 열 너비 설정 */
+    width: 5%;
+}
+
+.subject {
+    width: 40%;
+}
+
+.writer { /* 'No.' 열 너비 설정 */
+    width: 10%;
+}
+
+.write-date { /* '작성자' 열 너비 설정 */
+    width: 15%;
+}
+
+.update-date { /* '작성일' 열 너비 설정 */
+    width: 15%;
+}
+
+.view-count { /* '최근 수정일' 열 너비 설정 */
+    width: 6%;
+}
+
+.pagination {
+    display: flex;
+    margin-top: 25px;
+    color: #666666;
+    gap: 10px;
+    justify-content: center;
+}
+
+.current-page {
+    font-weight: bold;
+    text-decoration: underline;
+}
+

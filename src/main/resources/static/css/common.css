@@ -1,0 +1,127 @@
+@import url('https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css');
+
+/* reset */
+* {
+    margin: 0px;
+    padding: 0px;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+li,
+ul,
+ol {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    background: transparent;
+    outline: none;
+}
+
+/* 메인 */
+#global-wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.main-container {
+    padding: 35px;
+    box-sizing: border-box;
+    width: 94%;
+    height: 100%;
+    border-radius: 15px;
+    margin: 0 auto;
+    border: 1px solid #dddddd;
+}
+
+/* 헤더 */
+header {
+    min-height: 100px;
+    box-shadow: 0 0 4px 0 #666666 inset;
+}
+
+.header-container {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.header-container .header-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.header-container .header-group .logo a {
+    font-size: 30px;
+    font-weight: 200;
+    color: #343a40;
+}
+
+.header-container .header-group .menu-group {
+    display: flex;
+    align-items: center;
+    color: #343a40;
+}
+
+.header-container .header-group .menu-group > div {
+    padding: 13px;
+}
+
+.header-container .header-group .menu-group a {
+    color: #343a40;
+}
+
+/* 푸터 */
+footer {
+    padding: 40px 0;
+    background-color: #666666;
+    box-shadow: 0 0 3px 0 #666666 inset;
+}
+
+.footer-container {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.footer-top li {
+    padding: 5px;
+}
+
+.footer-top li a {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.footer-bottom p {
+    font-size: 10px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.footer-bottom p:first-child {
+    margin-bottom: 10px;
+}
+

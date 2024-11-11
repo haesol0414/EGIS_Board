@@ -1,0 +1,63 @@
+/* 로그인 */
+#login-container {
+    box-shadow: 0 0 0 0;
+}
+
+h1 {
+    color: #666666;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.login-card {
+    width: 500px;
+    border: 4mm ridge rgb(102, 102, 102);
+    border-radius: 0 20px 0 10px;
+    margin: 40px auto 0 auto;
+    color: #666666;
+}
+
+.login-card form {
+    padding: 38px 22px;
+}
+
+.login-card form input {
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 15px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.login-card form button {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 15px;
+    background-color: #666666;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.login-card form .btn-link {
+    margin-bottom: 12px;
+    background-color: #fff;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.login-card form .outline-btn {
+    color: #666666;
+    display: block;
+    padding: 15px;
+}
