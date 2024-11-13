@@ -15,35 +15,41 @@
     <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="board-list-wrap">
-                <div class="board-top">
-                    <h1 class="board-title">게시글 목록</h1>
-                    <a href="#" class="write-btn">
+            <div class="board-top">
+                <h1 class="board-title">게시글 목록</h1>
+                <div class="board-right">
+                    <input class="search-input"></input>
+                    <a class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <a href="/write" class="write-btn">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </div>
-                <table class="bord-table">
-                    <thead>
+            </div>
+            <table class="board-table">
+                <thead>
+                <tr>
+                    <th class="col board-num">No.</th>
+                    <th class="col subject">제목</th>
+                    <th class="col writer">작성자</th>
+                    <th class="col write-date">작성일</th>
+                    <th class="col update-date">최근 수정일</th>
+                    <th class="col view-count">조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 10개의 행을 반복문으로 출력 -->
+                <c:forEach var="row" begin="1" end="10">
                     <tr>
-                        <th class="col board-num">No.</th>
-                        <th class="col subject">제목</th>
-                        <th class="col writer">작성자</th>
-                        <th class="col write-date">작성일</th>
-                        <th class="col update-date">최근 수정일</th>
-                        <th class="col view-count">조회수</th>
+                        <c:forEach var="col" begin="1" end="6">
+                            <td class="row"></td>
+                        </c:forEach>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <!-- 10개의 행을 반복문으로 출력 -->
-                    <c:forEach var="row" begin="1" end="10">
-                        <tr>
-                            <c:forEach var="col" begin="1" end="6">
-                                <td class="row"></td>
-                            </c:forEach>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-                <%-- 페이지네이션 필요 --%>
+                </c:forEach>
+                </tbody>
+            </table>
+            <%-- 페이지네이션 필요 --%>
             <div class="pagination">
                 <a href="#" class="prev">
                     <i class="fas fa-chevron-left"></i> <!-- 이전 화살표 -->
@@ -54,7 +60,7 @@
                     <i class="fas fa-chevron-right"></i> <!-- 다음 화살표 -->
                 </a>
             </div>
-            </div>
+        </div>
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>

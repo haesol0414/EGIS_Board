@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class JspController {
     // 홈 페이지
-    @GetMapping("/")
+    @RequestMapping("/")
     public String showHomePage() {
         return "boardList";
     }
@@ -17,8 +17,23 @@ public class JspController {
         return "login";
     }
 
-//    @RequestMapping("/register")
-//    public String showSignUpPage() {
-//        return "register";
-//    }
+    @RequestMapping("/register")
+    public String showSignUpPage() {
+        return "register";
+    }
+
+    @RequestMapping("/write")
+    public String showWritePage() {
+        return "boardWrite";
+    }
+
+    @RequestMapping("/detail")
+    public String showDetailPage() {
+        return "boardDetail";
+    }
+
+    @RequestMapping("/update")
+    public String showUpdatePage() {
+        return "boardUpdate";
+    }
 }

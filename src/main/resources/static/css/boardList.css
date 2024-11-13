@@ -1,4 +1,4 @@
-.board-container {
+#board-list-wrap {
     display: flex;
     flex-direction: column;
 }
@@ -7,28 +7,51 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 3px 5px 15px 5px;
+    margin: 15px 5px 34px 5px;
 }
 
 .board-title {
     font-size: 22px;
     font-weight: bold;
     color: #666666;
+    margin-bottom: 20px;
+}
+
+.board-right {
+    position: relative;
+    top: 19px;
+}
+
+.search-input {
+    width: 300px;
+    border: none;
+    border-bottom: 2px solid #666666;
+    outline: none;
+    padding: 8px 0;
+}
+
+.search-btn i {
+    position: relative;
+    top: 4px;
+    font-size: 25px;
+    color: #666666;
+    margin-left: 10px;
 }
 
 .write-btn i {
-    font-size: 24px;
+    position: relative;
+    top: 4px;
+    right: 3px;
+    font-size: 25px;
     color: #666666;
+    margin-left: 30px;
 }
 
-
-.write-btn i:hover {
+.search-btn i:hover, .write-btn i:hover {
     color: #007bee;
 }
 
-
-
-.bord-table {
+.board-table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -37,13 +60,15 @@
     border: 1px solid #dddddd;
     padding: 25px;
     text-align: center;
+    color: #343a40;
 }
 
 .col {
     background-color: #f2f2f2;
+    font-weight: 600;
 }
 
-.board-num { /* '조회수' 열 너비 설정 */
+.board-num {
     width: 5%;
 }
 
@@ -51,25 +76,26 @@
     width: 40%;
 }
 
-.writer { /* 'No.' 열 너비 설정 */
+.writer {
     width: 10%;
 }
 
-.write-date { /* '작성자' 열 너비 설정 */
+.write-date {
     width: 15%;
 }
 
-.update-date { /* '작성일' 열 너비 설정 */
+.update-date {
     width: 15%;
 }
 
-.view-count { /* '최근 수정일' 열 너비 설정 */
+.view-count {
     width: 6%;
 }
 
 .pagination {
     display: flex;
-    margin-top: 25px;
+    margin-top: 29px;
+    margin-bottom: 20px;
     color: #666666;
     gap: 10px;
     justify-content: center;
@@ -79,4 +105,3 @@
     font-weight: bold;
     text-decoration: underline;
 }
-

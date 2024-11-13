@@ -1,0 +1,98 @@
+#board-update-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-top {
+    margin: 10px auto 17px 5px;
+}
+
+.board-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #666666;
+}
+
+.update-table {
+    border-collapse: separate;
+    border-spacing: 1px;
+    border-top: 1px solid #ccc;
+    text-align: left;
+    line-height: 1.5;
+    margin: 30px auto 10px auto;
+    width: 100%;
+    max-width: 100%;
+    color: #666666;
+}
+
+.update-table th {
+    position: relative;
+    top: 7px;
+    left: 10px;
+    font-weight: bold;
+    margin: 10px 0 10px 0;
+    height: 40px;
+    width: 20%;
+    padding: 10px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
+.update-table td {
+    position: relative;
+    top: 7px;
+    left: 10px;
+    width: 100%;
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
+#subject {
+    position: relative;
+    bottom: 6px;
+    border: 1px solid gray;
+    width: 1500px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+#subject:focus {
+    outline: #666666 solid 1px;
+}
+
+#content {
+    border: 1px solid gray;
+    width: 1500px;
+    height: 450px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 12px 15px;
+}
+
+#content:focus {
+    outline: #666666 solid 1px;
+}
+
+.update-btn {
+    width: 70px;
+    height: 38px;
+    margin: 4px 0 0 5px;
+    border-radius: 5px;
+    border: 1px solid #666666;
+    background: #ffffff;
+    color: #666666;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+}
+
+.update-btn:hover {
+    background: #666666;
+    color: #ffffff;
+}

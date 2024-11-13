@@ -9,7 +9,17 @@
             </div>
             <div class="menu-group">
                 <div>
-                    <a href="/login">Login　/　SignUp</a>
+                    <a href="/login">Login</a>
+                </div>
+                <div>
+                    <a href="/register">SignUp</a>
+                </div>
+                <%-- 나중에 지우기 --%>
+                <div>
+                    <a href="/detail">Detail</a>
+                </div>
+                <div>
+                    <a href="/update">Update</a>
                 </div>
             </div>
         </div>

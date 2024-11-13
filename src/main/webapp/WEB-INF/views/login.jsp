@@ -8,6 +8,9 @@
     <title>게시판</title>
     <link rel="stylesheet" href="resources/css/common.css">
     <link rel="stylesheet" href="resources/css/login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="resources/js/login.js"></script>
 </head>
 <body>
 <div id="global-wrap">
@@ -18,9 +21,10 @@
             <div class="login-card">
                 <form>
                     <input class="form-id" type="email" placeholder="Id" required/>
-                    <input class="form-pw" type="password" placeholder="Password"/>
+                    <input class="form-pw" type="password" placeholder="Password" required/>
                     <button class="form-submit" type="submit">Login</button>
-                    <div class="btn-link">
+                    <%-- 회원가입 페이지 이동 버튼 --%>
+                    <div id="signup-link" class="btn-link">
                         <a href="/register" class="outline-btn">SignUp</a>
                     </div>
                 </form>

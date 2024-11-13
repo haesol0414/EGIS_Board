@@ -1,0 +1,109 @@
+#board-write-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-top {
+    margin: 10px auto 17px 5px;
+}
+
+.board-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #666666;
+}
+
+.write-table {
+    border-collapse: separate;
+    border-spacing: 1px;
+    border-top: 1px solid #ccc;
+    text-align: left;
+    line-height: 1.5;
+    margin: 30px auto 10px auto;
+    width: 100%;
+    max-width: 100%;
+    color: #666666;
+}
+
+.write-table th {
+    width: 20%;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    margin: 10px 0 10px 0;
+    width: 20%;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ccc;
+}
+
+.write-table td {
+    width: 100%;
+    padding: 10px 0;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
+.write-table p {
+    font-size: 30px;
+    text-align: center;
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#writer {
+    height: 40px;
+    padding: 15px 0 0 0;
+}
+
+#writer:focus {
+    outline: none;
+}
+
+#subject {
+    border: 1px solid gray;
+    width: 1500px;
+    height: 40px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+#subject:focus {
+    outline: #666666 solid 1px;
+}
+
+#content {
+    border: 1px solid gray;
+    width: 1500px;
+    height: 450px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 12px 15px;
+    margin: 5px 0;
+}
+
+#content:focus {
+    outline: #666666 solid 1px;
+}
+
+.write_btn {
+    width: 70px;
+    height: 38px;
+    margin: 4px 0 0 5px;
+    border-radius: 5px;
+    border: 1px solid #666666;
+    background: #ffffff;
+    color: #666666;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+}
+
+.write_btn:hover {
+    background: #666666;
+    color: #ffffff;
+}
