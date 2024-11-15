@@ -33,17 +33,20 @@
 .search-btn i {
     position: relative;
     top: 4px;
+    right: 3px;
     font-size: 25px;
     color: #666666;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .write-btn i {
     position: relative;
     top: 4px;
-    right: 3px;
+    right: 5px;
     font-size: 25px;
     color: #666666;
+    display: none;
     margin-left: 30px;
 }
 

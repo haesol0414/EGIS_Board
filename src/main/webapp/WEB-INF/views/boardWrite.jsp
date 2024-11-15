@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="resources/css/common.css">
     <link rel="stylesheet" href="resources/css/boardWrite.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="resources/js/logout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <script src="resources/js/common.js"></script>
 </head>
 <body>
 <div id="global-wrap">

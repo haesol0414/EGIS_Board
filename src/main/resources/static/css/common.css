@@ -43,6 +43,7 @@ main {
     margin: 0 auto;
     border: 1px solid #dddddd;
 }
+
 /* 헤더 */
 header {
     min-height: 100px;
@@ -84,6 +85,29 @@ header {
 
 .header-container .header-group .menu-group a:hover {
     color: #8892a0;
+}
+
+.header-container .header-group .menu-group button {
+    all: unset;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #343a40;
+    display: none;
+}
+
+.header-container .header-group .menu-group button:hover {
+    color: #8892a0;
+}
+
+.header-container .header-group .menu-group button:hover {
+    color: #8892a0;
+}
+
+#username {
+    font-size: 16px;
+    margin-right: 5px;
+    color: #343a40;
 }
 
 /* 푸터 */

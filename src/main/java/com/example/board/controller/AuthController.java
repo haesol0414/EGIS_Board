@@ -1,10 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.dto.LoginDTO;
-import com.example.board.dto.UserDetailDTO;
 import com.example.board.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +17,12 @@ public class AuthController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
-        UserDetailDTO user = authService.login(loginDTO);
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        String accessToken = authService.login(loginDTO);
 
-        if (user != null) {
-            HttpSession session = request.getSession(true);
-
-            session.setAttribute("user", user);  // 유저 정보를 세션에 저장
-            System.out.println(session.getAttribute("user"));  // 로그에 세션 정보 출력
-            return ResponseEntity.ok(user);
+        if (accessToken != null) {
+            // 로그인 성공 시 accessToken 반환
+            return ResponseEntity.ok(accessToken);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }

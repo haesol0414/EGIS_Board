@@ -20,8 +20,10 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(loginData),
             success: function (res) {
-                alert(`${res.userName}님 로그인 성공`)
+                alert(`로그인 성공`)
+                console.log(res)
 
+                localStorage.setItem('token', res);
                 window.location.href = "/";
             },
             error: function (xhr) {

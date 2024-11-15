@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="resources/css/common.css">
     <link rel="stylesheet" href="resources/css/login.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="resources/js/common.js"></script>
+
     <script src="resources/js/login.js"></script>
 </head>
 <body>

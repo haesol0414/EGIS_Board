@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="resources/css/boardList.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="resources/js/logout.js"></script>
-    <script src="resources/js/register.js"></script>
+    <script src="resources/js/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </head>
 <body>
 <div id="global-wrap">
@@ -22,10 +22,10 @@
                 <h1 class="board-title">게시글 목록</h1>
                 <div class="board-right">
                     <input class="search-input"></input>
-                    <a class="search-btn">
+                    <a id="search-btn" class="search-btn">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="/write" class="write-btn">
+                    <a href="/write" id="write-btn" class="write-btn">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </div>
