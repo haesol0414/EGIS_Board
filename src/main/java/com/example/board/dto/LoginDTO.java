@@ -1,15 +1,12 @@
 package com.example.board.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestLoginDTO {
+public class LoginDTO {
     private String userId;
     private String password;
 }

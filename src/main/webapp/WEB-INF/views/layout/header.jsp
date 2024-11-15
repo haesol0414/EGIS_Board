@@ -21,6 +21,7 @@
                 <div>
                     <a href="/update">Update</a>
                 </div>
+                <button id="logout-btn">로그아웃</button>
             </div>
         </div>
     </div>

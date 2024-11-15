@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestCreateUserDTO {
+public class CreateUserDTO {
     private String userId;
     private String userName;
     private String password;

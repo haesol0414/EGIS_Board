@@ -2,6 +2,7 @@ package com.example.board.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
@@ -12,6 +13,6 @@ public class User {
     private Role role;
 
     public enum Role {
-        회원, 관리자
+        USER, ADMIN
     }
 }

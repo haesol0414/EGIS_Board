@@ -1,4 +1,4 @@
 package com.example.board.dto;
 
-public class ResponseBoardDTO {
+public class UpdateBoardDTO {
 }
