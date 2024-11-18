@@ -14,7 +14,6 @@ $(document).ready(function() {
 
             username.text(decodedToken.userName + "님").show();
             logoutBtn.show();
-            writeBtn.show();
             loginLink.hide();
             signupLink.hide();
 
@@ -32,6 +31,8 @@ $(document).ready(function() {
         // 로그아웃 상태일 때
         loginLink.show();
         signupLink.show();
+        writeBtn.hide();
+
 
         console.log("토큰이 없습니다.");
     }

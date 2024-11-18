@@ -11,7 +11,7 @@ public class Board {
     private String createUser;   // user와 조인
     private String updateUser;   // user와 조인
     private String subject;      // not null
-    private String contentText;  // not ull
+    private String contentText;  // not null
     private Integer viewCnt;     // default값 o
     private String createdAt;    // default값 o
     private String updatedAt;    // default값 o

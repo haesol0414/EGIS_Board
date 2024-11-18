@@ -25,7 +25,7 @@
                 <table>
                     <tr>
                         <th class="writer">작성자</th>
-                        <td id="writer">회원명 @(test123)</td>
+                        <td id="writer">회원명 (@test123)</td>
                     </tr>
                     <tr>
                         <th class="subject">제목</th>

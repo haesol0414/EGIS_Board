@@ -1,15 +1,11 @@
 package com.example.board.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class JspController {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-
-    // 홈 페이지
+public class PageController {
+    // 메인 페이지
     @RequestMapping("/")
     public String showHomePage() {
         return "boardList";
@@ -17,7 +13,6 @@ public class JspController {
 
     @RequestMapping("/login")
     public String showLoginPage() {
-        System.out.println(jwtSecret);
         return "login";
     }
 
@@ -31,10 +26,10 @@ public class JspController {
         return "boardWrite";
     }
 
-    @RequestMapping("/detail")
-    public String showDetailPage() {
-        return "boardDetail";
-    }
+//    @RequestMapping("/detail")
+//    public String showDetailPage() {
+//        return "boardDetail";
+//    }
 
     @RequestMapping("/update")
     public String showUpdatePage() {

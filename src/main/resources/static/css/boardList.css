@@ -1,3 +1,15 @@
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 #board-list-wrap {
     display: flex;
     flex-direction: column;
@@ -7,14 +19,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 15px 5px 34px 5px;
+    margin: 15px 5px 33px 5px;
 }
 
 .board-title {
     font-size: 22px;
     font-weight: bold;
     color: #666666;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .board-right {
@@ -27,12 +39,12 @@
     border: none;
     border-bottom: 2px solid #666666;
     outline: none;
-    padding: 8px 0;
+    padding: 10px;
 }
 
 .search-btn i {
     position: relative;
-    top: 4px;
+    top: 7px;
     right: 3px;
     font-size: 25px;
     color: #666666;
@@ -42,11 +54,10 @@
 
 .write-btn i {
     position: relative;
-    top: 4px;
-    right: 5px;
+    top: 7px;
+    right: 7px;
     font-size: 25px;
     color: #666666;
-    display: none;
     margin-left: 30px;
 }
 
@@ -79,16 +90,26 @@
     width: 40%;
 }
 
+.row.subject:hover {
+    color: #8892a0;
+}
+
+
 .writer {
-    width: 10%;
+    width: 11%;
 }
 
 .write-date {
-    width: 15%;
+    width: 12%;
 }
 
 .update-date {
-    width: 15%;
+    width: 12%;
+}
+
+.row.update-date {
+    color: #325928;
+    /*animation: blink 1s infinite;*/
 }
 
 .view-count {
@@ -97,7 +118,7 @@
 
 .pagination {
     display: flex;
-    margin-top: 29px;
+    margin-top: 35px;
     margin-bottom: 20px;
     color: #666666;
     gap: 10px;
