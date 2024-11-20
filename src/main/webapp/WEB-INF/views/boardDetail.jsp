@@ -47,7 +47,7 @@
                     </tr>
                     <tr>
                         <th class="content">내용</th>
-                        <td id="content">${board.contentText}</td>
+                        <td id="content"><c:out value="${board.contentText}"/></td>
                     </tr>
                 </table>
             </div>
@@ -62,10 +62,16 @@
         <!-- 삭제 확인 모달 -->
         <div id="deleteModal" class="modal">
             <div class="modal-content">
-                <span id="close-btn">&times;</span>
                 <p>삭제하시겠습니까?</p>
-                <button id="delete-confirm-btn">예</button>
-                <button id="delete-deny-btn">아니오</button>
+                <button id="confirm-btn">예</button>
+                <button id="deny-btn">아니오</button>
+            </div>
+        </div>
+        <!-- 메세지 모달 -->
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-msg"></p>
+                <button id="close-btn">확인</button>
             </div>
         </div>
     </main>

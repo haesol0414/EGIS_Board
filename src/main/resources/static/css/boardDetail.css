@@ -4,7 +4,7 @@
 }
 
 .board-top {
-    margin: 10px auto 17px 5px;
+    margin: 10px auto 30px 5px;
 }
 
 .board-title {
@@ -23,6 +23,7 @@
     width: 100%;
     max-width: 100%;
     color: #666666;
+    padding-bottom: 10px;
 }
 
 .board-detail-table th {
@@ -31,7 +32,7 @@
     left: 10px;
     width: 20%;
     height: 40px;
-    padding: 10px 12px;
+    padding: 12px 12px;
     font-weight: bold;
     margin: 10px 0 10px 0;
     vertical-align: top;
@@ -43,7 +44,7 @@
     top: 7px;
     right: 120px;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     vertical-align: top;
     border-bottom: 1px solid #ccc;
 }
@@ -56,9 +57,22 @@
     margin-bottom: 10px;
 }
 
+
+
+.board-detail-table tr:last-child th {
+    padding-top: 10px;
+    border-bottom: none; /* 마지막 행의 모든 <td>에 border-bottom 제거 */
+}
+
+.board-detail-table tr:last-child td {
+    padding-top: 10px;
+    border-bottom: none; /* 마지막 행의 모든 <td>에 border-bottom 제거 */
+}
+
 #content {
     width: 1500px;
     height: 450px;
+    white-space: pre-line;
 }
 
 .btns-box {
@@ -128,28 +142,28 @@
     cursor: pointer;
 }
 
-#delete-confirm-btn {
+#confirm-btn {
     background-color: #d9534f;
     color: white;
 }
 
-#delete-deny-btn {
+#deny-btn, #close-btn {
     background-color: #666666;
     color: white;
 }
 
-#close-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #d9534f;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
+/*#close-btn {*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    right: 12px;*/
+/*    font-size: 18px;*/
+/*    font-weight: bold;*/
+/*    color: #d9534f;*/
+/*    cursor: pointer;*/
+/*    background: none;*/
+/*    border: none;*/
+/*}*/
 
-#close-btn:hover {
-    color: #666666;
-}
+/*#close-btn:hover {*/
+/*    color: #666666;*/
+/*}*/

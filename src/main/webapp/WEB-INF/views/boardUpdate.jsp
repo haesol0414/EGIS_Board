@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td><input type="text" name="subject" id="subject" value=${board.subject} maxlength=20></td>
+                        <td><input type="text" name="subject" id="subject" value="${board.subject}" maxlength=20 /></td>
                     </tr>
                     <tr>
                         <th class="date">작성일 (최근 수정일)</th>
@@ -47,11 +47,21 @@
                     </tr>
                     <tr>
                         <th class="content">내용</th>
-                        <td><textarea name="content" id="content" maxlength=2000>${board.contentText}</textarea></td>
+                        <td><textarea id="content" name="content" maxlength=2000 wrap="hard">${board.contentText}</textarea></td>
                     </tr>
                 </table>
-                <p><input type="submit" value="수정하기" class="update-btn"></p>
+                <div class="update-btns">
+                    <button class="btn" id="cancel-btn">취소</button>
+                    <p><input type="submit" value="수정하기" class="btn"></p>
+                </div>
             </form>
+        </div>
+        <!-- 메세지 모달 -->
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-msg"></p>
+                <button id="close-btn">확인</button>
+            </div>
         </div>
     </main>
     <%@ include file="layout/footer.jsp" %>

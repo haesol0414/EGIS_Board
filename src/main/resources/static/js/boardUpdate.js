@@ -2,10 +2,12 @@ $(document).ready(function () {
     const token = localStorage.getItem("token");
     const boardNo = window.location.pathname.match(/\/board\/(\d+)/)?.[1];
     const updateForm = $(".update-form");
-    console.log(boardNo);
-
     const decodedToken = jwt_decode(token);
     const loggedInUserId = decodedToken.sub;
+    const cancelBtn = $('#cancel-btn');
+    const closeBtn = $("#close-btn");
+    const alertModal = $("#alert-modal");
+    const modalMsg = $("#modal-msg");
 
     updateForm.on("submit", function (event) {
         event.preventDefault();
@@ -39,9 +41,7 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(updatedBoard),
             success: function (res) {
-                alert("게시글이 수정되었습니다.");
-
-                window.location.href = `/board/${boardNo}`;
+                openAlertModal("게시글이 수정되었습니다.");
             },
             error: function (xhr, status, error) {
                 alert("수정 중 오류가 발생했습니다.");
@@ -49,5 +49,22 @@ $(document).ready(function () {
                 console.error("Error:", xhr.responseText);
             }
         });
+    });
+
+    cancelBtn.on('click', function () {
+        window.location.href = `/board/${boardNo}`;
+    })
+
+    const openAlertModal = (msg) => {
+        alertModal.show();
+        modalMsg.text(msg);
+    }
+    const closeAlertModal = () => {
+        alertModal.hide();
+    }
+
+    closeBtn.on("click", function () {
+        closeAlertModal();
+        window.location.href = `/board/${boardNo}`;
     });
 });

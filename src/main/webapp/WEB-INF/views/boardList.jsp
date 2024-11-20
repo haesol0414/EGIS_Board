@@ -18,7 +18,7 @@
     <main>
         <div class="main-container" id="board-list-wrap">
             <div class="board-top">
-                <h1 class="board-title">게시글 목록</h1>
+                <h1 class="board-title">게시판</h1>
                 <div class="board-right">
                     <input class="search-input">
                     <a id="search-btn" class="search-btn">

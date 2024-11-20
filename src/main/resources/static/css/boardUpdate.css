@@ -4,7 +4,7 @@
 }
 
 .board-top {
-    margin: 10px auto 17px 5px;
+    margin: 10px auto 30px 5px;
 }
 
 .board-title {
@@ -56,7 +56,7 @@
     border-radius: 6px;
     box-sizing: border-box;
     font-size: 16px;
-    padding: 10px 15px;
+    padding: 12px 15px;
 }
 
 #subject:focus {
@@ -71,17 +71,24 @@
     box-sizing: border-box;
     font-size: 16px;
     margin-bottom: 10px;
-    padding: 12px 15px;
+    margin-right: 10px;
+    padding: 20px;
 }
 
 #content:focus {
     outline: #666666 solid 1px;
 }
 
-.update-btn {
+.update-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
     width: 70px;
     height: 38px;
-    margin: 15px 0 0 10px;
+    /*margin: 12px 0px 0 10px;*/
+    margin: 12px 0;
     border-radius: 5px;
     border: 1px solid #666666;
     background: #ffffff;
@@ -89,10 +96,60 @@
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
-    float: right;
 }
 
-.update-btn:hover {
+.btn:hover {
     background: #666666;
     color: #ffffff;
+}
+
+
+/* DELETE 모달 */
+.modal {
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: auto;
+}
+
+.modal-content p {
+    margin: 35px 0 50px 0;
+    color: #343a40;
+}
+
+.modal-content button {
+    margin: 10px 10px 30px 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#confirm-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+#deny-btn, #close-btn {
+    background-color: #666666;
+    color: white;
 }

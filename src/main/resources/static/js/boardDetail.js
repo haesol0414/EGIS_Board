@@ -1,16 +1,17 @@
 $(document).ready(function () {
     const token = localStorage.getItem("token");
-    // URL에서 boardNo 추출
     const pathSegments = window.location.pathname.split('/');
     const boardNo = pathSegments[pathSegments.length - 1];
     const modifyBtn = $("#modify-btn");
     const deleteBtn = $("#delete-btn");
     const replyBtn = $("#reply-btn");
     const deleteModal = $("#deleteModal");
-    const confirmDeleteBtn = $("#delete-confirm-btn");
-    const denyDeleteBtn = $("#delete-deny-btn");
-    const closeBtn = $("#close-btn");
+    const confirmDeleteBtn = $("#confirm-btn");
+    const denyDeleteBtn = $("#deny-btn");
     const writerBtnDiv = $(".writer-btns");
+    const closeBtn = $("#close-btn");
+    const alertModal = $("#alert-modal");
+    const modalMsg = $("#modal-msg");
 
     if (token) {
         const decodedToken = jwt_decode(token);
@@ -55,17 +56,16 @@ $(document).ready(function () {
         event.stopPropagation();
 
         if (boardNo) {
-            openModal();
+            openDeleteModal();
 
             confirmDeleteBtn.off("click").on("click", function () {
-                closeModal();
+                closeDeleteModal();
 
                 $.ajax({
                     url: `/board/${boardNo}`,
                     type: 'DELETE',
                     success: function (res) {
-                        alert(res);
-                        window.location.href = "/";
+                        openAlertModal("게시글이 삭제되었습니다.");
                     },
                     error: function (xhr, status, error) {
                         alert("삭제 중 에러가 발생했습니다: " + xhr.responseText);
@@ -77,23 +77,36 @@ $(document).ready(function () {
         }
     });
 
-    // '아니오', 'x' 버튼 클릭 시 모달 닫기
-    denyDeleteBtn.add(closeBtn).on("click", function () {
-        closeModal();
+    // '아니오' 버튼 클릭 시 모달 닫기
+    denyDeleteBtn.on("click", function () {
+        closeDeleteModal();
     });
 
-    // 삭제 모달 열기
-    const openModal = () => {
+    // 답글달기 버튼
+    replyBtn.on("click", function (event) {
+        event.preventDefault();
+    });
+
+
+    // 삭제 모달 열기, 닫기
+    const openDeleteModal = () => {
         deleteModal.show();
     };
-
-    // 삭제 모달 닫기
-    const closeModal = () => {
+    const closeDeleteModal = () => {
         deleteModal.hide();
     };
 
-    // 답글달기 버튼
-    // replyBtn.on("click", function (event) {
-    //     event.preventDefault();
-    // });
+    // 알림창 열기, 닫기
+    const openAlertModal = (msg) => {
+        alertModal.show();
+        modalMsg.text(msg);
+    }
+    const closeAlertModal = () => {
+        alertModal.hide();
+    }
+
+    closeBtn.on("click", function () {
+        closeAlertModal();
+        window.location.href = "/";
+    });
 });

@@ -32,7 +32,7 @@
                     </tr>
                     <tr>
                         <th class="content">내용</th>
-                        <td><textarea name="content" id="content" maxlength=2000></textarea></td>
+                        <td><textarea name="content" id="content" maxlength=2000 wrap="hard"></textarea></td>
                     </tr>
                 </table>
                 <p><input type="submit" value="작성하기" class="write_btn"></p>

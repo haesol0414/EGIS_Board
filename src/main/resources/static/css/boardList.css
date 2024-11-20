@@ -31,7 +31,7 @@
 
 .board-right {
     position: relative;
-    top: 30px;
+    top: 38px;
 }
 
 .search-input {
@@ -45,7 +45,7 @@
 .search-btn i {
     position: relative;
     top: 7px;
-    right: 3px;
+    right: 1px;
     font-size: 25px;
     color: #666666;
     margin-left: 10px;
