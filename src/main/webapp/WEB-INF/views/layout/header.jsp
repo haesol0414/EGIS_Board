@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="/resources/css/common.css">
+<script src="/resources/js/common.js"></script>
 <header>
     <div class="header-container">
         <div class="header-group">
@@ -17,9 +19,6 @@
                 </div>
                 <div id="signup-link">
                     <a href="/register">SignUp</a>
-                </div>
-                <div>
-                    <a href="/update">Update</a>
                 </div>
             </div>
         </div>

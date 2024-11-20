@@ -1,5 +1,6 @@
 package com.example.board.security;
 
+import com.example.board.config.JwtConfig;
 import com.example.board.service.security.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,14 +30,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);
         }
-        // 에러 핸들링 필요
         chain.doFilter(request, response);
     }
 
     // Request Header에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConstant.GRANT_TYPE)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConfig.GRANT_TYPE)) {
             return bearerToken.substring(7);
         }
         return null;

@@ -1,6 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.CreateUserDTO;
+import com.example.board.dto.SignUpDTO;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/users/signup")
-    public int singUp(@RequestBody CreateUserDTO createUserDTO) {
-        return userService.signUp(createUserDTO);
+    public int singUp(@RequestBody SignUpDTO signUpDTO) {
+        return userService.signUp(signUpDTO);
     }
 
     // 아이디 중복체크

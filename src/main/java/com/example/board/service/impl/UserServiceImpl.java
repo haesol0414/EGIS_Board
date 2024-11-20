@@ -1,6 +1,6 @@
 package com.example.board.service.impl;
 
-import com.example.board.dto.CreateUserDTO;
+import com.example.board.dto.SignUpDTO;
 import com.example.board.mapper.UserMapper;
 import com.example.board.model.User;
 import com.example.board.service.UserService;
@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
 
     // 회원 가입
     @Override
-    public int signUp(CreateUserDTO createUserDTO) {
-        User user = createUserDTO.toEntity();
+    public int signUp(SignUpDTO signUpDTO) {
+        User user = signUpDTO.toEntity();
 
         //패스워드 암호화
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserId(String userId) {
         // 아이디가 존재하는지 확인하고, 존재하지 않을 경우 사용 가능
-        // 존재하지 않으면(false) -> true로 변환 -> Controller : true면 200
         return !userMapper.existsByUserId(userId);
     }
 }

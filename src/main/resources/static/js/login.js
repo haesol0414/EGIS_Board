@@ -33,6 +33,7 @@ $(document).ready(function() {
                     alert("서버 오류 발생");
                 }
             }
+
         });
     });
 });

@@ -6,12 +6,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <link rel="stylesheet" href="resources/css/common.css">
     <link rel="stylesheet" href="resources/css/boardList.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="resources/js/common.js"></script>
     <script src="resources/js/boardList.js"></script>
 </head>
 <body>
@@ -22,7 +20,7 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 목록</h1>
                 <div class="board-right">
-                    <input class="search-input"></input>
+                    <input class="search-input">
                     <a id="search-btn" class="search-btn">
                         <i class="fas fa-search"></i>
                     </a>
@@ -43,20 +41,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="row" begin="1" end="15">
-                </c:forEach>
                 </tbody>
             </table>
-            <%-- 페이지네이션 필요 --%>
+            <%-- 페이지네이션 --%>
             <div class="pagination">
-                <a href="#" class="prev">
-                    <i class="fas fa-chevron-left"></i> <!-- 이전 화살표 -->
-                </a>
-                <span class="current-page">1</span>
-                <a href="#">2</a>
-                <a href="#" class="next">
-                    <i class="fas fa-chevron-right"></i> <!-- 다음 화살표 -->
-                </a>
             </div>
         </div>
     </main>

@@ -8,16 +8,31 @@ $(document).ready(function() {
 
     if (token) {
         try {
-            // 로그인 상태일 때
             const decodedToken = jwt_decode(token);
-            console.log("디코딩된 토큰:", decodedToken);
+            console.log("(common) 디코딩된 토큰:", decodedToken);
+            const now = Math.floor(Date.now() / 1000);
+            const exp = decodedToken.exp;
 
-            username.text(decodedToken.userName + "님").show();
-            logoutBtn.show();
-            loginLink.hide();
-            signupLink.hide();
+            if (exp > now) {
+                username.text(decodedToken.userName + "님").show();
+                logoutBtn.show();
+                loginLink.hide();
+                signupLink.hide();
 
-            // 로그아웃 버튼 클릭 시 처리
+                const timeUntilExpiration = (exp - now) * 1000;
+                console.log(`토큰 만료까지 남은 시간: ${(timeUntilExpiration / 1000 / 60).toFixed(0)}분`);
+
+                setTimeout(() => {
+                    alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
+                }, timeUntilExpiration);
+            } else {
+                alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+
             logoutBtn.on("click", function() {
                 localStorage.removeItem("token");
                 alert("로그아웃 성공");
@@ -26,14 +41,14 @@ $(document).ready(function() {
         } catch (error) {
             console.error("토큰 디코딩 오류:", error);
             alert("토큰 디코딩에 실패했습니다. 다시 로그인 해주세요.");
+            localStorage.removeItem("token");
+            window.location.href = "/login";
         }
     } else {
-        // 로그아웃 상태일 때
         loginLink.show();
         signupLink.show();
         writeBtn.hide();
 
-
-        console.log("토큰이 없습니다.");
+        console.log("비회원 입니다.");
     }
 });

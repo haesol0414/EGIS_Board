@@ -19,11 +19,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 15px 5px 33px 5px;
+    margin: 15px 5px 50px 5px;
 }
 
 .board-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     color: #666666;
     margin-bottom: 30px;
@@ -31,7 +31,7 @@
 
 .board-right {
     position: relative;
-    top: 19px;
+    top: 30px;
 }
 
 .search-input {
@@ -90,8 +90,9 @@
     width: 40%;
 }
 
-.row.subject:hover {
+.row.subject a:hover {
     color: #8892a0;
+    text-decoration: underline;
 }
 
 
@@ -125,7 +126,18 @@
     justify-content: center;
 }
 
-.current-page {
-    font-weight: bold;
+.page-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #666666;
     text-decoration: underline;
+}
+
+.page-btn.current {
+    border: none;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: default;
 }

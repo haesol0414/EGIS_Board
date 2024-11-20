@@ -1,18 +1,21 @@
 package com.example.board.service;
 
 import com.example.board.dto.*;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
     // 게시글 작성
-    long createBoard(CreateBoardDTO createBoardDTO);
+    void createBoard(BoardCreateDTO boardCreateDTO);
     // 게시글 목록 조회
-    List<BoardListDTO> getBoardList();
+    Map<String, Object> getBoardList(Pageable pageable);
     // 게시글 상세 조회
     BoardDetailDTO getBoardDetail(Long boardNo);
     // 게시글 수정
-    long UpdateBoard(UpdateBoardDTO updateBoardDTO);
+    void updateBoard(BoardUpdateDTO boardUpdateDTO);
     // 게시글 삭제
-    long DeleteBoard(long boardId);
+    void deleteBoard(Long boardNo);
+    // 조회수 증가
+    void updateViewCnt(Long boardNo);
 }

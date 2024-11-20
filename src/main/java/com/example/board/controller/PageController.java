@@ -26,11 +26,6 @@ public class PageController {
         return "boardWrite";
     }
 
-//    @RequestMapping("/detail")
-//    public String showDetailPage() {
-//        return "boardDetail";
-//    }
-
     @RequestMapping("/update")
     public String showUpdatePage() {
         return "boardUpdate";

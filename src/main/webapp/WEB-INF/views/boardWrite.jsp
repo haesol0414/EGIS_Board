@@ -7,11 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="resources/css/common.css">
     <link rel="stylesheet" href="resources/css/boardWrite.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <script src="resources/js/common.js"></script>
+    <script src="resources/js/boardWrite.js"></script>
 </head>
 <body>
 <div id="global-wrap">
@@ -21,11 +20,11 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 작성</h1>
             </div>
-            <form class="write-table">
+            <form class="write-form">
                 <table>
                     <tr>
                         <th class="writer">작성자</th>
-                        <td id="writer">회원명 (@test123)</td>
+                        <td id="writer"></td>
                     </tr>
                     <tr>
                         <th class="subject">제목</th>

@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/boardDetail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/resources/js/common.js"></script>
+    <script src="/resources/js/boardDetail.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </head>
 <body>
 <div id="global-wrap">
@@ -25,7 +25,7 @@
                 <table>
                     <tr>
                         <th class="writer">작성자</th>
-                        <td id="writer">${board.createUserName}(@${board.createUserId})</td>
+                        <td id="writer" data-writerid="${board.createUserId}">${board.createUserName}(@${board.createUserId})</td>
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
@@ -53,16 +53,16 @@
             </div>
             <div class="btns-box">
                 <button class="btn" id="reply-btn">답글 달기</button>
-                <div class="right-btns">
+                <div class="writer-btns">
                     <button class="btn" id="delete-btn">삭제하기</button>
-                    <button class="btn" id="modify-btn">수정하기</button>
+                    <button class="btn" id="modify-btn" onclick="location.href='/board/${board.boardNo}/edit'">수정하기</button>
                 </div>
             </div>
         </div>
         <!-- 삭제 확인 모달 -->
         <div id="deleteModal" class="modal">
             <div class="modal-content">
-                <span class="close-btn">&times;</span>
+                <span id="close-btn">&times;</span>
                 <p>삭제하시겠습니까?</p>
                 <button id="delete-confirm-btn">예</button>
                 <button id="delete-deny-btn">아니오</button>
