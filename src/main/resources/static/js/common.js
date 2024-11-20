@@ -5,6 +5,7 @@ $(document).ready(function() {
     const loginLink = $("#login-link");
     const signupLink = $("#signup-link");
     const writeBtn = $("#write-btn");
+    const loggedInUserDiv = $('.login-user');
 
     if (token) {
         try {
@@ -48,6 +49,7 @@ $(document).ready(function() {
         loginLink.show();
         signupLink.show();
         writeBtn.hide();
+        loggedInUserDiv.hide();
 
         console.log("비회원 입니다.");
     }

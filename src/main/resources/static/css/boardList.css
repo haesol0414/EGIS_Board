@@ -31,7 +31,7 @@
 
 .board-right {
     position: relative;
-    top: 38px;
+    top: 35px;
 }
 
 .search-input {
@@ -78,6 +78,7 @@
 }
 
 .col {
+    /*background-color: #f2f2f2;*/
     background-color: #f2f2f2;
     font-weight: 600;
 }

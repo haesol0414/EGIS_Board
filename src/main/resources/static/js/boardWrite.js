@@ -4,6 +4,9 @@ $(document).ready(function() {
     const decodedToken = jwt_decode(token);
     const loggedInUserId = decodedToken.sub;
     const userName = decodedToken.userName;
+    const closeBtn = $("#close-btn");
+    const alertModal = $("#alert-modal");
+    const modalMsg = $("#modal-msg");
 
     const writeEl = $('#writer');
     writeEl.text(`${userName} (@${loggedInUserId})`);
@@ -33,13 +36,25 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(newBoard),
             success: function (res) {
-                alert(res);
-
-                window.location.href = "/";
+                openAlertModal(res);
             },
             error: function (xhr) {
-                alert('게시글 작성 실패: ' + xhr.status + " " + xhr.statusText);
+                openAlertModal('게시글 작성 실패: ' + xhr.status + " " + xhr.statusText);
             }
         });
+    });
+
+    const openAlertModal = (msg) => {
+        alertModal.show();
+        modalMsg.text(msg);
+    }
+    const closeAlertModal = () => {
+        alertModal.hide();
+    }
+
+    closeBtn.on("click", function () {
+        closeAlertModal();
+
+        window.location.href = "/";
     });
 });

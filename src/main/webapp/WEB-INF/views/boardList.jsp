@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="resources/js/boardList.js"></script>
+    <script src="resources/js/boardSearch.js"></script>
 </head>
 <body>
 <div id="global-wrap">

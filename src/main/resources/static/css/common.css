@@ -104,9 +104,16 @@ header {
     color: #8892a0;
 }
 
-#username {
+
+.login-user {
+    display: flex;
+    gap: 7px;
+}
+
+.login-user #username {
+    user-select: none;
     font-size: 16px;
-    margin-right: 7px;
+    margin-right: 10px;
     color: #343a40;
 }
 

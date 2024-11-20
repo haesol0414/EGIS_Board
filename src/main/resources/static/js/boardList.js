@@ -9,7 +9,7 @@ $(document).ready(function () {
             url: "/board/list",
             type: "GET",
             data: {
-                page: pageNumber  // 서버로 페이지 번호 전송
+                page: pageNumber
             },
             contentType: "application/json",
             success: function (res) {

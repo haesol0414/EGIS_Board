@@ -103,8 +103,6 @@
     color: #ffffff;
 }
 
-
-/* DELETE 모달 */
 .modal {
     position: fixed;
     display: none;
@@ -144,12 +142,7 @@
     cursor: pointer;
 }
 
-#confirm-btn {
-    background-color: #d9534f;
-    color: white;
-}
-
-#deny-btn, #close-btn {
+#close-btn {
     background-color: #666666;
     color: white;
 }

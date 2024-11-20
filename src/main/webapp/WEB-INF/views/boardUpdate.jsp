@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td><input type="text" name="subject" id="subject" value="${board.subject}" maxlength=20 /></td>
+                        <td><input type="text" name="subject" id="subject" value="${board.subject}" minlength=2 maxlength=20 /></td>
                     </tr>
                     <tr>
                         <th class="date">작성일 (최근 수정일)</th>

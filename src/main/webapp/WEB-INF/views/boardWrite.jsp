@@ -28,7 +28,7 @@
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td><input type="text" name="subject" id="subject" maxlength=20></td>
+                        <td><input type="text" name="subject" id="subject" minlength=2 maxlength=20></td>
                     </tr>
                     <tr>
                         <th class="content">내용</th>
@@ -37,6 +37,13 @@
                 </table>
                 <p><input type="submit" value="작성하기" class="write_btn"></p>
             </form>
+        </div>
+        <!-- 메세지 모달 -->
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-msg"></p>
+                <button id="close-btn">확인</button>
+            </div>
         </div>
     </main>
     <%@ include file="layout/footer.jsp" %>

@@ -87,7 +87,6 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
-
     // 삭제 모달 열기, 닫기
     const openDeleteModal = () => {
         deleteModal.show();
