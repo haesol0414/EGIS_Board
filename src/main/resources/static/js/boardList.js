@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     function loadBoardList(pageNumber) {
         $.ajax({
-            url: "/board/list",
+            url: "/api/board/list",
             type: "GET",
             data: {
                 page: pageNumber

@@ -36,7 +36,7 @@ $(document).ready(function () {
         console.log(updatedBoard);
 
         $.ajax({
-            url: `/board/${boardNo}`,
+            url: `/api/board/${boardNo}`,
             type: "PATCH",
             contentType: "application/json",
             data: JSON.stringify(updatedBoard),

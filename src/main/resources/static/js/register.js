@@ -11,7 +11,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/check-id",
+            url: "/api/users/check-id",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({ userId: userId }),
@@ -60,7 +60,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: "/users/signup",
+            url: "/api/users/signup",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(userData),

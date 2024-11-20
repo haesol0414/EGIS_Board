@@ -15,7 +15,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/users/login",
+            url: "/api/users/login",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(loginData),
@@ -33,7 +33,6 @@ $(document).ready(function() {
                     alert("서버 오류 발생");
                 }
             }
-
         });
     });
 });

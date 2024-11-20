@@ -1,39 +1,17 @@
 package com.example.board.controller;
 
-import com.example.board.dto.SignUpDTO;
-import com.example.board.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Map;
-
-@RestController
+@Controller
 public class UserController {
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @RequestMapping("/login")
+    public String showLoginPage() {
+        return "login";
     }
 
-    // 회원가입
-    @PostMapping("/users/signup")
-    public int singUp(@RequestBody SignUpDTO signUpDTO) {
-        return userService.signUp(signUpDTO);
-    }
-
-    // 아이디 중복체크
-    @PostMapping("/check-id")
-    @ResponseBody
-    public ResponseEntity<String> checkUserId(@RequestBody Map<String, String> userData) {
-        String userId = userData.get("userId");
-        boolean isAvailable = userService.checkUserId(userId);
-
-        if (isAvailable) {
-            return ResponseEntity.ok("사용 가능한 아이디 입니다.");
-        } else {
-            return ResponseEntity.badRequest().body("이미 존재하는 아이디입니다.");
-        }
+    @RequestMapping("/register")
+    public String showSignUpPage() {
+        return "register";
     }
 }

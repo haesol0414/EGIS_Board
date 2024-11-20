@@ -62,7 +62,7 @@ $(document).ready(function () {
                 closeDeleteModal();
 
                 $.ajax({
-                    url: `/board/${boardNo}`,
+                    url: `/api/board/${boardNo}`,
                     type: 'DELETE',
                     success: function (res) {
                         openAlertModal("게시글이 삭제되었습니다.");

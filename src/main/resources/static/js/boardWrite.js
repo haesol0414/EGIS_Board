@@ -31,7 +31,7 @@ $(document).ready(function() {
         console.log(newBoard);
 
         $.ajax({
-            url: "/board/write",
+            url: "/api/board/write",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(newBoard),
