@@ -1,9 +1,12 @@
+@import "common.css";
+
 /* 회원가입 */
 #signup-wrap {
     box-shadow: 0 0 0 0;
     text-align: center;
 }
-h1 {
+
+.title {
     color: #666666;
     font-size: 30px;
     font-weight: 700;

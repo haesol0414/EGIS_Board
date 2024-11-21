@@ -1,14 +1,12 @@
-package com.example.board.dto;
+package com.example.board.dto.request;
 
 import lombok.*;
 
 import java.util.Date;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class BoardUpdateDTO {
     private Long boardNo;
     private String updateUserId;

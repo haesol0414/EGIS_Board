@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const boardNo = window.location.pathname.match(/\/board\/(\d+)/)?.[1];
     const updateForm = $(".update-form");
     const decodedToken = jwt_decode(token);

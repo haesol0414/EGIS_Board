@@ -1,7 +1,7 @@
 package com.example.board.controller;
 
-import com.example.board.dto.LoginDTO;
-import com.example.board.dto.SignUpDTO;
+import com.example.board.dto.request.LoginDTO;
+import com.example.board.dto.request.SignUpDTO;
 import com.example.board.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserRestController {
             // 로그인 성공 시 accessToken 반환
             return ResponseEntity.ok(accessToken);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("* 로그인 실패: 아이디 또는 비밀번호를 확인해주세요.");
         }
     }
 

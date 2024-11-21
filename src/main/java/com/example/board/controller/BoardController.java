@@ -1,6 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.BoardDetailDTO;
+import com.example.board.dto.response.BoardDetailDTO;
 import com.example.board.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;

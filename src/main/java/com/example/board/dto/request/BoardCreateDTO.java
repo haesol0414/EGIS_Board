@@ -1,12 +1,10 @@
-package com.example.board.dto;
+package com.example.board.dto.request;
 
 import lombok.*;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class BoardCreateDTO {
     private String createUserId;
     private String subject;

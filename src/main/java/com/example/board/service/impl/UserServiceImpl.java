@@ -1,11 +1,11 @@
 package com.example.board.service.impl;
 
-import com.example.board.dto.LoginDTO;
-import com.example.board.dto.SignUpDTO;
+import com.example.board.dto.request.LoginDTO;
+import com.example.board.dto.request.SignUpDTO;
 import com.example.board.mapper.UserMapper;
-import com.example.board.model.User;
 import com.example.board.service.UserService;
 import com.example.board.service.security.JwtProvider;
+import com.example.board.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,12 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
-
     }
 
+    // 로그인
     @Override
     public String login(LoginDTO loginDTO) {
-        User user = userMapper.findByUserId(loginDTO.getUserId());
+        UserVO user = userMapper.findByUserId(loginDTO.getUserId());
 
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             return null;
@@ -39,15 +39,13 @@ public class UserServiceImpl implements UserService {
     // 회원 가입
     @Override
     public int signUp(SignUpDTO signUpDTO) {
-        User user = signUpDTO.toEntity();
-
         //패스워드 암호화
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        String encodedPassword = passwordEncoder.encode(signUpDTO.getPassword());
 
         // 암호화된 패스워드를 포함한 User 객체 생성
-        User encryptedUser = User.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
+        UserVO encryptedUser = UserVO.builder()
+                .userId(signUpDTO.getUserId())
+                .userName(signUpDTO.getUserName())
                 .password(encodedPassword)
                 .build();
 

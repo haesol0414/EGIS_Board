@@ -1,6 +1,6 @@
 package com.example.board.service.security;
 
-import com.example.board.config.JwtConfig;
+import com.example.board.security.JwtConstant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,7 +32,7 @@ public class JwtProvider {
     // AccessToken 생성 메서드
     public String generateToken(String userId, String userName, String role) {
         long now = (new Date()).getTime();
-        Date accessTokenExpiresIn = new Date(now + JwtConfig.ACCESS_TOKEN_EXPIRE_TIME);
+        Date accessTokenExpiresIn = new Date(now + JwtConstant.ACCESS_TOKEN_EXPIRE_TIME);
 
         return Jwts.builder()
                 .setSubject(String.valueOf(userId)) // 사용자 ID

@@ -1,10 +1,12 @@
+@import 'common.css';
+
 #board-write-wrap {
     display: flex;
     flex-direction: column;
 }
 
 .board-top {
-    margin: 10px auto 17px 5px;
+    margin: 15px auto 33px 5px;
 }
 
 .board-title {
@@ -22,16 +24,14 @@
     margin: 30px auto 10px auto;
     width: 100%;
     max-width: 100%;
-    color: #666666;
+    color: var(--text-color);
 }
 
 .write-form th {
     width: 20%;
-    padding: 10px;
     font-weight: bold;
     vertical-align: top;
     margin: 10px 0 10px 0;
-    width: 20%;
     padding: 10px 12px;
     border-bottom: 1px solid #ccc;
 }
@@ -92,7 +92,7 @@
 .write_btn {
     width: 70px;
     height: 38px;
-    margin: 0 0 0 5px;
+    margin: 0 0 0 10px;
     border-radius: 5px;
     border: 1px solid #666666;
     background: #ffffff;
@@ -106,56 +106,4 @@
 .write_btn:hover {
     background: #666666;
     color: #ffffff;
-}
-
-
-/* DELETE 모달 */
-.modal {
-    position: fixed;
-    display: none;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
-}
-
-.modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: auto;
-}
-
-.modal-content p {
-    margin: 35px 0 50px 0;
-    color: #343a40;
-}
-
-.modal-content button {
-    margin: 10px 10px 30px 10px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-}
-
-#confirm-btn {
-    background-color: #d9534f;
-    color: white;
-}
-
-#deny-btn, #close-btn {
-    background-color: #666666;
-    color: white;
 }

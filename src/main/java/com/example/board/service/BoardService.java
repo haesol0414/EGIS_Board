@@ -1,6 +1,8 @@
 package com.example.board.service;
 
-import com.example.board.dto.*;
+import com.example.board.dto.request.BoardCreateDTO;
+import com.example.board.dto.request.BoardUpdateDTO;
+import com.example.board.dto.response.BoardDetailDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Map;

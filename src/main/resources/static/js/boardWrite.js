@@ -1,6 +1,5 @@
 $(document).ready(function() {
-    // 사용자의 토큰을 통해 정보 추출
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const decodedToken = jwt_decode(token);
     const loggedInUserId = decodedToken.sub;
     const userName = decodedToken.userName;

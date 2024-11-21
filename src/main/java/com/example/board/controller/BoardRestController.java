@@ -1,7 +1,7 @@
 package com.example.board.controller;
 
-import com.example.board.dto.BoardCreateDTO;
-import com.example.board.dto.BoardUpdateDTO;
+import com.example.board.dto.request.BoardCreateDTO;
+import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;

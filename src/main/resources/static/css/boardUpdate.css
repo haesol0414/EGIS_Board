@@ -1,3 +1,5 @@
+@import 'common.css';
+
 #board-update-wrap {
     display: flex;
     flex-direction: column;
@@ -22,7 +24,7 @@
     margin: 30px auto 10px auto;
     width: 100%;
     max-width: 100%;
-    color: #666666;
+    color: var(--text-color);
 }
 
 .update-form th {
@@ -101,48 +103,4 @@
 .btn:hover {
     background: #666666;
     color: #ffffff;
-}
-
-.modal {
-    position: fixed;
-    display: none;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
-}
-
-.modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: auto;
-}
-
-.modal-content p {
-    margin: 35px 0 50px 0;
-    color: #343a40;
-}
-
-.modal-content button {
-    margin: 10px 10px 30px 10px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#close-btn {
-    background-color: #666666;
-    color: white;
 }

@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    const closeBtn = $("#close-btn");
+    const alertModal = $("#alert-modal");
+    const modalMsg = $("#modal-msg");
+    const errorMsg = $("#error-msg");
+
     $("form").on("submit", function(event) {
         event.preventDefault();
 
@@ -20,19 +25,37 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(loginData),
             success: function (res) {
-                alert(`로그인 성공`)
-                console.log(res)
+                openAlertModal("로그인 성공")
 
-                localStorage.setItem('token', res);
-                window.location.href = "/";
+                sessionStorage.setItem('token', res);
             },
             error: function (xhr) {
                 if (xhr.status === 401) {
-                    alert("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
+                    errorMsg.text(xhr.responseText).show();
                 } else {
                     alert("서버 오류 발생");
                 }
             }
         });
+    });
+
+    const openAlertModal = (msg) => {
+        alertModal.show();
+        modalMsg.text(msg);
+    }
+    const closeAlertModal = () => {
+        alertModal.hide();
+    }
+
+    closeBtn.on("click", function () {
+        closeAlertModal();
+
+    });
+
+    $(document).on("keydown", function (event) {
+        if (event.key === "Enter" && alertModal.is(":visible")) {
+            closeAlertModal();
+            window.location.href = "/";
+        }
     });
 });

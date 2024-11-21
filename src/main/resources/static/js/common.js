@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const logoutBtn = $("#logout-btn");
     const username = $("#username");
     const loginLink = $("#login-link");
@@ -25,24 +25,24 @@ $(document).ready(function() {
 
                 setTimeout(() => {
                     alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-                    localStorage.removeItem("token");
+                    sessionStorage.removeItem("token");
                     window.location.href = "/login";
                 }, timeUntilExpiration);
             } else {
                 alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 window.location.href = "/login";
             }
 
             logoutBtn.on("click", function() {
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 alert("로그아웃 성공");
                 window.location.href = "/";
             });
         } catch (error) {
             console.error("토큰 디코딩 오류:", error);
             alert("토큰 디코딩에 실패했습니다. 다시 로그인 해주세요.");
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
             window.location.href = "/login";
         }
     } else {

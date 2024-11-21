@@ -1,6 +1,6 @@
-package com.example.board.config;
+package com.example.board.security;
 
-public class JwtConfig {
+public class JwtConstant {
     // Bearer 토큰 앞부분
     public static final String GRANT_TYPE = "Bearer ";
 

@@ -1,7 +1,7 @@
 package com.example.board.service.security;
 
 import com.example.board.mapper.UserMapper;
-import com.example.board.model.User;
+import com.example.board.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.findByUserId(username);
+        UserVO user = userMapper.findByUserId(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found with userId: " + username);

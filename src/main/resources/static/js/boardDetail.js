@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const pathSegments = window.location.pathname.split('/');
     const boardNo = pathSegments[pathSegments.length - 1];
     const modifyBtn = $("#modify-btn");

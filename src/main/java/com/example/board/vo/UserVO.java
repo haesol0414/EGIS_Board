@@ -1,11 +1,11 @@
-package com.example.board.model;
+package com.example.board.vo;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class User {
+public class UserVO {
     private String userId;
     private String userName;
     private String password;

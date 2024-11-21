@@ -24,7 +24,7 @@
                     <a id="search-btn" class="search-btn">
                         <i class="fas fa-search"></i>
                     </a>
-                    <a href="/write" id="write-btn" class="write-btn">
+                    <a href="/board/write" id="write-btn" class="write-btn">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </div>

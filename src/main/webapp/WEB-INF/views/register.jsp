@@ -15,7 +15,7 @@
     <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="signup-wrap">
-            <h1>회원 가입</h1>
+            <h1 class="title">회원 가입</h1>
             <div class="signup-card">
                 <form>
                     <div>
@@ -27,6 +27,8 @@
                                    placeholder="Id"/>
                             <button type="button" id="id-check-btn">중복확인</button>
                         </div>
+                        <div id="error-msg" class="error-msg"></div>
+                        <div id="positive-msg" class="positive-msg"></div>
                     </div>
                     <div>
                         <label for="form-name">이름</label>
@@ -46,6 +48,13 @@
                     </div>
                     <button type="submit" class="form-submit">Register</button>
                 </form>
+            </div>
+        </div>
+        <!-- 메세지 모달 -->
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-msg"></p>
+                <button id="close-btn">확인</button>
             </div>
         </div>
     </main>
