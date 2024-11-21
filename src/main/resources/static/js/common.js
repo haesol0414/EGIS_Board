@@ -6,6 +6,9 @@ $(document).ready(function() {
     const signupLink = $("#signup-link");
     const writeBtn = $("#write-btn");
     const loggedInUserDiv = $('.login-user');
+    const closeBtn = $("#close-btn");
+    const alertModal = $("#alert-modal");
+    const modalMsg = $("#modal-msg");
 
     if (token) {
         try {
@@ -36,8 +39,7 @@ $(document).ready(function() {
 
             logoutBtn.on("click", function() {
                 sessionStorage.removeItem("token");
-                alert("로그아웃 성공");
-                window.location.href = "/";
+                openAlertModal("로그아웃 성공");
             });
         } catch (error) {
             console.error("토큰 디코딩 오류:", error);
@@ -53,4 +55,21 @@ $(document).ready(function() {
 
         console.log("비회원 입니다.");
     }
+
+    const openAlertModal = (msg) => {
+        alertModal.show();
+        modalMsg.text(msg);
+    }
+    const closeAlertModal = () => {
+        alertModal.hide();
+    }
+    closeBtn.on("click", function () {
+        closeAlertModal();
+    });
+    $(document).on("keydown", function (event) {
+        if (event.key === "Enter" && alertModal.is(":visible")) {
+            closeAlertModal();
+            window.location.href = "/";
+        }
+    });
 });

@@ -26,5 +26,11 @@
                 </div>
             </div>
         </div>
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-msg"></p>
+                <button id="close-btn">확인</button>
+            </div>
+        </div>
     </div>
 </header>

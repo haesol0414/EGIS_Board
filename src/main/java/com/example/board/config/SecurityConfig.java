@@ -4,6 +4,7 @@ import com.example.board.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -27,9 +28,11 @@ public class SecurityConfig {
                 // 세션 비활성화 (JWT 인증 방식이므로 세션 사용하지 않음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 요청별 접근 제어 설정
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/board/write").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/board/*").authenticated()
+                        .anyRequest().permitAll()
                 )
                 // 예외 처리
                 .exceptionHandling(exception -> exception
