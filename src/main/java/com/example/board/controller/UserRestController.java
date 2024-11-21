@@ -24,13 +24,21 @@ public class UserRestController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        String accessToken = userService.login(loginDTO);
+        try {
+            String accessToken = userService.login(loginDTO);
 
-        if (accessToken != null) {
-            // 로그인 성공 시 accessToken 반환
-            return ResponseEntity.ok(accessToken);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("* 로그인 실패: 아이디 또는 비밀번호를 확인해주세요.");
+            if (accessToken != null) {
+                // 로그인 성공 시 accessToken 반환
+                return ResponseEntity.ok(accessToken);
+            } else {
+                // 로그인 실패 시 401 상태 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("* 로그인 실패: 아이디 또는 비밀번호를 확인해주세요.");
+            }
+        } catch (Exception e) {
+            // 예외 발생 시 500 상태 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("로그인 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
     }
 
@@ -55,13 +63,18 @@ public class UserRestController {
     @PostMapping("/check-id")
     @ResponseBody
     public ResponseEntity<String> checkUserId(@RequestBody Map<String, String> userData) {
-        String userId = userData.get("userId");
-        boolean isAvailable = userService.checkUserId(userId);
+        try {
+            String userId = userData.get("userId");
+            boolean isAvailable = userService.checkUserId(userId);
 
-        if (isAvailable) {
-            return ResponseEntity.ok("사용 가능한 아이디 입니다.");
-        } else {
-            return ResponseEntity.badRequest().body("이미 존재하는 아이디입니다.");
+            if (isAvailable) {
+                return ResponseEntity.ok("사용 가능한 아이디 입니다.");
+            } else {
+                return ResponseEntity.badRequest().body("이미 존재하는 아이디입니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
     }
 }

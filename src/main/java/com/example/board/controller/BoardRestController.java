@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -48,6 +50,12 @@ public class BoardRestController {
     @PostMapping("/write")
     public ResponseEntity<String> createBoard(@RequestBody BoardCreateDTO boardCreateDTO) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String createUserId = authentication.getName();
+            // 사용자 ID 설정
+            boardCreateDTO.setCreateUserId(createUserId);
+
+            // 게시글 작성 서비스 호출
             boardService.createBoard(boardCreateDTO);
 
             return ResponseEntity.ok("게시글 작성이 완료되었습니다.");
@@ -61,6 +69,12 @@ public class BoardRestController {
     @PatchMapping("/{boardNo}")
     public ResponseEntity<String> UpdateBoard(@PathVariable(name = "boardNo") Long boardNo, @RequestBody BoardUpdateDTO boardUpdateDTO) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String createUserId = authentication.getName();
+            // 사용자 ID 설정
+            boardUpdateDTO.setUpdateUserId(createUserId);
+
+            // 업데이트 서비스 호출
             boardService.updateBoard(boardUpdateDTO);
 
             return ResponseEntity.ok("수정이 완료되었습니다.");

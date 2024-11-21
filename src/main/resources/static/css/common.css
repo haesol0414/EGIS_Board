@@ -221,3 +221,8 @@ footer {
     font-size: 12px;
     margin: 4px 0 18px 0;
 }
+
+.prev-btn, .next-btn {
+    font-size: 12px;
+    padding: 0 7px;
+}

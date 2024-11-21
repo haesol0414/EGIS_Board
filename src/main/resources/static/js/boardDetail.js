@@ -64,6 +64,9 @@ $(document).ready(function () {
                 $.ajax({
                     url: `/api/board/${boardNo}`,
                     type: 'DELETE',
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
                     success: function (res) {
                         openAlertModal("게시글이 삭제되었습니다.");
                     },

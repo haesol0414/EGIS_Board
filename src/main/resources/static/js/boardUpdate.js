@@ -27,7 +27,6 @@ $(document).ready(function () {
 
         const updatedBoard = {
             boardNo: boardNo,
-            updateUserId: loggedInUserId,
             subject: subject,
             contentText: contentText,
             updatedAt: new Date().toISOString()
@@ -39,6 +38,9 @@ $(document).ready(function () {
             url: `/api/board/${boardNo}`,
             type: "PATCH",
             contentType: "application/json",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
             data: JSON.stringify(updatedBoard),
             success: function (res) {
                 openAlertModal("게시글이 수정되었습니다.");

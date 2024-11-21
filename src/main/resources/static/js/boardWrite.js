@@ -23,7 +23,6 @@ $(document).ready(function() {
         }
 
         const newBoard = {
-            createUserId: loggedInUserId,
             subject: subject,
             contentText: contentText
         };
@@ -33,6 +32,9 @@ $(document).ready(function() {
             url: "/api/board/write",
             type: "POST",
             contentType: "application/json",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
             data: JSON.stringify(newBoard),
             success: function (res) {
                 openAlertModal(res);

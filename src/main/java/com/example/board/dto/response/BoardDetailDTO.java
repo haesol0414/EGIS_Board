@@ -5,7 +5,6 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDetailDTO {
