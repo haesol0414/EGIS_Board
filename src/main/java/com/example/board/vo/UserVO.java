@@ -2,6 +2,7 @@ package com.example.board.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder

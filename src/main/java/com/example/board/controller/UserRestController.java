@@ -24,6 +24,7 @@ public class UserRestController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        // 데이터 들어옴
         try {
             String accessToken = userService.login(loginDTO);
 

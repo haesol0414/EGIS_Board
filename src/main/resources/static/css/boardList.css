@@ -37,11 +37,13 @@
 }
 
 .search-input {
+    color: var(--text-color);
+    font-weight: 500;
     width: 300px;
     border: none;
     border-bottom: 2px solid #666666;
     outline: none;
-    padding: 8px;
+    padding: 8px 8px 4px 16px;
     margin: 0;
     line-height: 1.5;
     font-size: 16px;
@@ -51,17 +53,17 @@
 .search-btn i {
     position: relative;
     top: 7px;
-    right: 1px;
+    right: 7px;
     font-size: 25px;
     color: #666666;
     margin-left: 10px;
     cursor: pointer;
 }
 
-.write-btn i {
+.write-btn {
     position: relative;
     top: 8px;
-    right: 8px;
+    margin-right: 3px;
     font-size: 26px;
     color: #666666;
     margin-left: 30px;
@@ -99,7 +101,7 @@
 
 .row.subject a:hover {
     color: #8892a0;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
 }
 .writer {
     width: 11%;
@@ -150,8 +152,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    top: 4px;
-    right: 2px;
+    left: 8px;
 }
 
 .dropbtn {
@@ -164,7 +165,7 @@
     border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .dropbtn:focus {
@@ -177,7 +178,7 @@
     background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
-    min-width: 76px;
+    min-width: 120px;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-top: 4px;
@@ -196,4 +197,11 @@
 
 .show {
     display: block;
+}
+
+.no-data {
+    font-size: 24px;
+    text-align: center;
+    color: var(--text-color);
+    padding: 50px 0 90px 0;
 }

@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     public String login(LoginDTO loginDTO) {
         UserVO user = userMapper.findByUserId(loginDTO.getUserId());
 
+        System.out.println(user);
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             return null;
         }

@@ -28,6 +28,8 @@
                         <div class="dropdown-content">
                             <a href="#" data-value="제목">제목</a>
                             <a href="#" data-value="내용">내용</a>
+                            <a href="#" data-value="제목 + 내용">제목 + 내용</a>
+                            <a href="#" data-value="작성자명">작성자명</a>
                         </div>
                     </div>
                     <input class="search-input">

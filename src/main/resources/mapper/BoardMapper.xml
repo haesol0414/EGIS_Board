@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.mapper.BoardMapper">
+    <!-- 게시글 목록조회 -->
+    <select id="selectBoardList" parameterType="map" resultType="com.example.board.vo.BoardVO">
+        SELECT b.board_no AS boardNo,
+               b.create_user_id AS createUserId,
+               cu.user_name AS createUserName,
+               b.update_user_id AS updateUserId,
+               uu.user_name AS updateUserName,
+               b.subject,
+               b.view_cnt AS viewCnt,
+               b.created_at AS createdAt,
+               b.updated_at AS updatedAt,
+               b.deleted_yn AS deletedYn,
+               b.group_no AS groupNo,
+               b.group_ord AS groupOrd,
+               b.group_dep AS groupDep
+        FROM board b
+                 LEFT JOIN users cu ON b.create_user_id = cu.user_id
+                 LEFT JOIN users uu ON b.update_user_id = uu.user_id
+        WHERE b.deleted_yn = 'N'
+        ORDER BY b.board_no DESC
+            LIMIT #{size} OFFSET #{offset}
+    </select>
+    <select id="selectBoardTotalCount" resultType="int">
+        SELECT COUNT(*) FROM board WHERE deleted_yn = 'N'
+    </select>
+    <!-- 게시글 상세조회 -->
+    <select id="selectBoardDetail" parameterType="long" resultType="com.example.board.vo.BoardVO">
+        SELECT b.board_no AS boardNo,
+               b.create_user_id AS createUserId,
+               cu.user_name AS createUserName,
+               b.update_user_id AS updateUserId,
+               uu.user_name AS updateUserName,
+               b.subject,
+               b.content_text AS contentText,
+               b.view_cnt AS viewCnt,
+               b.created_at AS createdAt,
+               b.updated_at AS updatedAt,
+               b.deleted_yn AS deletedYn,
+               b.group_no AS groupNo,
+               b.group_ord AS groupOrd,
+               b.group_dep AS groupDep
+        FROM board b
+                 LEFT JOIN users cu ON b.create_user_id = cu.user_id
+                 LEFT JOIN users uu ON b.update_user_id = uu.user_id
+        WHERE board_no = #{boardNo}
+    </select>
+    <!-- 게시글 작성 -->
+    <insert id="insertBoard" parameterType="com.example.board.vo.BoardVO">
+        INSERT INTO board (create_user_id, subject, content_text)
+        VALUES (#{createUserId}, #{subject}, #{contentText})
+    </insert>
+    <!-- 게시글 수정 -->
+    <update id="updateBoard" parameterType="com.example.board.vo.BoardVO">
+        UPDATE board
+        SET
+            update_user_id = #{updateUserId},
+            subject = #{subject},
+            content_text = #{contentText},
+            updated_at = #{updatedAt}
+        WHERE board_no = #{boardNo}
+    </update>
+    <!-- 게시글 삭제 -->
+    <update id="deleteBoard" parameterType="long">
+        UPDATE board SET deleted_yn = 'Y' WHERE board_no = #{boardNo}
+    </update>
+    <!-- 조회수 업데이트 -->
+    <update id="updateViewCnt" parameterType="long">
+        UPDATE board SET view_cnt = view_cnt + 1 WHERE board_no = #{boardNo}
+    </update>
+    <!-- 게시글 검색 -->
+    <select id="searchBoardList" parameterType="map" resultType="com.example.board.vo.BoardVO">
+        SELECT b.board_no AS boardNo,
+        b.create_user_id AS createUserId,
+        cu.user_name AS createUserName,
+        b.update_user_id AS updateUserId,
+        uu.user_name AS updateUserName,
+        b.subject,
+        b.view_cnt AS viewCnt,
+        b.created_at AS createdAt,
+        b.updated_at AS updatedAt,
+        b.deleted_yn AS deletedYn,
+        b.group_no AS groupNo,
+        b.group_ord AS groupOrd,
+        b.group_dep AS groupDep
+        FROM board b
+        LEFT JOIN users cu ON b.create_user_id = cu.user_id
+        LEFT JOIN users uu ON b.update_user_id = uu.user_id
+        WHERE b.deleted_yn = 'N'
+        <if test="filter == 'subject'">
+            AND b.subject ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'contentText'">
+            AND b.content_text ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'writer'">
+            AND cu.user_name ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'all'">
+            AND (b.subject ILIKE '%' || #{keyword} || '%' OR b.content_text ILIKE '%' || #{keyword} || '%')
+        </if>
+        ORDER BY b.board_no DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+    <!-- 검색된 게시글 수 -->
+    <select id="selectSearchTotalCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM board b
+        LEFT JOIN users cu ON b.create_user_id = cu.user_id
+        WHERE b.deleted_yn = 'N'
+        <if test="filter == 'subject'">
+            AND b.subject ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'contentText'">
+            AND b.content_text ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'writer'">
+            AND cu.user_name ILIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="filter == 'all'">
+            AND (b.subject ILIKE '%' || #{keyword} || '%' OR b.content_text ILIKE '%' || #{keyword} || '%')
+        </if>
+    </select>
+</mapper>

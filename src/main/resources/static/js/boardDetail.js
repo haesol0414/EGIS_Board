@@ -107,7 +107,6 @@ $(document).ready(function () {
     // 답글 버튼
     $replyBtn.on("click", function (event) {
         event.preventDefault();
-        // 추가 동작 필요 시 작성
     });
 
     $closeBtn.on("click", function () {

@@ -7,7 +7,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardUpdateDTO {
     private Long boardNo;
     private String updateUserId;

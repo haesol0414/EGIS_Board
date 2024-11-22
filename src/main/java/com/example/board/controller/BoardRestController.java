@@ -4,6 +4,7 @@ import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.service.BoardService;
 
+import com.example.board.vo.BoardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,22 +30,24 @@ public class BoardRestController {
 
     // 게시글 목록 조회
     @GetMapping("/list")
-    public Map<String, Object> getBoardList(@PageableDefault(size = 15) Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> getBoardList(
+            @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @PageableDefault(size = 15) Pageable pageable
+    ) {
         Map<String, Object> response = new HashMap<>();
-
         try {
-            Map<String, Object> boards = boardService.getBoardList(pageable);
+            // 서비스 호출
+            Map<String, Object> boards = boardService.getBoardList(filter, keyword, pageable);
 
             response.put("status", "success");
             response.put("data", boards);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace();
-
             response.put("status", "error");
             response.put("message", "게시글 목록 조회 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        return response;
     }
 
     // 게시글 작성
