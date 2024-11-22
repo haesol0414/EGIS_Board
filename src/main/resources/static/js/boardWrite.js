@@ -1,61 +1,76 @@
-$(document).ready(function() {
+$(document).ready(function () {
     const token = sessionStorage.getItem('token');
     const decodedToken = jwt_decode(token);
     const loggedInUserId = decodedToken.sub;
     const userName = decodedToken.userName;
-    const closeBtn = $("#close-btn");
-    const alertModal = $("#alert-modal");
-    const modalMsg = $("#modal-msg");
 
-    const writeEl = $('#writer');
-    writeEl.text(`${userName} (@${loggedInUserId})`);
-    const writeForm = $(".write-form");
+    const $closeBtn = $("#close-btn");
+    const $alertModal = $("#alert-modal");
+    const $modalMsg = $("#modal-msg");
+    const $writeEl = $("#writer");
+    const $writeForm = $(".write-form");
 
-    writeForm.on("submit", function(event) {
-        event.preventDefault();
+    const initializeWriterInfo = () => {
+        $writeEl.text(`${userName} (@${loggedInUserId})`);
+    };
 
+    const getNewBoardData = () => {
         const subject = $("#subject").val().trim();
         const contentText = $("#content").val().trim();
 
         if (!subject || !contentText) {
             alert("제목과 내용을 모두 입력해주세요.");
-            return;
+            return null;
         }
 
-        const newBoard = {
+        return {
             subject: subject,
-            contentText: contentText
+            contentText: contentText,
         };
-        console.log(newBoard);
+    };
 
+    // 서버 요청 처리
+    const writeBoard = (newBoard) => {
         $.ajax({
             url: "/api/board/write",
             type: "POST",
             contentType: "application/json",
             headers: {
-                "Authorization": "Bearer " + token
+                Authorization: `Bearer ${token}`,
             },
             data: JSON.stringify(newBoard),
             success: function (res) {
                 openAlertModal(res);
             },
             error: function (xhr) {
-                openAlertModal('게시글 작성 실패: ' + xhr.status + " " + xhr.statusText);
-            }
+                openAlertModal(`게시글 작성 실패: ${xhr.status} ${xhr.statusText}`);
+            },
         });
-    });
+    };
 
     const openAlertModal = (msg) => {
-        alertModal.show();
-        modalMsg.text(msg);
-    }
+        $modalMsg.text(msg);
+        $alertModal.show();
+    };
+
     const closeAlertModal = () => {
-        alertModal.hide();
-    }
+        $alertModal.hide();
+    };
 
-    closeBtn.on("click", function () {
+    // 글 작성 폼 제출
+    $writeForm.on("submit", function (event) {
+        event.preventDefault();
+
+        const newBoard = getNewBoardData();
+        if (newBoard) {
+            writeBoard(newBoard);
+        }
+    });
+
+    $closeBtn.on("click", function () {
         closeAlertModal();
-
         window.location.href = "/";
     });
+
+    initializeWriterInfo();
 });

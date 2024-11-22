@@ -20,6 +20,16 @@
             <div class="board-top">
                 <h1 class="board-title">게시판</h1>
                 <div class="board-right">
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            <span class="dropbtn_content">제목</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#" data-value="제목">제목</a>
+                            <a href="#" data-value="내용">내용</a>
+                        </div>
+                    </div>
                     <input class="search-input">
                     <a id="search-btn" class="search-btn">
                         <i class="fas fa-search"></i>

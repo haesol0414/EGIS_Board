@@ -20,4 +20,5 @@ public interface BoardService {
     void deleteBoard(Long boardNo);
     // 조회수 증가
     void updateViewCnt(Long boardNo);
+    // 게시글 검색
 }

@@ -1,59 +1,67 @@
-$(document).ready(function() {
-    const closeBtn = $("#close-btn");
-    const alertModal = $("#alert-modal");
-    const modalMsg = $("#modal-msg");
-    const errorMsg = $("#error-msg");
+$(document).ready(function () {
+    const $closeBtn = $("#close-btn");
+    const $alertModal = $("#alert-modal");
+    const $modalMsg = $("#modal-msg");
+    const $errorMsg = $("#error-msg");
+    const $form = $("form");
+    const $userIdInput = $("#form-id");
+    const $passwordInput = $("#form-pw");
 
-    $("form").on("submit", function(event) {
+    // 로그인 처리
+    const handleLogin = (event) => {
         event.preventDefault();
 
-        const userId = $("#form-id").val().trim();
-        const password = $("#form-pw").val().trim();
+        const userId = $userIdInput.val().trim();
+        const password = $passwordInput.val().trim();
 
-        if (userId === "" || password === "") {
+        if (!userId || !password) {
             alert("아이디 또는 비밀번호를 입력해주세요.");
             return;
         }
 
-        const loginData = {
-            userId, password
-        }
+        const loginData = { userId, password };
 
+        sendLoginRequest(loginData);
+    };
+
+    // 로그인 요청 및 처리
+    const sendLoginRequest = (loginData) => {
         $.ajax({
             url: "/api/users/login",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(loginData),
-            success: function (res) {
-                openAlertModal("로그인 성공")
-
-                sessionStorage.setItem('token', res);
+            success: (token) => {
+                sessionStorage.setItem("token", token);
+                openAlertModal("로그인 성공");
             },
-            error: function (xhr) {
+            error: (xhr) => {
                 if (xhr.status === 401) {
-                    errorMsg.text(xhr.responseText).show();
+                    $errorMsg.text(xhr.responseText).show();
                 } else {
                     alert("서버 오류 발생");
                 }
-            }
+            },
         });
-    });
+    };
 
+    // 알림 모달 열기
     const openAlertModal = (msg) => {
-        alertModal.show();
-        modalMsg.text(msg);
-    }
+        $modalMsg.text(msg);
+        $alertModal.show();
+    };
+
+    // 알림 모달 닫기
     const closeAlertModal = () => {
-        alertModal.hide();
-    }
+        $alertModal.hide();
+    };
 
-    closeBtn.on("click", function () {
-        closeAlertModal();
-
-    });
-
+    // 로그인 버튼
+    $form.on("submit", handleLogin);
+    
+    $closeBtn.on("click", closeAlertModal);
     $(document).on("keydown", function (event) {
-        if (event.key === "Enter" && alertModal.is(":visible")) {
+        if (event.key === "Enter" && $alertModal.is(":visible")) {
             closeAlertModal();
             window.location.href = "/";
         }

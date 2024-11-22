@@ -36,10 +36,10 @@ public class BoardServiceImpl implements BoardService {
         int offset = (pageable.getPageNumber() - 1) * size; // 시작 위치 (offset)
 
         // 페이징 처리된 게시글 목록 가져오기
-        List<BoardVO> boards = boardMapper.getBoardList(size, offset);
+        List<BoardVO> boards = boardMapper.selectBoardList(size, offset);
 
         // 전체 페이지 수 계산
-        int totalRecords = boardMapper.getTotalBoardCount();
+        int totalRecords = boardMapper.selectBoardTotalCount();
         int totalPages = (int) Math.ceil((double) totalRecords / size);
 
         // VO → DTO 변환
@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public BoardDetailDTO getBoardDetail(Long boardNo) {
         // VO 객체 조회
-        BoardVO board = boardMapper.getBoardDetail(boardNo);
+        BoardVO board = boardMapper.selectBoardDetail(boardNo);
 
         // VO → DTO 변환
         return modelMapper.map(board, BoardDetailDTO.class);
@@ -97,4 +97,7 @@ public class BoardServiceImpl implements BoardService {
     public void updateViewCnt(Long boardNo) {
         boardMapper.updateViewCnt(boardNo);
     }
+
+    // 게시글 검색
+
 }

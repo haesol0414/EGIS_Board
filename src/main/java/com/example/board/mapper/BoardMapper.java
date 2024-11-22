@@ -29,11 +29,11 @@ public interface BoardMapper {
                 ORDER BY b.board_no DESC
                 LIMIT #{size} OFFSET #{offset}
             """)
-    List<BoardVO> getBoardList(@Param("size") int size, @Param("offset") int offset);
+    List<BoardVO> selectBoardList(@Param("size") int size, @Param("offset") int offset);
 
     // 전체 게시글 수 조회
     @Select("SELECT COUNT(*) FROM board")
-    int getTotalBoardCount();
+    int selectBoardTotalCount();
 
     // 게시글 상세조회
     @Select("""
@@ -56,7 +56,7 @@ public interface BoardMapper {
                 LEFT JOIN users uu ON b.update_user_id = uu.user_id
                 WHERE board_no = #{boardNo};
             """)
-    BoardVO getBoardDetail(Long boardNo);
+    BoardVO selectBoardDetail(Long boardNo);
 
     // 게시글 작성
     @Insert("INSERT INTO board (create_user_id, subject, content_text) VALUES (#{createUserId}, #{subject}, #{contentText})")
@@ -81,4 +81,6 @@ public interface BoardMapper {
     // 조회수 증가
     @Update("UPDATE board SET view_cnt = view_cnt + 1 WHERE board_no = #{boardNo}")
     void updateViewCnt(Long boardNo);
+    
+    // 게시글 검색
 }
