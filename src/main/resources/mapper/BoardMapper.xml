@@ -22,7 +22,7 @@
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
         WHERE b.deleted_yn = 'N'
-        ORDER BY b.board_no DESC
+        ORDER BY group_no DESC, group_ord ASC
             LIMIT #{size} OFFSET #{offset}
     </select>
     <select id="selectBoardTotalCount" resultType="int">
@@ -125,4 +125,15 @@
             AND (b.subject ILIKE '%' || #{keyword} || '%' OR b.content_text ILIKE '%' || #{keyword} || '%')
         </if>
     </select>
+    <!-- 그룹 내 순서 밀기 -->
+    <update id="updateGroupOrd">
+        UPDATE board
+        SET group_ord = group_ord + 1
+        WHERE group_no = #{groupNo} AND group_ord > #{parentOrd};
+    </update>
+    <!-- 답글 작성 -->
+    <insert id="insertReply" parameterType="com.example.board.vo.BoardVO">
+        INSERT INTO board (create_user_id, subject, content_text, group_no, group_ord, group_dep)
+        VALUES (#{createUserId}, #{subject}, #{contentText}, #{groupNo}, #{groupOrd}, #{groupDep});
+    </insert>
 </mapper>

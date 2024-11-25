@@ -49,13 +49,20 @@ $(document).ready(function () {
         }
 
         boardList.forEach(function (board) {
+            const indentStyle = `padding-left: ${board.groupDep * 30}px;`;
+            const prefix = board.groupDep > 0 ? `<span class="reply-prefix">RE: </span>` : "";
+
             const row = $(`
             <tr>
                 <td class="row board-num">${board.boardNo}</td>
-                <td class="row subject"><a href="/board/${board.boardNo}">${board.subject}</a></td>
+                <td class="row subject">
+                    <a href="/board/${board.boardNo}" style="${indentStyle}">${prefix}${board.subject}</a>
+                </td>
                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
                 <td class="row write-date">${formatDate(board.createdAt)}</td>
-                <td class="row update-date">${board.updatedAt ? formatDate(board.updatedAt) : '-'}</td>
+                  ${board.updatedAt
+                ? `<td class="row update-date">${formatDate(board.updatedAt)}</td>`
+                : `<td class="row date">-</td>`}
                 <td class="row view-count">${board.viewCnt}</td>
             </tr>
         `);
@@ -121,7 +128,7 @@ $(document).ready(function () {
     }
 
     // 검색 처리
-    $searchBtn.on('click', function () {
+    function performSearch() {
         const filterText = $dropbtnContent.text();
         const filter = filterMap[filterText];
         const keyword = $searchInput.val();
@@ -133,6 +140,17 @@ $(document).ready(function () {
 
         currentPage = 1;
         loadBoardList(currentPage, filter, keyword);
+    }
+
+    $searchBtn.on('click', function () {
+        performSearch();
+    });
+
+    $searchInput.on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch();
+        }
     });
 
     // 날짜 포맷팅

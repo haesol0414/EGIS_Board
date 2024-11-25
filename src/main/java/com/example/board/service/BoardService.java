@@ -2,11 +2,10 @@ package com.example.board.service;
 
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
+import com.example.board.dto.request.BoardReplyDTO;
 import com.example.board.dto.response.BoardDetailDTO;
-import com.example.board.vo.BoardVO;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
@@ -22,4 +21,6 @@ public interface BoardService {
     void deleteBoard(Long boardNo);
     // 조회수 증가
     void updateViewCnt(Long boardNo);
+    // 답글 작성
+    void addReply(Long boardNo, BoardReplyDTO boardReplyDTO);
 }

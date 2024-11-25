@@ -27,6 +27,15 @@ public class BoardController {
         return "boardWrite";
     }
 
+    // 답글 작성 페이지
+    @GetMapping("/reply/{boardNo}")
+    public String showWriteReplyPage(@PathVariable(name = "boardNo") Long boardNo, Model model) {
+        BoardDetailDTO parent = boardService.getBoardDetail(boardNo);
+        model.addAttribute("parent", parent);
+
+        return "boardWrite";
+    }
+
     // 게시글 상세 페이지
     @GetMapping("/{boardNo}")
     public String getBoardDetail(@PathVariable(name = "boardNo") Long boardNo, Model model) {

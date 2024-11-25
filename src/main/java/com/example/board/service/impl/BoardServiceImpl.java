@@ -1,13 +1,14 @@
 package com.example.board.service.impl;
 
+import com.example.board.dto.request.BoardReplyDTO;
 import com.example.board.dto.response.BoardDetailDTO;
-import com.example.board.dto.response.BoardListDTO;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.mapper.BoardMapper;
 import com.example.board.vo.BoardVO;
 import com.example.board.service.BoardService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -97,5 +97,28 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void updateViewCnt(Long boardNo) {
         boardMapper.updateViewCnt(boardNo);
+    }
+
+    // 답글 작성
+    @Transactional
+    public void addReply(Long boardNo, BoardReplyDTO boardReplyDTO) {
+        // 부모 글 정보 조회
+        BoardVO parent = boardMapper.selectBoardDetail(boardNo);
+        if (parent == null) {
+            throw new IllegalArgumentException("부모 글이 존재하지 않습니다.");
+        }
+
+        // 그룹 정보 설정
+        boardReplyDTO.setGroupNo(parent.getGroupNo());                     // 부모 글의 그룹 번호 상속
+        boardReplyDTO.setGroupOrd(parent.getGroupOrd() + 1);               // 부모 글의 다음 순서
+        boardReplyDTO.setGroupDep(parent.getGroupDep() + 1);               // 부모 글의 깊이 + 1
+
+        // 기존 글 순서 밀기
+        boardMapper.updateGroupOrd(parent.getGroupNo(), parent.getGroupOrd());
+
+        BoardVO newReply = modelMapper.map(boardReplyDTO, BoardVO.class);
+
+        System.out.println(newReply);
+        boardMapper.insertReply(newReply);
     }
 }

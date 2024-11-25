@@ -7,6 +7,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class BoardVO {
     private Long boardNo;
     private String createUserId;

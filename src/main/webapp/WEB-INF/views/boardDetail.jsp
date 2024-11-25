@@ -29,15 +29,19 @@
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td id="subject">${board.subject}</td>
+                        <td id="subject">
+                        <c:if test="${board.groupDep > 0}">
+                                <span class="reply-prefix">RE: </span>
+                        </c:if>
+                        ${board.subject}</td>
                     </tr>
                     <tr>
                         <th class="date">작성일 (최근 수정일)</th>
                         <td id="date">
                             <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
                             <c:if test="${not empty board.updatedAt and not empty board.updateUserName}">
-                                (<fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
-                                ${board.updateUserName}님에 의해 수정)
+                                <span class="update-date"> (<fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                ${board.updateUserName}님에 의해 수정)</span>
                             </c:if>
                         </td>
                     </tr>
@@ -52,10 +56,11 @@
                 </table>
             </div>
             <div class="btns-box">
-                <button class="btn" id="reply-btn">답글 달기</button>
+                <a href="/board/reply/${board.boardNo}" class="btn reply-link">답글 달기</a>
                 <div class="writer-btns">
                     <button class="btn" id="delete-btn">삭제하기</button>
-                    <button class="btn" id="modify-btn" onclick="location.href='/board/${board.boardNo}/edit'">수정하기</button>
+                    <button class="btn" id="modify-btn" onclick="location.href='/board/${board.boardNo}/edit'">수정하기
+                    </button>
                 </div>
             </div>
         </div>

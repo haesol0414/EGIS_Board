@@ -29,4 +29,8 @@ public interface BoardMapper {
     );
 
     int selectSearchTotalCount(@Param("filter") String filter, @Param("keyword") String keyword);
+
+    void updateGroupOrd(@Param("groupNo") Integer groupNo, @Param("parentOrd") Integer parentOrd);
+
+    void insertReply(BoardVO newReply);
 }

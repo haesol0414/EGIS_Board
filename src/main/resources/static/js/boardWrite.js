@@ -7,11 +7,13 @@ $(document).ready(function () {
     const $closeBtn = $("#close-btn");
     const $alertModal = $("#alert-modal");
     const $modalMsg = $("#modal-msg");
-    const $writeEl = $("#writer");
-    const $writeForm = $(".write-form");
+    const $writerEl = $("#writer");
+    const $writeSubmitBtn = $("#write-submit");
+    const $replySubmitBtn = $("#reply-submit");
+
 
     const initializeWriterInfo = () => {
-        $writeEl.text(`${userName} (@${loggedInUserId})`);
+        $writerEl.text(`${userName} (@${loggedInUserId})`);
     };
 
     const getNewBoardData = () => {
@@ -29,25 +31,6 @@ $(document).ready(function () {
         };
     };
 
-    // 서버 요청 처리
-    const writeBoard = (newBoard) => {
-        $.ajax({
-            url: "/api/board/write",
-            type: "POST",
-            contentType: "application/json",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: JSON.stringify(newBoard),
-            success: function (res) {
-                openAlertModal(res);
-            },
-            error: function (xhr) {
-                openAlertModal(`게시글 작성 실패: ${xhr.status} ${xhr.statusText}`);
-            },
-        });
-    };
-
     const openAlertModal = (msg) => {
         $modalMsg.text(msg);
         $alertModal.show();
@@ -57,13 +40,53 @@ $(document).ready(function () {
         $alertModal.hide();
     };
 
-    // 글 작성 폼 제출
-    $writeForm.on("submit", function (event) {
+    // 게시글 작성 API
+    $writeSubmitBtn.on("click", function (event) {
         event.preventDefault();
 
         const newBoard = getNewBoardData();
+
         if (newBoard) {
-            writeBoard(newBoard);
+            $.ajax({
+                url: "/api/board/write",
+                type: "POST",
+                contentType: "application/json",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: JSON.stringify(newBoard),
+                success: function (res) {
+                    openAlertModal(res);
+                },
+                error: function (xhr) {
+                    openAlertModal(`게시글 작성 실패: ${xhr.status} ${xhr.statusText}`);
+                },
+            });
+        }
+    });
+
+    // 답글 작성 API
+    $replySubmitBtn.on("click", function (event) {
+        event.preventDefault();
+        const parentBoardNo = $("#parent-data").data("board-no");
+        const newBoard = getNewBoardData();
+
+        if (newBoard) {
+            $.ajax({
+                url: `/api/board/reply/${parentBoardNo}`,
+                type: "POST",
+                contentType: "application/json",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: JSON.stringify(newBoard),
+                success: function (res) {
+                    openAlertModal(res);
+                },
+                error: function (xhr) {
+                    openAlertModal(`게시글 작성 실패: ${xhr.status} ${xhr.statusText}`);
+                },
+            });
         }
     });
 

@@ -17,9 +17,9 @@
     <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="board-list-wrap">
+            <h1 class="board-title">게시판</h1>
             <div class="board-top">
-                <h1 class="board-title">게시판</h1>
-                <div class="board-right">
+                <div class="search">
                     <div class="dropdown">
                         <button class="dropbtn">
                             <span class="dropbtn_content">제목</span>
@@ -36,6 +36,8 @@
                     <a id="search-btn" class="search-btn">
                         <i class="fas fa-search"></i>
                     </a>
+                </div>
+                <div class="board-right">
                     <a href="/board/write" id="write-btn" class="write-btn">
                         <i class="fas fa-pencil-alt"></i>
                     </a>

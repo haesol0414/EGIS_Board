@@ -2,9 +2,9 @@ package com.example.board.controller;
 
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
+import com.example.board.dto.request.BoardReplyDTO;
 import com.example.board.service.BoardService;
 
-import com.example.board.vo.BoardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -68,6 +67,28 @@ public class BoardRestController {
                     .body("게시글 작성 중 에러가 발생했습니다: " + e.getMessage());
         }
     }
+
+    // 답글 작성
+    @PostMapping("/reply/{boardNo}")
+    public ResponseEntity<String> addReply(@PathVariable(name = "boardNo") Long boardNo, @RequestBody BoardReplyDTO boardReplyDTO) {
+        try {
+            System.out.println(boardReplyDTO);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String createUserId = authentication.getName();
+
+            boardReplyDTO.setCreateUserId(createUserId);
+
+            // 답글 작성 서비스 호출
+            boardService.addReply(boardNo, boardReplyDTO);
+
+            return ResponseEntity.ok("답글 작성이 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("답글 작성 중 에러가 발생했습니다: " + e.getMessage());
+        }
+    }
+
 
     // 게시글 수정
     @PatchMapping("/{boardNo}")

@@ -71,7 +71,6 @@ public class JwtProvider {
 
             // 만료 시간 확인
             Date expiration = claims.getExpiration();
-            System.out.println(expiration);
             if (expiration.before(new Date())) { // 현재 시간보다 만료 시간이 이전이면 만료
                 log.info("JWT Token 만료");
                 return false;

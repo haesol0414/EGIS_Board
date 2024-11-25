@@ -29,10 +29,11 @@
 
 .write-form th {
     width: 20%;
+    height: 40px;
     font-weight: bold;
     vertical-align: top;
     margin: 10px 0 10px 0;
-    padding: 10px 12px;
+    padding: 15px 12px 0 12px;
     border-bottom: 1px solid #ccc;
 }
 
@@ -43,21 +44,27 @@
     border-bottom: 1px solid #ccc;
 }
 
-.write-form p {
-    font-size: 30px;
-    text-align: center;
-    color: black;
+.write-form button {
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
 #writer {
-    height: 40px;
     padding: 15px 0 0 0;
 }
 
 #writer:focus {
     outline: none;
+}
+
+
+#parent {
+    padding: 15px 0 0 0;
+}
+
+#parent:hover {
+    color: #8892a0;
+    text-decoration: underline;
 }
 
 #subject {

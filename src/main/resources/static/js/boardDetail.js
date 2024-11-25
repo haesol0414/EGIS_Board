@@ -104,11 +104,6 @@ $(document).ready(function () {
 
     $denyDeleteBtn.on("click", closeDeleteModal);
 
-    // 답글 버튼
-    $replyBtn.on("click", function (event) {
-        event.preventDefault();
-    });
-
     $closeBtn.on("click", function () {
         closeAlertModal();
         window.location.href = "/";

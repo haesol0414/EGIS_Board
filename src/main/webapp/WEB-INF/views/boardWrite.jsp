@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판</title>
+    <title>${parent != null ? "답글 작성" : "게시글 작성"}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/resources/css/boardWrite.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -18,24 +18,43 @@
     <main>
         <div class="main-container" id="board-write-wrap">
             <div class="board-top">
-                <h1 class="board-title">게시글 작성</h1>
+                <h1 class="board-title">${parent != null ? "답글 작성" : "게시글 작성"}</h1>
             </div>
             <form class="write-form">
                 <table>
+                    <tr>
+                        <c:if test="${parent != null}">
+                            <th>원글</th>
+                            <td id="parent">
+                                <c:if test="${parent.groupDep > 0}">
+                                    <span class="reply-prefix">RE: </span>
+                                </c:if>
+                                <a href="/board/${parent.boardNo}" id="parent">${parent.subject}</a>
+                            </td>
+                        </c:if>
+                    </tr>
                     <tr>
                         <th class="writer">작성자</th>
                         <td id="writer"></td>
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td><input type="text" name="subject" id="subject" minlength=2 maxlength=20></td>
+                        <td><input type="text" name="subject" id="subject" minlength="2" maxlength="20"></td>
                     </tr>
                     <tr>
                         <th class="content">내용</th>
-                        <td><textarea name="content" id="content" maxlength=2000 wrap="hard"></textarea></td>
+                        <td><textarea name="content" id="content" maxlength="2000" wrap="hard"></textarea></td>
                     </tr>
                 </table>
-                <p><input type="submit" value="작성하기" class="write_btn"></p>
+                <c:choose>
+                    <c:when test="${parent != null}">
+                        <div id="parent-data" data-board-no="${parent.boardNo}"></div>
+                        <button id="reply-submit" class="write_btn">답글 작성</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button id="write-submit" class="write_btn">작성하기</button>
+                    </c:otherwise>
+                </c:choose>
             </form>
         </div>
         <!-- 메세지 모달 -->
