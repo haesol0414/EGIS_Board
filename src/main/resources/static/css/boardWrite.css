@@ -6,7 +6,7 @@
 }
 
 .board-top {
-    margin: 15px auto 40px 5px;
+    margin: 15px auto 50px 5px;
 }
 
 .board-title {
@@ -39,27 +39,27 @@
 
 .write-form td {
     width: 100%;
-    padding: 10px 0;
-    vertical-align: top;
+    padding: 10px;
     border-bottom: 1px solid #ccc;
 }
 
-.write-form button {
+.write-form {
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
 #writer {
-    padding: 15px 0 0 0;
+    position: relative;
+    top: 4px;
 }
 
 #writer:focus {
     outline: none;
 }
 
-
-#parent {
-    padding: 15px 0 0 0;
+.parent {
+    position: relative;
+    top: 4px;
 }
 
 #parent:hover {
@@ -69,7 +69,7 @@
 
 #subject {
     border: 1px solid gray;
-    width: 1500px;
+    width: 1400px;
     height: 40px;
     border-radius: 6px;
     box-sizing: border-box;
@@ -83,7 +83,7 @@
 
 #content {
     border: 1px solid gray;
-    width: 1500px;
+    width: 1400px;
     height: 450px;
     border-radius: 6px;
     box-sizing: border-box;
@@ -99,7 +99,6 @@
 .write_btn {
     width: 70px;
     height: 38px;
-    margin: 0 0 0 10px;
     border-radius: 5px;
     border: 1px solid #666666;
     background: #ffffff;
@@ -108,9 +107,44 @@
     font-size: 14px;
     cursor: pointer;
     float: right;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .write_btn:hover {
     background: #666666;
     color: #ffffff;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* 커스텀 버튼 스타일 */
+.custom-file-input {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #666666;
+    background: #ffffff;
+    color: #666666;
+}
+
+.file-name {
+    margin-left: 15px;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.clear-file {
+    all: unset;
+    cursor: pointer;
+    color: red;
+    display: none;
+    margin-left: 10px;
+    font-size: 14px;
 }

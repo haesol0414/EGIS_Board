@@ -25,7 +25,7 @@
                     <tr>
                         <c:if test="${parent != null}">
                             <th>원글</th>
-                            <td id="parent">
+                            <td class="parent">
                                 <c:if test="${parent.groupDep > 0}">
                                     <span class="reply-prefix">RE: </span>
                                 </c:if>
@@ -44,6 +44,15 @@
                     <tr>
                         <th class="content">내용</th>
                         <td><textarea name="content" id="content" maxlength="2000" wrap="hard"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th class="file-upload">첨부파일</th>
+                        <td>
+                            <label for="file-input" class="custom-file-input">파일 선택</label>
+                            <input type="file" id="file-input" name="file" />
+                            <span id="file-name">선택된 파일 없음</span>
+                            <button id="clear-file" class="clear-file" type="button">×</button>
+                        </td>
                     </tr>
                 </table>
                 <c:choose>

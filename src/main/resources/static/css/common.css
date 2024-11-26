@@ -1,8 +1,8 @@
 @import url('https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css');
 /* reset */
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 html,
 body {
@@ -20,6 +20,7 @@ a {
     background: transparent;
     outline: none;
 }
+
 :root {
     --text-color: #424242;
     --background-color: #F7E9E4;

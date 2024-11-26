@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,57 +53,66 @@ public class BoardRestController {
     }
 
     // 게시글 작성
-    @PostMapping("/write")
-    public ResponseEntity<String> createBoard(@RequestBody BoardCreateDTO boardCreateDTO) {
+    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> createBoard(
+            @RequestPart("boardCreateDTO") BoardCreateDTO boardCreateDTO,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String createUserId = authentication.getName();
-            // 사용자 ID 설정
-            boardCreateDTO.setCreateUserId(createUserId);
+            boardCreateDTO.setCreateUserId(authentication.getName());
 
             // 게시글 작성 서비스 호출
-            boardService.createBoard(boardCreateDTO);
+            Long boardNo = boardService.createBoard(boardCreateDTO, file);
 
-            return ResponseEntity.ok("게시글 작성이 완료되었습니다.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "게시글 작성이 완료되었습니다.");
+            response.put("boardNo", boardNo);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
+            e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("게시글 작성 중 에러가 발생했습니다: " + e.getMessage());
+                    .body(Collections.singletonMap("error", "게시글 작성 중 에러가 발생했습니다: " + e.getMessage()));
         }
     }
 
     // 답글 작성
-    @PostMapping("/reply/{boardNo}")
-    public ResponseEntity<String> addReply(@PathVariable(name = "boardNo") Long boardNo, @RequestBody BoardReplyDTO boardReplyDTO) {
+    @PostMapping(value = "/reply/{boardNo}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>>  addReply(@PathVariable(name = "boardNo") Long boardNo,
+            @RequestPart("boardReplyDTO") BoardReplyDTO boardReplyDTO,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
-            System.out.println(boardReplyDTO);
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String createUserId = authentication.getName();
-
-            boardReplyDTO.setCreateUserId(createUserId);
+            boardReplyDTO.setCreateUserId(authentication.getName());
 
             // 답글 작성 서비스 호출
-            boardService.addReply(boardNo, boardReplyDTO);
+            Long replyNo = boardService.addReply(boardNo, boardReplyDTO, file);
 
-            return ResponseEntity.ok("답글 작성이 완료되었습니다.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "답글 작성이 완료되었습니다.");
+            response.put("boardNo", replyNo);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
+            e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("답글 작성 중 에러가 발생했습니다: " + e.getMessage());
+                    .body(Collections.singletonMap("error", "답글 작성 중 에러가 발생했습니다: " + e.getMessage()));
         }
     }
 
 
     // 게시글 수정
-    @PatchMapping("/{boardNo}")
-    public ResponseEntity<String> UpdateBoard(@PathVariable(name = "boardNo") Long boardNo, @RequestBody BoardUpdateDTO boardUpdateDTO) {
+    @PatchMapping(value = "/{boardNo}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> UpdateBoard(@PathVariable(name = "boardNo") Long boardNo, @RequestPart("boardUpdateDTO") BoardUpdateDTO boardUpdateDTO,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String createUserId = authentication.getName();
-            // 사용자 ID 설정
-            boardUpdateDTO.setUpdateUserId(createUserId);
+            boardUpdateDTO.setUpdateUserId(authentication.getName());
 
             // 업데이트 서비스 호출
-            boardService.updateBoard(boardUpdateDTO);
+            boardService.updateBoard(boardNo, boardUpdateDTO, file);
 
             return ResponseEntity.ok("수정이 완료되었습니다.");
         } catch (Exception e) {

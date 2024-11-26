@@ -53,6 +53,22 @@
                         <th class="content">내용</th>
                         <td id="content"><c:out value="${board.contentText}"/></td>
                     </tr>
+                        <tr>
+                            <th class="file">첨부파일</th>
+                            <td id="file" class="file-name">
+                                <c:choose>
+                                    <c:when test="${file != null}">
+                                        <span id="file-name">${file.originFileName}</span>
+                                        <a href="#" class="file-download" download>
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span>-</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
                 </table>
             </div>
             <div class="btns-box">

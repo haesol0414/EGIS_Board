@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     const $modifyBtn = $("#modify-btn");
     const $deleteBtn = $("#delete-btn");
-    const $replyBtn = $("#reply-btn");
+    const $replyBtn = $(".reply-link");
     const $deleteModal = $("#deleteModal");
     const $confirmDeleteBtn = $("#confirm-btn");
     const $denyDeleteBtn = $("#deny-btn");

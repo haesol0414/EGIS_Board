@@ -4,19 +4,25 @@ import com.example.board.dto.request.BoardReplyDTO;
 import com.example.board.dto.response.BoardDetailDTO;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
+import com.example.board.dto.response.FileDTO;
 import com.example.board.mapper.BoardMapper;
 import com.example.board.vo.BoardVO;
 import com.example.board.service.BoardService;
+import com.example.board.vo.FileVO;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -30,6 +36,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 목록 조회 (페이징 처리)
+    @Transactional(readOnly = true)
     public Map<String, Object> getBoardList(String filter, String keyword, Pageable pageable) {
         int size = pageable.getPageSize();
         int offset = (pageable.getPageNumber() - 1) * size;
@@ -69,22 +76,35 @@ public class BoardServiceImpl implements BoardService {
 
     // 게시글 작성
     @Transactional
-    public void createBoard(BoardCreateDTO boardCreateDTO) {
-        // DTO → VO 변환
-        BoardVO newBoard = modelMapper.map(boardCreateDTO, BoardVO.class);
+    public Long createBoard(BoardCreateDTO boardCreateDTO, MultipartFile file) {
+        System.out.println(boardCreateDTO);
 
-        // 데이터 삽입
-        boardMapper.insertBoard(newBoard);
+        // DTO → VO 변환 후 insert
+        BoardVO newBoard = modelMapper.map(boardCreateDTO, BoardVO.class);
+        Long boardNo = boardMapper.insertBoard(newBoard);
+
+        if (file != null && !file.isEmpty()) {
+            uploadFile(file, boardNo);
+        }
+
+        return boardNo;
     }
 
     // 게시글 수정
     @Transactional
-    public void updateBoard(BoardUpdateDTO boardUpdateDTO) {
-        // DTO → VO 변환
+    public void updateBoard(Long boardNo, BoardUpdateDTO boardUpdateDTO, MultipartFile file) {
+        // DTO → VO 변환 후 update
         BoardVO updatedBoard = modelMapper.map(boardUpdateDTO, BoardVO.class);
-
-        // 데이터 업데이트
         boardMapper.updateBoard(updatedBoard);
+
+        if (file == null || file.isEmpty()) {
+            // 파일이 없을 경우 기존 파일 삭제
+            boardMapper.deleteFileByBoardNo(boardNo);
+        } else {
+            // 파일이 존재하면 기존 파일 삭제 후 새 파일 업로드
+            boardMapper.deleteFileByBoardNo(boardNo);
+            uploadFile(file, boardNo);
+        }
     }
 
     // 게시글 삭제
@@ -101,11 +121,11 @@ public class BoardServiceImpl implements BoardService {
 
     // 답글 작성
     @Transactional
-    public void addReply(Long boardNo, BoardReplyDTO boardReplyDTO) {
+    public Long addReply(Long boardNo, BoardReplyDTO boardReplyDTO, MultipartFile file) {
         // 부모 글 정보 조회
         BoardVO parent = boardMapper.selectBoardDetail(boardNo);
         if (parent == null) {
-            throw new IllegalArgumentException("부모 글이 존재하지 않습니다.");
+            throw new IllegalArgumentException("원글이 존재하지 않습니다.");
         }
 
         // 그룹 정보 설정
@@ -116,9 +136,52 @@ public class BoardServiceImpl implements BoardService {
         // 기존 글 순서 밀기
         boardMapper.updateGroupOrd(parent.getGroupNo(), parent.getGroupOrd());
 
+        // DTO → VO 변환 후 insert
         BoardVO newReply = modelMapper.map(boardReplyDTO, BoardVO.class);
+        Long replyNo = boardMapper.insertReply(newReply);
+        System.out.println(replyNo);
 
-        System.out.println(newReply);
-        boardMapper.insertReply(newReply);
+        if (file != null && !file.isEmpty()) {
+            uploadFile(file, replyNo);
+        }
+
+        return replyNo;
+    }
+
+    // 파일 저장
+    @Transactional
+    public void uploadFile(MultipartFile file, Long boardNo) {
+        try {
+            String originFileName = file.getOriginalFilename();
+            String savedFileName = UUID.randomUUID() + "_" + originFileName;
+            String filePath = "D:\\uploads\\" + savedFileName;
+
+            // 파일 저장
+            Files.copy(file.getInputStream(), Paths.get(filePath));
+
+            // FileVO 생성 및 저장
+            FileVO attachment = FileVO.builder()
+                    .boardNo(boardNo)
+                    .originFileName(originFileName)
+                    .fileName(savedFileName)
+                    .filePath(filePath)
+                    .fileSize(file.getSize())
+                    .build();
+
+            boardMapper.insertAttachment(attachment);
+        } catch (IOException e) {
+            throw new RuntimeException("파일 업로드 실패", e);
+        }
+    }
+
+    @Transactional
+    public FileDTO getFileByBoardNo(Long boardNo) {
+        FileVO fileVO = boardMapper.selectFileByBoardNo(boardNo);
+        if (fileVO == null) {
+            return null;
+        }
+
+        // VO → DTO 변환
+        return modelMapper.map(fileVO, FileDTO.class);
     }
 }

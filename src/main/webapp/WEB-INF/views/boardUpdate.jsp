@@ -49,6 +49,24 @@
                         <th class="content">내용</th>
                         <td><textarea id="content" name="content" maxlength=2000 wrap="hard">${board.contentText}</textarea></td>
                     </tr>
+                    <tr>
+                        <th>첨부파일</th>
+                        <td>
+                            <div class="file-container">
+                                <label for="file-input" class="custom-file-input">파일 선택</label>
+                                <input type="file" id="file-input" name="file"/>
+                                <c:choose>
+                                    <c:when test="${file != null}">
+                                        <span id="file-name" class="file-name">${file.originFileName}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="file-name">선택된 파일 없음</span>
+                                    </c:otherwise>
+                                </c:choose>
+                                <button class="clear-file" type="button">×</button>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
                 <div class="update-btns">
                     <button class="btn" id="cancel-btn">취소</button>

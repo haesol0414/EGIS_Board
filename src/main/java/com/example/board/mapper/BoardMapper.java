@@ -1,6 +1,7 @@
 package com.example.board.mapper;
 
 import com.example.board.vo.BoardVO;
+import com.example.board.vo.FileVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface BoardMapper {
 
     BoardVO selectBoardDetail(@Param("boardNo") Long boardNo);
 
-    void insertBoard(BoardVO newBoard);
+    Long insertBoard(BoardVO newBoard);
 
     void updateBoard(BoardVO updatedBoard);
 
@@ -32,5 +33,11 @@ public interface BoardMapper {
 
     void updateGroupOrd(@Param("groupNo") Integer groupNo, @Param("parentOrd") Integer parentOrd);
 
-    void insertReply(BoardVO newReply);
+    Long insertReply(BoardVO newReply);
+
+    void insertAttachment(FileVO attachment);
+
+    FileVO selectFileByBoardNo(Long boardNo);
+
+    void deleteFileByBoardNo(Long boardNo);
 }

@@ -46,7 +46,6 @@
     left: 10px;
     width: 100%;
     padding: 10px;
-    vertical-align: top;
     border-bottom: 1px solid #ccc;
 }
 
@@ -54,7 +53,7 @@
     position: relative;
     bottom: 6px;
     border: 1px solid gray;
-    width: 1500px;
+    width: 1450px;
     border-radius: 6px;
     box-sizing: border-box;
     font-size: 16px;
@@ -67,7 +66,7 @@
 
 #content {
     border: 1px solid gray;
-    width: 1500px;
+    width: 1450px;
     height: 450px;
     border-radius: 6px;
     box-sizing: border-box;
@@ -89,7 +88,6 @@
 .btn {
     width: 70px;
     height: 38px;
-    /*margin: 12px 0px 0 10px;*/
     margin: 12px 0;
     border-radius: 5px;
     border: 1px solid #666666;
@@ -103,4 +101,39 @@
 .btn:hover {
     background: #666666;
     color: #ffffff;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-input {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #666666;
+    background: #ffffff;
+    color: #666666;
+}
+
+#file-name {
+    margin-left: 15px;
+    font-size: 13px;
+}
+
+.clear-file {
+    all: unset;
+    cursor: pointer;
+    color: red;
+    display: none;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.file-container {
+    position: relative;
+    bottom: 6px;
 }
