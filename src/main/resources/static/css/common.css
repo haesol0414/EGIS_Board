@@ -51,6 +51,8 @@ main {
 
 /* 헤더 */
 header {
+    display: flex;
+    align-items: center;
     min-height: 100px;
     box-shadow: 0 0 4px 0 #666666 inset;
 }

@@ -1,21 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/resources/css/boardUpdate.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <script src="/resources/js/boardUpdate.js"></script>
-</head>
-<body>
+<c:set var="styleSheet" value="/resources/css/boardUpdate.css" />
+<%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
-    <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="board-update-wrap">
             <div class="board-top">
@@ -54,16 +42,18 @@
                         <td>
                             <div class="file-container">
                                 <label for="file-input" class="custom-file-input">파일 선택</label>
-                                <input type="file" id="file-input" name="file"/>
-                                <c:choose>
-                                    <c:when test="${file != null}">
-                                        <span id="file-name" class="file-name">${file.originFileName}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="file-name">선택된 파일 없음</span>
-                                    </c:otherwise>
-                                </c:choose>
-                                <button class="clear-file" type="button">×</button>
+                                <input type="file" id="file-input" name="files" multiple/>
+                                <span class="file-alert">파일은 최대 5개까지 첨부 가능합니다.</span>
+                                <ul class="file-list">
+                                    <c:if test="${not empty files}">
+                                        <c:forEach var="file" items="${files}">
+                                            <li data-file-id="${file.attachmentId}">
+                                                <span class="file-name">${file.originFileName}</span>
+                                                <button class="clear-file" type="button">×</button>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                </ul>
                             </div>
                         </td>
                     </tr>
@@ -84,5 +74,4 @@
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>
-</body>
-</html>
+<script type="module" src="/resources/js/boardUpdate.js"></script>

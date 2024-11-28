@@ -1,20 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${parent != null ? "답글 작성" : "게시글 작성"}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/resources/css/boardWrite.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <script src="/resources/js/boardWrite.js"></script>
-</head>
-<body>
+<c:set var="styleSheet" value="/resources/css/boardWrite.css" />
+<%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
-    <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="board-write-wrap">
             <div class="board-top">
@@ -48,10 +36,11 @@
                     <tr>
                         <th class="file-upload">첨부파일</th>
                         <td>
-                            <label for="file-input" class="custom-file-input">파일 선택</label>
-                            <input type="file" id="file-input" name="file" />
-                            <span id="file-name">선택된 파일 없음</span>
-                            <button id="clear-file" class="clear-file" type="button">×</button>
+                            <div class="file-list">
+                                <label for="file-input-0" class="custom-file-input">파일 선택</label>
+                                <input type="file" id="file-input-0" name="file" class="file-input" />
+                                <span class="file-alert">파일은 최대 5개까지 첨부 가능합니다.</span>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -76,5 +65,4 @@
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>
-</body>
-</html>
+<script type="module" src="/resources/js/boardWrite.js"></script>

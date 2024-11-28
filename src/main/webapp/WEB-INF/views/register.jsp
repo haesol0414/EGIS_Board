@@ -1,18 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판</title>
-    <link rel="stylesheet" href="resources/css/register.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="resources/js/register.js"></script>
-</head>
-<body>
+<c:set var="styleSheet" value="/resources/css/register.css" />
+<%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
-    <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="signup-wrap">
             <h1 class="title">회원 가입</h1>
@@ -60,5 +50,6 @@
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>
+<script type="module" src="resources/js/register.js"></script>
 </body>
 </html>

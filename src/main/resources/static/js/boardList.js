@@ -1,3 +1,5 @@
+import { formatDate } from "./utils/formatDate.js";
+
 $(document).ready(function () {
     let currentPage = 1;
     const filterMap = {
@@ -152,13 +154,6 @@ $(document).ready(function () {
             performSearch();
         }
     });
-
-    // 날짜 포맷팅
-    function formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ` +
-            `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
-    }
 
     // 초기화 함수 실행
     initializeDropdown();

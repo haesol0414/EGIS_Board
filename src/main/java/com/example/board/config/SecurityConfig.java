@@ -32,6 +32,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/board/write").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/board/*").authenticated()
+//                        .requestMatchers("/board/write", "/board/reply/**").hasRole("USER") // 로그인된 사용자만 접근 가능
+//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자만 접근 가능
                         .anyRequest().permitAll()
                 )
                 // 예외 처리

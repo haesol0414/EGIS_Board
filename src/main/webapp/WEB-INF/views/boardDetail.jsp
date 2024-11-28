@@ -1,46 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판</title>
-    <link rel="stylesheet" href="/resources/css/boardDetail.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/resources/js/boardDetail.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-</head>
-<body>
+<c:set var="styleSheet" value="/resources/css/boardDetail.css" />
+<%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
-    <%@ include file="layout/header.jsp" %>
     <main>
         <div class="main-container" id="board-write-wrap">
             <div class="board-top">
                 <h1 class="board-title">게시글 상세</h1>
             </div>
-            <div class="board-detail-table">
-                <table>
+            <div>
+                <table class="board-detail-table">
                     <tr>
                         <th class="writer">작성자</th>
-                        <td id="writer" data-writerid="${board.createUserId}">${board.createUserName}(@${board.createUserId})</td>
+                        <td id="writer"
+                            data-writerid="${board.createUserId}">${board.createUserName}(@${board.createUserId})
+                        </td>
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
                         <td id="subject">
-                        <c:if test="${board.groupDep > 0}">
+                            <c:if test="${board.groupDep > 0}">
                                 <span class="reply-prefix">RE: </span>
-                        </c:if>
-                        ${board.subject}</td>
+                            </c:if>
+                            ${board.subject}</td>
                     </tr>
                     <tr>
                         <th class="date">작성일 (최근 수정일)</th>
                         <td id="date">
-                            <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                             <c:if test="${not empty board.updatedAt and not empty board.updateUserName}">
-                                <span class="update-date"> (<fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                <span class="update-date"> (<fmt:formatDate value="${board.updatedAt}"
+                                                                            pattern="yyyy-MM-dd HH:mm:ss"/>
                                 ${board.updateUserName}님에 의해 수정)</span>
                             </c:if>
                         </td>
@@ -53,22 +44,27 @@
                         <th class="content">내용</th>
                         <td id="content"><c:out value="${board.contentText}"/></td>
                     </tr>
-                        <tr>
-                            <th class="file">첨부파일</th>
-                            <td id="file" class="file-name">
-                                <c:choose>
-                                    <c:when test="${file != null}">
-                                        <span id="file-name">${file.originFileName}</span>
-                                        <a href="#" class="file-download" download>
+                    <tr>
+                        <th class="file">첨부파일</th>
+                        <td id="file" class="file-name">
+                            <c:choose>
+                            <c:when test="${not empty files}">
+                            <ul class="file-list">
+                                <c:forEach var="file" items="${files}">
+                                    <li>
+                                        <span class="file-name">${file.originFileName}</span>
+                                        <button class="file-download" data-file-id="${file.attachmentId}">
                                             <i class="fas fa-download"></i>
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span>-</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            </c:when>
+                            <c:otherwise>
+                            <span>-</span>
+                            </c:otherwise>
+                            </c:choose>
+                    </tr>
                 </table>
             </div>
             <div class="btns-box">
@@ -98,5 +94,4 @@
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>
-</body>
-</html>
+<script type="module" src="/resources/js/boardDetail.js"></script>

@@ -144,21 +144,27 @@
         VALUES (#{createUserId}, #{subject}, #{contentText}, #{groupNo}, #{groupOrd}, #{groupDep})
         RETURNING board_no
     </select>
-    <!-- 첨부파일 정보 저장 -->
-    <insert id="insertAttachment" parameterType="com.example.board.vo.FileVO">
-        INSERT INTO attachments (board_no,
-                                 origin_file_name,
-                                 file_name,
-                                 file_path,
-                                 file_size)
-        VALUES (#{boardNo},
-                #{originFileName},
-                #{fileName},
-                #{filePath},
-                #{fileSize})
+    <!-- 첨부파일 저장 -->
+    <insert id="insertFiles" parameterType="list">
+        INSERT INTO attachments (
+        board_no,
+        origin_file_name,
+        file_name,
+        file_path,
+        file_size
+        ) VALUES
+        <foreach collection="list" item="file" separator=",">
+            (
+            #{file.boardNo},
+            #{file.originFileName},
+            #{file.fileName},
+            #{file.filePath},
+            #{file.fileSize}
+            )
+        </foreach>
     </insert>
     <!-- 특정 게시글의 파일 조회 -->
-    <select id="selectFileByBoardNo" parameterType="long" resultType="com.example.board.vo.FileVO">
+    <select id="selectFilesByBoardNo" parameterType="long" resultType="com.example.board.vo.FileVO">
         SELECT
             attachment_id,
             board_no,
@@ -173,8 +179,26 @@
             board_no = #{boardNo};
     </select>
     <!--  첨부파일 삭제  -->
-    <delete id="deleteFileByBoardNo" parameterType="long">
+    <delete id="deleteFilesByIds" parameterType="java.util.List">
         DELETE FROM attachments
-        WHERE board_no = #{boardNo};
+        WHERE attachment_id IN
+        <foreach item="deletedFileIds" collection="list" open="(" separator="," close=")">
+            #{deletedFileIds}
+        </foreach>
     </delete>
+    <!-- 파일 아이디로 파일 조회  -->
+    <select id="selectFileById" parameterType="long" resultType="com.example.board.vo.FileVO">
+        SELECT
+            attachment_id,
+            board_no,
+            origin_file_name,
+            file_name,
+            file_path,
+            file_size,
+            uploaded_at
+        FROM
+            attachments
+        WHERE
+            attachment_id = #{attachmentId};
+    </select>
 </mapper>

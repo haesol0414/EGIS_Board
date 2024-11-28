@@ -19,10 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -76,34 +74,38 @@ public class BoardServiceImpl implements BoardService {
 
     // 게시글 작성
     @Transactional
-    public Long createBoard(BoardCreateDTO boardCreateDTO, MultipartFile file) {
-        System.out.println(boardCreateDTO);
-
+    public Long createBoard(BoardCreateDTO boardCreateDTO, List<MultipartFile> files) {
         // DTO → VO 변환 후 insert
         BoardVO newBoard = modelMapper.map(boardCreateDTO, BoardVO.class);
         Long boardNo = boardMapper.insertBoard(newBoard);
 
-        if (file != null && !file.isEmpty()) {
-            uploadFile(file, boardNo);
+        System.out.println(files);
+
+        // 파일이 존재할 경우 업로드 처리
+        if (files != null && !files.isEmpty()) {
+            uploadFiles(files, boardNo);
         }
 
         return boardNo;
     }
 
+
     // 게시글 수정
     @Transactional
-    public void updateBoard(Long boardNo, BoardUpdateDTO boardUpdateDTO, MultipartFile file) {
-        // DTO → VO 변환 후 update
+    public void updateBoard(Long boardNo, BoardUpdateDTO boardUpdateDTO, List<MultipartFile> files) {
         BoardVO updatedBoard = modelMapper.map(boardUpdateDTO, BoardVO.class);
         boardMapper.updateBoard(updatedBoard);
 
-        if (file == null || file.isEmpty()) {
-            // 파일이 없을 경우 기존 파일 삭제
-            boardMapper.deleteFileByBoardNo(boardNo);
-        } else {
-            // 파일이 존재하면 기존 파일 삭제 후 새 파일 업로드
-            boardMapper.deleteFileByBoardNo(boardNo);
-            uploadFile(file, boardNo);
+        System.out.println(boardNo);
+        // 삭제된 파일 처리
+        if (boardUpdateDTO.getRemovedFileIds() != null && !boardUpdateDTO.getRemovedFileIds().isEmpty()) {
+            System.out.println(boardUpdateDTO.getRemovedFileIds());
+            boardMapper.deleteFilesByIds(boardUpdateDTO.getRemovedFileIds());
+        }
+
+        // 파일이 존재할 경우 업로드 처리
+        if (files != null && !files.isEmpty()) {
+            uploadFiles(files, boardNo);
         }
     }
 
@@ -121,7 +123,7 @@ public class BoardServiceImpl implements BoardService {
 
     // 답글 작성
     @Transactional
-    public Long addReply(Long boardNo, BoardReplyDTO boardReplyDTO, MultipartFile file) {
+    public Long addReply(Long boardNo, BoardReplyDTO boardReplyDTO, List<MultipartFile> files) {
         // 부모 글 정보 조회
         BoardVO parent = boardMapper.selectBoardDetail(boardNo);
         if (parent == null) {
@@ -139,10 +141,10 @@ public class BoardServiceImpl implements BoardService {
         // DTO → VO 변환 후 insert
         BoardVO newReply = modelMapper.map(boardReplyDTO, BoardVO.class);
         Long replyNo = boardMapper.insertReply(newReply);
-        System.out.println(replyNo);
 
-        if (file != null && !file.isEmpty()) {
-            uploadFile(file, replyNo);
+        // 파일이 존재할 경우 업로드 처리
+        if (files != null && !files.isEmpty()) {
+            uploadFiles(files, boardNo);
         }
 
         return replyNo;
@@ -150,38 +152,61 @@ public class BoardServiceImpl implements BoardService {
 
     // 파일 저장
     @Transactional
-    public void uploadFile(MultipartFile file, Long boardNo) {
-        try {
-            String originFileName = file.getOriginalFilename();
-            String savedFileName = UUID.randomUUID() + "_" + originFileName;
-            String filePath = "D:\\uploads\\" + savedFileName;
+    public void uploadFiles(List<MultipartFile> files, Long boardNo) {
+        List<FileVO> fileVOList = new ArrayList<>();
 
-            // 파일 저장
-            Files.copy(file.getInputStream(), Paths.get(filePath));
+        for (MultipartFile file : files) {
+            try {
+                String originFileName = file.getOriginalFilename();
+                String savedFileName = UUID.randomUUID() + "_" + originFileName;
+                String filePath = "D:\\uploads\\" + savedFileName;
 
-            // FileVO 생성 및 저장
-            FileVO attachment = FileVO.builder()
-                    .boardNo(boardNo)
-                    .originFileName(originFileName)
-                    .fileName(savedFileName)
-                    .filePath(filePath)
-                    .fileSize(file.getSize())
-                    .build();
+                // 파일 저장
+                Files.copy(file.getInputStream(), Paths.get(filePath));
 
-            boardMapper.insertAttachment(attachment);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 실패", e);
+                // FileVO 생성
+                FileVO attachment = FileVO.builder()
+                        .boardNo(boardNo)
+                        .originFileName(originFileName)
+                        .fileName(savedFileName)
+                        .filePath(filePath)
+                        .fileSize(file.getSize())
+                        .build();
+
+                fileVOList.add(attachment);
+            } catch (IOException e) {
+                throw new RuntimeException("파일 업로드 실패", e);
+            }
+        }
+
+        // 매퍼 호출로 일괄 삽입
+        if (!fileVOList.isEmpty()) {
+            boardMapper.insertFiles(fileVOList);
         }
     }
 
-    @Transactional
-    public FileDTO getFileByBoardNo(Long boardNo) {
-        FileVO fileVO = boardMapper.selectFileByBoardNo(boardNo);
-        if (fileVO == null) {
-            return null;
+    // 파일 조회
+    @Transactional(readOnly = true)
+    public List<FileDTO> getFilesByBoardNo(Long boardNo) {
+        List<FileVO> fileList = boardMapper.selectFilesByBoardNo(boardNo);
+
+        // 파일이 없을 경우 빈 리스트 반환
+        if (fileList == null || fileList.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        // VO → DTO 변환
+        return fileList.stream()
+                .map(fileVO -> modelMapper.map(fileVO, FileDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    // 파일 상세 정보 조회
+    public FileDTO getFileDetails(Long attachmentId) {
+        FileVO fileVO = boardMapper.selectFileById(attachmentId);
+        if (fileVO == null) {
+            throw new IllegalArgumentException("파일 정보를 찾을 수 없습니다.");
+        }
+
         return modelMapper.map(fileVO, FileDTO.class);
     }
 }

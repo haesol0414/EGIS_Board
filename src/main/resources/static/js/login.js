@@ -1,11 +1,12 @@
+import * as Modal from './utils/modal.js';
+
 $(document).ready(function () {
-    const $closeBtn = $("#close-btn");
-    const $alertModal = $("#alert-modal");
-    const $modalMsg = $("#modal-msg");
-    const $errorMsg = $("#error-msg");
+    Modal.initializeModalElements();
+
     const $form = $("form");
     const $userIdInput = $("#form-id");
     const $passwordInput = $("#form-pw");
+    const $errorMsg = $("#error-msg");
 
     // 로그인 처리
     const handleLogin = (event) => {
@@ -33,7 +34,7 @@ $(document).ready(function () {
             data: JSON.stringify(loginData),
             success: (token) => {
                 sessionStorage.setItem("token", token);
-                openAlertModal("로그인 성공");
+                Modal.openAlertModal("로그인 성공", "/");
             },
             error: (xhr) => {
                 if (xhr.status === 401) {
@@ -45,25 +46,6 @@ $(document).ready(function () {
         });
     };
 
-    // 알림 모달 열기
-    const openAlertModal = (msg) => {
-        $modalMsg.text(msg);
-        $alertModal.show();
-    };
-
-    // 알림 모달 닫기
-    const closeAlertModal = () => {
-        $alertModal.hide();
-    };
-
     // 로그인 버튼
     $form.on("submit", handleLogin);
-    
-    $closeBtn.on("click", closeAlertModal);
-    $(document).on("keydown", function (event) {
-        if (event.key === "Enter" && $alertModal.is(":visible")) {
-            closeAlertModal();
-            window.location.href = "/";
-        }
-    });
 });

@@ -1,81 +1,103 @@
+import * as Modal from "./utils/modal.js";
+
 $(document).ready(function () {
+    Modal.initializeModalElements();
+
     const token = sessionStorage.getItem('token');
     const decodedToken = jwt_decode(token);
     const loggedInUserId = decodedToken.sub;
     const userName = decodedToken.userName;
-    let boardNo;
 
-    const $fileInput = $('#file-input');
-    const $fileName = $('#file-name');
-    const $clearFileBtn = $('#clear-file');
-    const $closeBtn = $("#close-btn");
-    const $alertModal = $("#alert-modal");
-    const $modalMsg = $("#modal-msg");
+    const $fileList = $('.file-list'); // 파일 리스트 컨테이너
     const $writerEl = $("#writer");
     const $writeSubmitBtn = $("#write-submit");
     const $replySubmitBtn = $("#reply-submit");
 
+    let filesArr = []; // 파일 배열
+    let fileNo = 0; // 파일 고유 ID
+    const maxFiles = 5; // 최대 파일 개수
+
+    // 작성자 정보 초기화
     const initializeWriterInfo = () => {
         $writerEl.text(`${userName} (@${loggedInUserId})`);
     };
 
-    // 파일 선택
-    const updateFileName = () => {
-        const files = $fileInput[0].files;
-        if (files.length > 0) {
-            $fileName.text(files[0].name);
-            $clearFileBtn.show();
-        } else {
-            $fileName.text("선택된 파일 없음");
-            $clearFileBtn.hide();
+    // 첨부파일 추가
+    const addFile = ($inputElement) => {
+        const attFileCnt = $fileList.find('.filebox').length; // 현재 첨부파일 개수
+        const remainFileCnt = maxFiles - attFileCnt; // 남은 파일 추가 가능 개수
+        const curFileCnt = $inputElement[0].files.length; // 현재 선택된 파일 개수
+
+        if (curFileCnt > remainFileCnt) {
+            alert(`첨부파일은 최대 ${maxFiles}개까지 가능합니다.`);
+            return;
         }
+
+        for (let i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
+            const file = $inputElement[0].files[i];
+            if (validateFile(file)) {
+                filesArr.push(file);
+
+                const $fileBox = $(`
+                    <div id="file${fileNo}" class="filebox">
+                        <p class="name">${file.name}</p>
+                        <button type="button" class="clear-file" data-file-id="${fileNo}">×</button>
+                    </div>
+                `);
+
+                $fileList.append($fileBox);
+                fileNo++;
+            }
+        }
+        $inputElement.val(''); // 파일 입력 초기화
     };
 
-    // "x" 버튼 클릭 시 파일 업로드 취소
-    $clearFileBtn.on('click', function () {
-        resetFileInput();
-    });
+    // 첨부파일 검증
+    const validateFile = (file) => {
+        if (file.name.length > 100) {
+            alert("파일명이 100자를 초과했습니다.");
+            return false;
+        }
+        if (file.size > 100 * 1024 * 1024) {
+            alert("파일 크기는 최대 100MB까지 가능합니다.");
+            return false;
+        }
 
-    // 파일 입력 리셋
-    const resetFileInput = () => {
-        $fileInput.val('');
-        $fileName.text('선택된 파일 없음');
-        $clearFileBtn.hide()
+        return true;
     };
 
-    const getNewBoardData = (dtoKey) => {
+    // 첨부파일 삭제
+    const deleteFile = (fileId) => {
+        filesArr = filesArr.filter((_, index) => index !== fileId);
+        $(`#file${fileId}`).remove();
+    };
+
+    // 폼 데이터 생성
+    const getFormData = (dtoKey) => {
         const subject = $("#subject").val().trim();
         const contentText = $("#content").val().trim();
-        const files = $fileInput[0].files;
-        const formData = new FormData();
 
         if (!subject || !contentText) {
-            alert("제목과 내용을 모두 입력해주세요.");
+            alert("제목과 내용을 입력해주세요.");
             return null;
         }
 
-        // JSON 데이터
-        const newBoard = {
-            subject: subject,
-            contentText: contentText,
-        };
+        const formData = new FormData();
 
-        // JSON 데이터를 "boardCreateDTO" key로 추가
-        formData.append(dtoKey, new Blob([JSON.stringify(newBoard)], {
-            type: "application/json",
-        }));
+        formData.append(dtoKey, new Blob([JSON.stringify({ subject, contentText })], { type: "application/json" }));
 
-        // 파일 데이터를 "file" key로 추가
-        if (files.length > 0) {
-            formData.append("file", files[0]);
-        }
+        filesArr.forEach((file) => {
+            if (file) {
+                formData.append("files", file);
+            }
+        });
 
         return formData;
     };
 
-    // 글 작성 API
+    // 작성 API 요청
     const handleFormSubmit = (url, dtoKey) => {
-        const formData = getNewBoardData(dtoKey);
+        const formData = getFormData(dtoKey);
 
         if (formData) {
             $.ajax({
@@ -83,37 +105,27 @@ $(document).ready(function () {
                 type: "POST",
                 processData: false,
                 contentType: false,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
                 data: formData,
                 success: function (res) {
-                    openAlertModal(res.message, res.boardNo);
+                    Modal.openAlertModal(res.message, `/board/${res.boardNo}`);
                 },
                 error: function (xhr) {
-                    openAlertModal(`요청 실패: ${xhr.status} ${xhr.statusText}`);
+                    alert(`요청 실패: ${xhr.status} - ${xhr.statusText}`);
                 },
             });
         }
     };
 
-    const openAlertModal = (msg, boardNo) => {
-        $modalMsg.text(msg);
-        $alertModal.show();
+    // 이벤트 바인딩
+    $fileList.on("change", "input[type='file']", function () {
+        addFile($(this));
+    });
 
-        $closeBtn.on("click", function () {
-            closeAlertModal();
-
-            window.location.href = `/board/${boardNo}`;
-        });
-    };
-
-    const closeAlertModal = () => {
-        $alertModal.hide();
-    };
-
-    // 이벤트 핸들러 등록
-    $fileInput.on('change', updateFileName);
+    $fileList.on("click", ".clear-file", function () {
+        const fileId = $(this).data('file-id');
+        deleteFile(fileId);
+    });
 
     $writeSubmitBtn.on("click", function (event) {
         event.preventDefault();
@@ -125,8 +137,6 @@ $(document).ready(function () {
         const parentBoardNo = $("#parent-data").data("board-no");
         handleFormSubmit(`/api/board/reply/${parentBoardNo}`, "boardReplyDTO");
     });
-
-    $fileInput.on('change', updateFileName);
 
     initializeWriterInfo();
 });

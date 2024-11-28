@@ -197,7 +197,6 @@
     font-size: 16px;
     cursor: pointer;
     color: #666666;
-    text-decoration: underline;
 }
 
 .page-btn.current {
@@ -205,6 +204,7 @@
     text-decoration: none;
     font-weight: bold;
     cursor: default;
+    color: #A5D6A7;
 }
 
 
@@ -221,5 +221,4 @@
 
 .clear-file {
     color: red;
-
 }

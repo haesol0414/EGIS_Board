@@ -10,14 +10,14 @@
     color: #666666;
     font-size: 30px;
     font-weight: 700;
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 .login-card {
     width: 500px;
     border: 4mm ridge rgb(102, 102, 102);
     border-radius: 0 20px 0 10px;
-    margin: 40px auto 0 auto;
+    margin: 40px auto 10px auto;
     color: var(--text-color);
     text-align: left;
 }

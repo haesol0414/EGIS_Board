@@ -7,8 +7,10 @@
         </ul>
         <div class="footer-bottom">
             <p>
-                COPYRIGHT ⓒ leehaesol ALL RIGHTS RESERVED.
+                COPYRIGHT ⓒ leehaesol ALL RIGHTS RESERVED
             </p>
         </div>
     </div>
 </footer>
+</body>
+</html>
