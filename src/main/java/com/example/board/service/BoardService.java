@@ -15,7 +15,7 @@ public interface BoardService {
     // 게시글 작성
     Long createBoard(BoardCreateDTO boardCreateDTO, List<MultipartFile> files);
     // 게시글 목록 조회
-    Map<String, Object> getBoardList(String filter, String keyword, Pageable pageable);
+    public Map<String, Object> getBoardList(String filter, String keyword, int size, int offset);
     // 게시글 상세 조회
     BoardDetailDTO getBoardDetail(Long boardNo);
     // 게시글 수정

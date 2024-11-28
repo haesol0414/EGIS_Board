@@ -35,13 +35,11 @@ public class BoardServiceImpl implements BoardService {
 
     // 게시글 목록 조회 (페이징 처리)
     @Transactional(readOnly = true)
-    public Map<String, Object> getBoardList(String filter, String keyword, Pageable pageable) {
-        int size = pageable.getPageSize();
-        int offset = (pageable.getPageNumber() - 1) * size;
-
+    public Map<String, Object> getBoardList(String filter, String keyword, int size, int offset) {
         List<BoardVO> boards;
         int totalRecords;
 
+        // 검색 조건 확인
         if (filter != null && keyword != null && !keyword.isBlank()) {
             // 검색 조건이 있는 경우
             boards = boardMapper.searchBoardList(filter, keyword, size, offset);
@@ -52,8 +50,10 @@ public class BoardServiceImpl implements BoardService {
             totalRecords = boardMapper.selectBoardTotalCount();
         }
 
+        // 총 페이지 계산
         int totalPages = (int) Math.ceil((double) totalRecords / size);
 
+        // 결과 맵 구성
         Map<String, Object> result = new HashMap<>();
         result.put("boardList", boards);
         result.put("totalRecords", totalRecords);

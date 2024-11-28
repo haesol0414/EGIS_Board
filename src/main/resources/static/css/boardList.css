@@ -37,20 +37,56 @@
 }
 
 .search {
-    width: 600px;
+    width: 700px;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 40px;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-sizing: border-box;
 }
 
-.dropdown {
+.search-input {
+    background-color: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    width: 500px;
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    margin-right: 10px;
+    line-height: 1.5;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.search-btn {
+    width: 20px;
+
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-btn i {
     position: relative;
-    display: inline-block;
-    left: 8px;
+    top: 3px;
+    right: 18px;
+    font-size: 25px;
+    color: #828282;
+    transition: color 0.3s ease;
+}
+
+.search-btn:hover i {
+    color: #474747;
 }
 
 .dropbtn {
+    width: 130px;
     background-color: transparent;
     color: #474747;
     padding: 8px 14px;
@@ -60,10 +96,6 @@
     display: flex;
     align-items: center;
     gap: 7px;
-}
-
-.dropbtn:focus {
-    outline: none;
 }
 
 .dropdown-content {
@@ -88,32 +120,6 @@
     background-color: #f1f1f1;
 }
 
-.search-input {
-    background-color: transparent;
-    color: var(--text-color);
-    font-weight: 500;
-    width: 450px;
-    border: none;
-    outline: none;
-    padding: 8px 8px 4px 16px;
-    margin: 0;
-    line-height: 1.5;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-.search-btn i {
-    position: relative;
-    top: 6px;
-    right: 16px;
-    float: right;
-    font-size: 25px;
-    color: #828282;
-    cursor: pointer;
-    align-items: end;
-    transition: color 0.3s ease;
-}
-
 .write-btn i {
     position: relative;
     top: 30px;
@@ -123,7 +129,7 @@
     transition: color 0.3s ease;
 }
 
-.search-btn i:hover, .write-btn i:hover {
+.write-btn i:hover {
     color: #A5D6A7;
 }
 
@@ -199,7 +205,7 @@
     color: #666666;
 }
 
-.page-btn.current {
+.page-btn.active {
     border: none;
     text-decoration: none;
     font-weight: bold;
@@ -217,8 +223,4 @@
     text-align: center;
     color: var(--text-color);
     padding: 50px 0 90px 0;
-}
-
-.clear-file {
-    color: red;
 }

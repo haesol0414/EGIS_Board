@@ -10,8 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -23,17 +26,30 @@ public class BoardController {
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
-
-    // 게시글 목록 페이지
-    @GetMapping
-    public String showHomePage(Model model) {
+    // 게시글 목록 조회 페이지
+    @GetMapping("/list")
+    public String getBoardList(
+            @RequestParam(value = "filter", required = false, defaultValue = "all") String filter,
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "15") int size,
+            Model model) {
         try {
-            return "boardList";
-        } catch (Exception e) {
-            log.error("게시글 목록 페이지 로드 중 오류 발생", e);
-            model.addAttribute("errorMessage", "게시글 목록을 불러오는 도중 문제가 발생했습니다.");
+            // 목록 조회 서비스 호출
+            int offset = (page - 1) * size;
 
-            return "error";
+            Map<String, Object> boards = boardService.getBoardList(filter, keyword, size, offset);
+
+            model.addAttribute("boardList", boards.get("boardList"));
+            model.addAttribute("totalPages", boards.get("totalPages"));
+            model.addAttribute("currentPage", page);
+            model.addAttribute("filter", filter);
+            model.addAttribute("keyword", keyword);
+
+            return "boardList"; // JSP 파일 이름
+        } catch (Exception e) {
+            model.addAttribute("error", "게시글 목록 조회 중 오류가 발생했습니다.");
+            return "error"; // 에러 페이지로 이동
         }
     }
 

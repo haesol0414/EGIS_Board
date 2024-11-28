@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="styleSheet" value="/resources/css/boardList.css" />
 <%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
@@ -10,20 +11,23 @@
                 <div class="search">
                     <div class="dropdown">
                         <button class="dropbtn">
-                            <span class="dropbtn_content">제목</span>
+                            <span class="dropbtn_content">${filter}</span> <!-- 기본값 -->
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            <a href="#" data-value="제목">제목</a>
-                            <a href="#" data-value="내용">내용</a>
-                            <a href="#" data-value="제목 + 내용">제목 + 내용</a>
-                            <a href="#" data-value="작성자명">작성자명</a>
+                            <a href="#" data-value="subject">제목</a>
+                            <a href="#" data-value="contentText">내용</a>
+                            <a href="#" data-value="all">제목 + 내용</a>
+                            <a href="#" data-value="writer">작성자명</a>
                         </div>
                     </div>
-                    <input class="search-input">
-                    <a id="search-btn" class="search-btn">
-                        <i class="fas fa-search"></i>
-                    </a>
+                    <form action="/board/list" method="get" style="display: inline;">
+                        <input type="hidden" name="filter" value="${filter}"> <!-- 기본값 설정 -->
+                        <input class="search-input" name="keyword" value="${keyword}" placeholder="검색어 입력">
+                        <button id="search-btn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
                 <div class="board-right">
                     <a href="/board/write" id="write-btn" class="write-btn">
@@ -43,13 +47,49 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:choose>
+                    <c:when test="${empty boardList}">
+                        <tr>
+                            <td class="no-data" colspan="6">
+                                <span>조회된 게시글이 없습니다.</span>
+                            </td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="board" items="${boardList}">
+                            <tr>
+                                <td class="row board-num">${board.boardNo}</td>
+                                <td class="row subject">
+                                    <a href="/board/${board.boardNo}">${board.subject}</a>
+                                </td>
+                                <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
+                                <td class="row write-date">
+                                    <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                </td>
+                                <td class="row update-date">
+                                    <c:choose>
+                                        <c:when test="${not empty board.updatedAt}">
+                                            <fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                        </c:when>
+                                        <c:otherwise>-</c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="row view-count">${board.viewCnt}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
                 </tbody>
             </table>
             <%-- 페이지네이션 --%>
             <div class="pagination">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <a href="?page=${i}&filter=${filter}&keyword=${keyword}"
+                       class="${currentPage == i ? 'active' : ''}">${i}</a>
+                </c:forEach>
             </div>
         </div>
     </main>
     <%@ include file="layout/footer.jsp" %>
 </div>
-<script type="module" src="resources/js/boardList.js"></script>
+<script type="module" src="/resources/js/boardList.js"></script>

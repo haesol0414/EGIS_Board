@@ -9,10 +9,10 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     // 게시글 목록 조회
-    List<BoardVO> selectBoardList(@Param("size") int size, @Param("offset") int offset);
-
-    // 전체 게시글 갯수
-    int selectBoardTotalCount();
+//    List<BoardVO> selectBoardList(@Param("size") int size, @Param("offset") int offset);
+//
+//    // 전체 게시글 갯수
+//    int selectBoardTotalCount();
 
     // 게시글 상세 조회
     BoardVO selectBoardDetail(@Param("boardNo") Long boardNo);
@@ -29,16 +29,25 @@ public interface BoardMapper {
     // 조회수 증가
     void updateViewCnt(@Param("boardNo") Long boardNo);
 
-    // 게시글 검색
-    List<BoardVO> searchBoardList(
-            @Param("filter") String filter,
-            @Param("keyword") String keyword,
-            @Param("size") int size,
-            @Param("offset") int offset
-    );
+//    // 게시글 검색
+//    List<BoardVO> searchBoardList(
+//            @Param("filter") String filter,
+//            @Param("keyword") String keyword,
+//            @Param("size") int size,
+//            @Param("offset") int offset
+//    );
+//
+//    // 검색된 게시글 갯수
+//    int selectSearchTotalCount(@Param("filter") String filter, @Param("keyword") String keyword);
+    List<BoardVO> selectBoardList(@Param("size") int size, @Param("offset") int offset);
 
-    // 검색된 게시글 갯수
+    int selectBoardTotalCount();
+
+    List<BoardVO> searchBoardList(@Param("filter") String filter, @Param("keyword") String keyword,
+                                  @Param("size") int size, @Param("offset") int offset);
+
     int selectSearchTotalCount(@Param("filter") String filter, @Param("keyword") String keyword);
+
 
     // 답글 작성
     Long insertReply(BoardVO newReply);
