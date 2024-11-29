@@ -26,10 +26,10 @@
 }
 
 .board-title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     color: #666666;
-    margin: 22px 0 25px 0;
+    margin: 22px 5px 25px 0;
 }
 
 .board-right {
@@ -123,7 +123,7 @@
 .write-btn i {
     position: relative;
     top: 30px;
-    margin-right: 3px;
+    margin-right: 4px;
     font-size: 26px;
     color: #666666;
     transition: color 0.3s ease;
@@ -188,39 +188,57 @@
     width: 6%;
 }
 
-.pagination {
-    display: flex;
-    margin-top: 35px;
-    margin-bottom: 20px;
-    color: #666666;
-    gap: 10px;
-    justify-content: center;
-}
-
-.page-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #666666;
-}
-
-.page-btn.active {
-    border: none;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: default;
-    color: #A5D6A7;
-}
-
-
-.show {
-    display: block;
-}
-
 .no-data {
     font-size: 24px;
     text-align: center;
     color: var(--text-color);
     padding: 50px 0 90px 0;
+}
+
+.pagination {
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: #666666;
+    gap: 9px;
+    justify-content: center;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #666666;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link.active {
+    background-color: #666666;
+    color: white;
+    border-color: #666666;
+}
+
+.page-link:hover {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.page-link.prev-btn i,
+.page-link.next-btn i {
+    margin: 0 4px;
+}
+
+.page-link[disabled] {
+    pointer-events: none;
+    color: #aaa;
+    border-color: #eee;
+}
+
+.show {
+    display: block;
 }

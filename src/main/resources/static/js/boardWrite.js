@@ -84,7 +84,7 @@ $(document).ready(function () {
 
         const formData = new FormData();
 
-        formData.append(dtoKey, new Blob([JSON.stringify({ subject, contentText })], { type: "application/json" }));
+        formData.append(dtoKey, new Blob([JSON.stringify({subject, contentText})], {type: "application/json"}));
 
         filesArr.forEach((file) => {
             if (file) {
@@ -105,7 +105,7 @@ $(document).ready(function () {
                 type: "POST",
                 processData: false,
                 contentType: false,
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {Authorization: `Bearer ${token}`},
                 data: formData,
                 success: function (res) {
                     Modal.openAlertModal(res.message, `/board/${res.boardNo}`);

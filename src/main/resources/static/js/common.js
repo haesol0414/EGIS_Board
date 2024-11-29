@@ -1,5 +1,5 @@
 import * as Modal from './utils/modal.js';
-import { getUserInfoFromToken } from "./utils/authUtils.js";
+import {getUserInfoFromToken} from "./utils/authUtils.js";
 
 $(document).ready(function () {
     Modal.initializeModalElements()

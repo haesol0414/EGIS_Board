@@ -4,10 +4,13 @@ import com.example.board.security.JwtConstant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,16 +33,20 @@ public class JwtProvider {
     }
 
     // AccessToken 생성 메서드
-    public String generateToken(String userId, String userName, String role) {
-        long now = (new Date()).getTime();
+    public String generateToken(String userId, String userName, Collection<? extends GrantedAuthority> roles) {
+        long now = System.currentTimeMillis();
         Date accessTokenExpiresIn = new Date(now + JwtConstant.ACCESS_TOKEN_EXPIRE_TIME);
 
+        String roleClaims = roles.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
         return Jwts.builder()
-                .setSubject(String.valueOf(userId)) // 사용자 ID
-                .setExpiration(accessTokenExpiresIn) // 만료 시간 설정
-                .claim("userName", userName) // 사용자 이름 추가
-                .claim("role", role) // 권한 추가
-                .signWith(this.key) // 서명
+                .setSubject(userId)
+                .setExpiration(accessTokenExpiresIn)
+                .claim("userName", userName)
+                .claim("role", roleClaims)
+                .signWith(this.key)
                 .compact();
     }
 
@@ -57,7 +64,7 @@ public class JwtProvider {
                 .toList();
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }
 
     // 토큰 만료 여부 확인
@@ -86,7 +93,7 @@ public class JwtProvider {
         } catch (IllegalArgumentException e) {
             log.info("JWT 클레임 문자열이 비어 있습니다.", e);
         }
-        
+
         return false;
     }
 

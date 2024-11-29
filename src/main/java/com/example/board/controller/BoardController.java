@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ public class BoardController {
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
+
     // 게시글 목록 조회 페이지
     @GetMapping("/list")
     public String getBoardList(
@@ -35,9 +39,9 @@ public class BoardController {
             @RequestParam(value = "size", required = false, defaultValue = "15") int size,
             Model model) {
         try {
-            // 목록 조회 서비스 호출
             int offset = (page - 1) * size;
 
+            // 목록 조회 서비스 호출
             Map<String, Object> boards = boardService.getBoardList(filter, keyword, size, offset);
 
             model.addAttribute("boardList", boards.get("boardList"));
@@ -46,10 +50,10 @@ public class BoardController {
             model.addAttribute("filter", filter);
             model.addAttribute("keyword", keyword);
 
-            return "boardList"; // JSP 파일 이름
+            return "boardList";
         } catch (Exception e) {
             model.addAttribute("error", "게시글 목록 조회 중 오류가 발생했습니다.");
-            return "error"; // 에러 페이지로 이동
+            return "error";
         }
     }
 

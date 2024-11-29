@@ -60,6 +60,9 @@
                             <tr>
                                 <td class="row board-num">${board.boardNo}</td>
                                 <td class="row subject">
+                                    <c:if test="${board.groupDep > 0}">
+                                        <span class="reply-prefix"  style="margin-left: ${board.groupDep * 30}px;">RE: </span>
+                                    </c:if>
                                     <a href="/board/${board.boardNo}">${board.subject}</a>
                                 </td>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
@@ -83,10 +86,23 @@
             </table>
             <%-- 페이지네이션 --%>
             <div class="pagination">
+                <%-- 이전 버튼 --%>
+                <c:if test="${currentPage > 1}">
+                    <a href="?page=${currentPage - 1}&filter=${filter}&keyword=${keyword}" class="page-link prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </c:if>
+                <%-- 페이지 번호 --%>
                 <c:forEach begin="1" end="${totalPages}" var="i">
                     <a href="?page=${i}&filter=${filter}&keyword=${keyword}"
-                       class="${currentPage == i ? 'active' : ''}">${i}</a>
+                       class="page-link ${currentPage == i ? 'active page-btn' : 'page-btn'}">${i}</a>
                 </c:forEach>
+                <%-- 다음 버튼 --%>
+                <c:if test="${currentPage < totalPages}">
+                    <a href="?page=${currentPage + 1}&filter=${filter}&keyword=${keyword}" class="page-link next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </c:if>
             </div>
         </div>
     </main>

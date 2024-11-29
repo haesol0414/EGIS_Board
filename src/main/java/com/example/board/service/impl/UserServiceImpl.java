@@ -7,8 +7,12 @@ import com.example.board.service.UserService;
 import com.example.board.service.security.JwtProvider;
 import com.example.board.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,13 +32,17 @@ public class UserServiceImpl implements UserService {
     public String login(LoginDTO loginDTO) {
         UserVO user = userMapper.findByUserId(loginDTO.getUserId());
 
-        System.out.println(user);
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             return null;
         }
 
+        // 권한 설정
+        List<SimpleGrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+        );
+
         // 로그인 성공 시 JWT 생성 후 반환
-        return jwtProvider.generateToken(user.getUserId(), user.getUserName(), user.getRole().name());
+        return jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
     }
 
     // 회원 가입

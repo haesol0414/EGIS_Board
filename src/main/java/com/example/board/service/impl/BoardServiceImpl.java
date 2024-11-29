@@ -96,7 +96,6 @@ public class BoardServiceImpl implements BoardService {
         BoardVO updatedBoard = modelMapper.map(boardUpdateDTO, BoardVO.class);
         boardMapper.updateBoard(updatedBoard);
 
-        System.out.println(boardNo);
         // 삭제된 파일 처리
         if (boardUpdateDTO.getRemovedFileIds() != null && !boardUpdateDTO.getRemovedFileIds().isEmpty()) {
             System.out.println(boardUpdateDTO.getRemovedFileIds());
@@ -144,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 파일이 존재할 경우 업로드 처리
         if (files != null && !files.isEmpty()) {
-            uploadFiles(files, boardNo);
+            uploadFiles(files, replyNo);
         }
 
         return replyNo;

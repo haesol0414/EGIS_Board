@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class BoardCreateDTO {
     private String createUserId;
     private String subject;

@@ -6,8 +6,8 @@ $(document).ready(function () {
         "작성자명": "writer"
     };
 
-    const defaultFilterText = "제목"; // 드롭다운 기본 텍스트
-    const defaultFilterValue = filterMap[defaultFilterText]; // 기본값에 대한 서버 매핑 값
+    const defaultFilterText = "제목";
+    const defaultFilterValue = filterMap[defaultFilterText];
 
     const $searchInput = $('.search-input');
     const $searchBtn = $('#search-btn');

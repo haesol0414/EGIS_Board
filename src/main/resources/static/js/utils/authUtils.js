@@ -6,6 +6,7 @@ export const getUserInfoFromToken = (token) => {
 
         const decodedToken = jwt_decode(token);
         if(decodedToken) {
+            console.log('디코딩된 토큰: ', decodedToken);
             const userId = decodedToken.sub;
             const userName = decodedToken.userName;
             const role = decodedToken.role;
