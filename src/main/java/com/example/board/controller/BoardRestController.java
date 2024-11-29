@@ -8,8 +8,6 @@ import com.example.board.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.io.File;
-
-
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -108,6 +99,8 @@ public class BoardRestController {
             // 로그인 유저
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             boardUpdateDTO.setUpdateUserId(authentication.getName());
+
+            boardUpdateDTO.setUpdatedAt(new Date());
 
             // 업데이트 서비스 호출
             boardService.updateBoard(boardNo, boardUpdateDTO, files);
