@@ -36,21 +36,17 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public Map<String, Object> getBoardList(String filter, String keyword, int size, int offset) {
         List<BoardVO> boards;
-        int totalRecords;
-
 
         // 검색 조건 확인
         if (filter != null && keyword != null && !keyword.isBlank()) {
             // 검색 조건이 있는 경우
-            boards = boardMapper.selectSearchBoardList(filter, keyword, size, offset);
-            totalRecords = boardMapper.selectSearchTotalCount(filter, keyword);
+            boards = boardMapper.selectSearchBoardList(filter, keyword, Integer.MAX_VALUE, 0); // 전체 데이터 조회
         } else {
             // 검색 조건이 없는 경우
-            boards = boardMapper.selectBoardList(size, offset);
-            totalRecords = boardMapper.selectBoardTotalCount();
+            boards = boardMapper.selectBoardList(Integer.MAX_VALUE, 0); // 전체 데이터 조회
         }
 
-        // VO → DTO 변환 및 답글 여부 설정
+        // VO → DTO 변환 및 삭제된 게시글과 답글 처리
         List<BoardDTO> boardListDTO = boards.stream()
                 .map(vo -> {
                     BoardDTO dto = modelMapper.map(vo, BoardDTO.class);
@@ -63,17 +59,25 @@ public class BoardServiceImpl implements BoardService {
                 .filter(dto -> !(dto.getDeletedYn().equals("Y") && !dto.isHasReplies()))
                 .collect(Collectors.toList());
 
-        // 총 페이지 계산
+        // 필터링된 데이터에서 페이지네이션 적용
+        int totalRecords = boardListDTO.size();
         int totalPages = (int) Math.ceil((double) totalRecords / size);
+
+        List<BoardDTO> paginatedBoardList = boardListDTO.stream()
+                .skip(offset)
+                .limit(size)
+                .collect(Collectors.toList());
 
         // 결과 맵 구성
         Map<String, Object> result = new HashMap<>();
-        result.put("boardList", boardListDTO);
-        result.put("totalRecords", totalRecords);
-        result.put("totalPages", totalPages);
+        result.put("boardList", paginatedBoardList); // 현재 페이지 데이터
+        result.put("totalRecords", totalRecords);   // 필터링된 데이터 기준 총 데이터 수
+        result.put("totalPages", totalPages);       // 필터링된 데이터 기준 총 페이지 수
+        result.put("currentPage", offset / size + 1); // 현재 페이지 번호
 
         return result;
     }
+
 
     // 게시글 상세 조회
     @Transactional(readOnly = true)
