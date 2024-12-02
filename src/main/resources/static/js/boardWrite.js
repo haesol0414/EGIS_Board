@@ -13,6 +13,7 @@ $(document).ready(function () {
     const $writeSubmitBtn = $("#write-submit");
     const $replySubmitBtn = $("#reply-submit");
 
+
     let filesArr = []; // 파일 배열
     let fileNo = 0; // 파일 고유 ID
     const maxFiles = 5; // 최대 파일 개수
@@ -134,7 +135,12 @@ $(document).ready(function () {
 
     $replySubmitBtn.on("click", function (event) {
         event.preventDefault();
-        const parentBoardNo = $("#parent-data").data("board-no");
+        // const parentBoardNo = $("#parent-data").data("board-no");
+        // 현재 URL 경로에서 boardNo 추출
+        const url = window.location.pathname; // "/board/reply/12345"
+        const parentBoardNo = url.split("/").pop(); // URL의 마지막 부분 추출
+
+        console.log(parentBoardNo);
         handleFormSubmit(`/api/board/reply/${parentBoardNo}`, "boardReplyDTO");
     });
 

@@ -30,12 +30,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // 토큰 추출
         String token = resolveToken(httpRequest);
-        System.out.println("Received Token: " + token);
 
         // 토큰 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            System.out.println("Generated Authentication: " + authentication);
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
             System.out.println("Invalid or missing token.");
@@ -46,9 +45,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     // Request Header에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
-        System.out.println("req: " + request);
         String bearerToken = request.getHeader("Authorization");
-        System.out.println(bearerToken);
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7); // "Bearer " 제거
         }

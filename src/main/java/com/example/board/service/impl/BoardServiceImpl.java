@@ -1,7 +1,7 @@
 package com.example.board.service.impl;
 
 import com.example.board.dto.request.BoardReplyDTO;
-import com.example.board.dto.response.BoardDetailDTO;
+import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.dto.response.FileDTO;
@@ -11,7 +11,6 @@ import com.example.board.service.BoardService;
 import com.example.board.vo.FileVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,10 +38,11 @@ public class BoardServiceImpl implements BoardService {
         List<BoardVO> boards;
         int totalRecords;
 
+
         // 검색 조건 확인
         if (filter != null && keyword != null && !keyword.isBlank()) {
             // 검색 조건이 있는 경우
-            boards = boardMapper.searchBoardList(filter, keyword, size, offset);
+            boards = boardMapper.selectSearchBoardList(filter, keyword, size, offset);
             totalRecords = boardMapper.selectSearchTotalCount(filter, keyword);
         } else {
             // 검색 조건이 없는 경우
@@ -50,12 +50,25 @@ public class BoardServiceImpl implements BoardService {
             totalRecords = boardMapper.selectBoardTotalCount();
         }
 
+        // VO → DTO 변환 및 답글 여부 설정
+        List<BoardDTO> boardListDTO = boards.stream()
+                .map(vo -> {
+                    BoardDTO dto = modelMapper.map(vo, BoardDTO.class);
+                    // 답글이 달려있는지 체크
+                    boolean hasReplies = boardMapper.checkHasReplies(vo.getGroupNo(), vo.getGroupOrd(), vo.getGroupDep());
+                    dto.setHasReplies(hasReplies);
+                    return dto;
+                })
+                // 삭제된 게시글이고 답글도 없는 경우 리스트에서 제외
+                .filter(dto -> !(dto.getDeletedYn().equals("Y") && !dto.isHasReplies()))
+                .collect(Collectors.toList());
+
         // 총 페이지 계산
         int totalPages = (int) Math.ceil((double) totalRecords / size);
 
         // 결과 맵 구성
         Map<String, Object> result = new HashMap<>();
-        result.put("boardList", boards);
+        result.put("boardList", boardListDTO);
         result.put("totalRecords", totalRecords);
         result.put("totalPages", totalPages);
 
@@ -64,12 +77,12 @@ public class BoardServiceImpl implements BoardService {
 
     // 게시글 상세 조회
     @Transactional(readOnly = true)
-    public BoardDetailDTO getBoardDetail(Long boardNo) {
+    public BoardDTO getBoardDetail(Long boardNo) {
         // VO 객체 조회
         BoardVO board = boardMapper.selectBoardDetail(boardNo);
 
         // VO → DTO 변환
-        return modelMapper.map(board, BoardDetailDTO.class);
+        return modelMapper.map(board, BoardDTO.class);
     }
 
     // 게시글 작성
@@ -111,6 +124,13 @@ public class BoardServiceImpl implements BoardService {
     // 게시글 삭제
     @Transactional
     public void deleteBoard(Long boardNo) {
+        // 삭제 대상 게시글 정보 가져오기
+        BoardVO board = boardMapper.selectBoardDetail(boardNo);
+        if (board == null) {
+            throw new IllegalArgumentException("삭제하려는 게시글이 존재하지 않습니다.");
+        }
+
+        // 게시글 삭제
         boardMapper.deleteBoard(boardNo);
     }
 
@@ -122,20 +142,34 @@ public class BoardServiceImpl implements BoardService {
 
     // 답글 작성
     @Transactional
-    public Long addReply(Long boardNo, BoardReplyDTO boardReplyDTO, List<MultipartFile> files) {
+    public Long addReply(Long parentBoardNo, BoardReplyDTO boardReplyDTO, List<MultipartFile> files) {
         // 부모 글 정보 조회
-        BoardVO parent = boardMapper.selectBoardDetail(boardNo);
+        BoardVO parent = boardMapper.selectBoardDetail(parentBoardNo);
         if (parent == null) {
             throw new IllegalArgumentException("원글이 존재하지 않습니다.");
         }
 
-        // 그룹 정보 설정
-        boardReplyDTO.setGroupNo(parent.getGroupNo());                     // 부모 글의 그룹 번호 상속
-        boardReplyDTO.setGroupOrd(parent.getGroupOrd() + 1);               // 부모 글의 다음 순서
-        boardReplyDTO.setGroupDep(parent.getGroupDep() + 1);               // 부모 글의 깊이 + 1
+        // 삽입 위치 결정
+        Integer nextGroupOrd = boardMapper.findNextGroupOrd(
+                parent.getGroupNo(), parent.getGroupOrd(), parent.getGroupDep()
+        );
 
-        // 기존 글 순서 밀기
-        boardMapper.updateGroupOrd(parent.getGroupNo(), parent.getGroupOrd());
+        Integer newGroupOrd;
+        if (nextGroupOrd == 0) {
+            // 그룹 내 가장 마지막 위치로 설정
+            newGroupOrd = boardMapper.findMaxGroupOrd(parent.getGroupNo());
+        } else {
+            // 기존 글 순서를 밀어낸 후 삽입 위치로 설정
+            boardMapper.updateGroupOrd(parent.getGroupNo(), nextGroupOrd);
+            newGroupOrd = nextGroupOrd;
+        }
+
+        // 새 답글의 그룹 깊이 설정
+        int newGroupDep = parent.getGroupDep() + 1;
+
+        boardReplyDTO.setGroupNo(parent.getGroupNo());
+        boardReplyDTO.setGroupOrd(newGroupOrd);
+        boardReplyDTO.setGroupDep(newGroupDep);
 
         // DTO → VO 변환 후 insert
         BoardVO newReply = modelMapper.map(boardReplyDTO, BoardVO.class);

@@ -21,10 +21,12 @@
         FROM board b
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
-        WHERE b.deleted_yn = 'N'
-        ORDER BY group_no DESC, group_ord ASC
+        ORDER BY group_no DESC,
+                 group_ord ASC,
+                 created_at ASC
         LIMIT #{size} OFFSET #{offset}
     </select>
+    <!-- 전체 게시글 수 검색 -->
     <select id="selectBoardTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM board
@@ -50,6 +52,7 @@
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
         WHERE board_no = #{boardNo}
+          AND deleted_yn = 'N'
     </select>
     <!-- 게시글 작성 -->
     <select id="insertBoard" parameterType="com.example.board.vo.BoardVO">
@@ -79,7 +82,7 @@
         WHERE board_no = #{boardNo}
     </update>
     <!-- 게시글 검색 -->
-    <select id="searchBoardList" parameterType="map" resultType="com.example.board.vo.BoardVO">
+    <select id="selectSearchBoardList" parameterType="map" resultType="com.example.board.vo.BoardVO">
         SELECT b.board_no AS boardNo,
         b.create_user_id AS createUserId,
         cu.user_name AS createUserName,
@@ -131,12 +134,28 @@
             AND (b.subject ILIKE '%' || #{keyword} || '%' OR b.content_text ILIKE '%' || #{keyword} || '%')
         </if>
     </select>
-    <!-- 그룹 내 순서 밀기 -->
+    <!-- 답글 삽입 위치 확인 -->
+    <select id="findNextGroupOrd" resultType="int">
+    <![CDATA[
+        SELECT COALESCE(MIN(group_ord), 0)
+        FROM board
+        WHERE group_no = #{groupNo}
+          AND group_ord > #{groupOrd}
+          AND group_dep <= #{groupDep};
+        ]]>
+    </select>
+    <!-- 최대 group_ord 가져오기 (그룹 내 마지막 위치 계산) -->
+    <select id="findMaxGroupOrd" resultType="int">
+        SELECT COALESCE(MAX(group_ord), 0) + 1
+        FROM board
+        WHERE group_no = #{groupNo};
+    </select>
+    <!-- 기존 글 순서 밀어내기-->
     <update id="updateGroupOrd">
         UPDATE board
         SET group_ord = group_ord + 1
         WHERE group_no = #{groupNo}
-          AND group_ord > #{parentOrd};
+          AND group_ord >= #{groupOrd};
     </update>
     <!-- 답글 작성 -->
     <select id="insertReply" parameterType="com.example.board.vo.BoardVO">
@@ -165,40 +184,49 @@
     </insert>
     <!-- 특정 게시글의 파일 조회 -->
     <select id="selectFilesByBoardNo" parameterType="long" resultType="com.example.board.vo.FileVO">
-        SELECT
-            attachment_id,
-            board_no,
-            origin_file_name,
-            file_name,
-            file_path,
-            file_size,
-            uploaded_at
-        FROM
-            attachments
-        WHERE
-            board_no = #{boardNo};
+        SELECT attachment_id,
+               board_no,
+               origin_file_name,
+               file_name,
+               file_path,
+               file_size,
+               uploaded_at,
+               deleted_yn
+        FROM attachments
+        WHERE board_no = #{boardNo}
+          AND deleted_yn = 'N';
     </select>
     <!--  첨부파일 삭제  -->
-    <delete id="deleteFilesByIds" parameterType="java.util.List">
-        DELETE FROM attachments
+    <update id="deleteFilesByIds" parameterType="java.util.List">
+        UPDATE attachments
+        SET deleted_yn = 'Y'
         WHERE attachment_id IN
         <foreach item="deletedFileIds" collection="list" open="(" separator="," close=")">
             #{deletedFileIds}
         </foreach>
-    </delete>
+    </update>
     <!-- 파일 아이디로 파일 조회  -->
     <select id="selectFileById" parameterType="long" resultType="com.example.board.vo.FileVO">
-        SELECT
-            attachment_id,
-            board_no,
-            origin_file_name,
-            file_name,
-            file_path,
-            file_size,
-            uploaded_at
-        FROM
-            attachments
-        WHERE
-            attachment_id = #{attachmentId};
+        SELECT attachment_id,
+               board_no,
+               origin_file_name,
+               file_name,
+               file_path,
+               file_size,
+               uploaded_at,
+               deleted_yn
+        FROM attachments
+        WHERE attachment_id = #{attachmentId};
+    </select>
+    <!-- 답글 여부 확인 -->
+    <select id="checkHasReplies" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM board
+            WHERE group_no = #{groupNo}
+              AND group_ord > #{groupOrd}
+              AND group_dep > #{groupDep}
+              AND deleted_yn = 'N'
+        )
     </select>
 </mapper>

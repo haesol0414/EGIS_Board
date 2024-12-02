@@ -65,8 +65,8 @@ public class BoardRestController {
     }
 
     // 답글 작성
-    @PostMapping(value = "/board/reply/{boardNo}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, Object>> addReply(@PathVariable(name = "boardNo") Long boardNo,
+    @PostMapping(value = "/board/reply/{parentBoardNo}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> addReply(@PathVariable(name = "parentBoardNo") Long parentBoardNo,
                                                         @RequestPart("boardReplyDTO") BoardReplyDTO boardReplyDTO,
                                                         @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         try {
@@ -75,7 +75,7 @@ public class BoardRestController {
             boardReplyDTO.setCreateUserId(authentication.getName());
 
             // 답글 작성 서비스 호출
-            Long replyNo = boardService.addReply(boardNo, boardReplyDTO, files);
+            Long replyNo = boardService.addReply(parentBoardNo, boardReplyDTO, files);
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "답글 작성이 완료되었습니다.");
@@ -83,7 +83,7 @@ public class BoardRestController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.error("답글 작성 중 오류 발생: boardNo = {}", boardNo, e);
+            log.error("답글 작성 중 오류 발생: parentBoardNo = {}", parentBoardNo, e);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "답글 작성 중 에러가 발생했습니다: " + e.getMessage()));
@@ -99,7 +99,6 @@ public class BoardRestController {
             // 로그인 유저
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             boardUpdateDTO.setUpdateUserId(authentication.getName());
-
             boardUpdateDTO.setUpdatedAt(new Date());
 
             // 업데이트 서비스 호출
@@ -142,6 +141,12 @@ public class BoardRestController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
+            // 파일 삭제 여부 확인
+            if ("Y".equals(fileDTO.getDeletedYn())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(null);
+            }
+
             String mimeType = Files.probeContentType(file.toPath()) != null
                     ? Files.probeContentType(file.toPath())
                     : "application/octet-stream";
@@ -159,7 +164,6 @@ public class BoardRestController {
                     .header(HttpHeaders.PRAGMA, "no-cache")
                     .header(HttpHeaders.EXPIRES, "0")
                     .body(resource);
-
         } catch (Exception e) {
             log.error("파일 다운로드 중 오류 발생", e);
 

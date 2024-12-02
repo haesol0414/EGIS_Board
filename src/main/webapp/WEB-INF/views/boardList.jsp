@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="styleSheet" value="/resources/css/boardList.css" />
+<c:set var="styleSheet" value="/resources/css/boardList.css"/>
 <%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
     <main>
@@ -60,19 +60,30 @@
                             <tr>
                                 <td class="row board-num">${board.boardNo}</td>
                                 <td class="row subject">
-                                    <c:if test="${board.groupDep > 0}">
-                                        <span class="reply-prefix"  style="margin-left: ${board.groupDep * 30}px;">RE: </span>
-                                    </c:if>
-                                    <a href="/board/${board.boardNo}">${board.subject}</a>
+                                    <c:choose>
+                                        <c:when test="${board.deletedYn == 'Y' and board.hasReplies}">
+                                            <c:if test="${board.groupDep > 0}">
+                                                <span style="margin-left: ${board.groupDep * 30}px;">  </span>
+                                            </c:if>
+                                            <span class="deleted-board">삭제된 게시글입니다.</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:if test="${board.groupDep > 0}">
+                                                <span class="reply-prefix"
+                                                      style="margin-left: ${board.groupDep * 30}px;">RE: </span>
+                                            </c:if>
+                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
                                 <td class="row write-date">
-                                    <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                    <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                 </td>
                                 <td class="row update-date">
                                     <c:choose>
                                         <c:when test="${not empty board.updatedAt}">
-                                            <fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                            <fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                         </c:when>
                                         <c:otherwise>-</c:otherwise>
                                     </c:choose>

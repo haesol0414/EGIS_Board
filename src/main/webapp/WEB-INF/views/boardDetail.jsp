@@ -9,6 +9,7 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 상세</h1>
             </div>
+                <a href="/board/list?page=${currentPage}&filter=${filter}&keyword=${keyword}" class="btn board-list-link">목록가기</a>
             <div>
                 <table class="board-detail-table">
                     <tr>
@@ -23,7 +24,8 @@
                             <c:if test="${board.groupDep > 0}">
                                 <span class="reply-prefix">RE: </span>
                             </c:if>
-                            ${board.subject}</td>
+                            ${board.subject}
+                        </td>
                     </tr>
                     <tr>
                         <th class="date">작성일 (최근 수정일)</th>

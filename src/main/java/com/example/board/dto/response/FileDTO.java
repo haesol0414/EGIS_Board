@@ -17,4 +17,5 @@ public class FileDTO {
     private String filePath;
     private Long fileSize;
     private Date uploadedAt;
+    private String deletedYn;
 }

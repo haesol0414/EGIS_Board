@@ -38,7 +38,7 @@
                         <td>
                             <div class="file-list">
                                 <label for="file-input-0" class="custom-file-input">파일 선택</label>
-                                <input type="file" id="file-input-0" name="file" class="file-input" />
+                                <input type="file" id="file-input-0" name="file" class="file-input" multiple />
                                 <span class="file-alert">파일은 최대 5개까지 첨부 가능합니다.</span>
                             </div>
                         </td>

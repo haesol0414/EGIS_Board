@@ -5,9 +5,10 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDetailDTO {
+public class BoardDTO {
     private Long boardNo;
     private String createUserId;
     private String createUserName;
@@ -22,4 +23,5 @@ public class BoardDetailDTO {
     private Integer groupNo;
     private Integer groupOrd;
     private Integer groupDep;
+    private boolean hasReplies;
 }

@@ -1,6 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.dto.response.BoardDetailDTO;
+import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.response.FileDTO;
 import com.example.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +29,7 @@ public class BoardController {
     // 게시글 목록 조회 페이지
     @GetMapping("/list")
     public String getBoardList(
-            @RequestParam(value = "filter", required = false, defaultValue = "all") String filter,
+            @RequestParam(value = "filter", required = false, defaultValue = "subject") String filter,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "size", required = false, defaultValue = "15") int size,
@@ -74,7 +70,7 @@ public class BoardController {
     @GetMapping("/reply/{boardNo}")
     public String showWriteReplyPage(@PathVariable(name = "boardNo") Long boardNo, Model model) {
         try {
-            BoardDetailDTO parent = boardService.getBoardDetail(boardNo);
+            BoardDTO parent = boardService.getBoardDetail(boardNo);
             model.addAttribute("parent", parent);
 
             return "boardWrite";
@@ -88,13 +84,17 @@ public class BoardController {
 
     // 게시글 상세 페이지
     @GetMapping("/{boardNo}")
-    public String getBoardDetail(@PathVariable(name = "boardNo") Long boardNo, Model model) {
+    public String getBoardDetail(@PathVariable(name = "boardNo") Long boardNo,
+                                 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(name = "filter", required = false, defaultValue = "subject") String filter,
+                                 @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
+                                 Model model) {
         try {
             // 조회수 증가
             boardService.updateViewCnt(boardNo);
 
             // 상세 데이터 받아오기
-            BoardDetailDTO boardDetail = boardService.getBoardDetail(boardNo);
+            BoardDTO boardDetail = boardService.getBoardDetail(boardNo);
             model.addAttribute("board", boardDetail);
 
             // 파일 데이터 가져오기
@@ -103,10 +103,16 @@ public class BoardController {
                 model.addAttribute("files", files);
             }
 
+            // 목록 가기 버튼용 페이지 정보 및 검색 조건 추가
+            model.addAttribute("currentPage", page);
+            model.addAttribute("filter", filter);
+            model.addAttribute("keyword", keyword);
+
+
             return "boardDetail";
         } catch (Exception e) {
             log.error("게시글 상세 페이지 로드 중 오류 발생: boardNo = {}", boardNo, e);
-            model.addAttribute("errorMessage", "게시글을 불러오는 도중 문제가 발생했습니다.");
+            model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
 
             return "error";
         }
@@ -117,7 +123,7 @@ public class BoardController {
     public String getBoardUpdateForm(@PathVariable(name = "boardNo") Long boardNo, Model model) {
         try {
             // 기존 게시글 불러오기
-            BoardDetailDTO boardDetail = boardService.getBoardDetail(boardNo);
+            BoardDTO boardDetail = boardService.getBoardDetail(boardNo);
             model.addAttribute("board", boardDetail);
 
             // 첨부파일 불러오기

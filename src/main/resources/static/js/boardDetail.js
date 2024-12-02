@@ -113,9 +113,14 @@ $(document).ready(function () {
                 window.URL.revokeObjectURL(url);
             },
             error: function (xhr) {
-                alert("파일 다운로드에 실패했습니다.");
-                console.error(xhr);
-            },
+                if (xhr.status === 403) {
+                    alert("파일이 삭제되어 다운로드할 수 없습니다.");
+                } else if (xhr.status === 404) {
+                    alert("파일을 찾을 수 없습니다.");
+                } else {
+                    alert("다운로드 중 오류가 발생했습니다.");
+                }
+            }
         });
     });
 

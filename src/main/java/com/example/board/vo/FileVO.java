@@ -1,9 +1,7 @@
 package com.example.board.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -17,4 +15,5 @@ public class FileVO {
     private String filePath;           // 파일 저장 경로
     private Long fileSize;             // 파일 크기
     private Date uploadedAt;
+    private String deletedYn;
 }

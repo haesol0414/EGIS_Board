@@ -24,7 +24,6 @@
     line-height: 1.5;
     width: 100%;
     max-width: 100%;
-    margin-top: 44px;
     margin-bottom: 6px;
     color: var(--text-color);
 }
@@ -134,4 +133,9 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 12px;
+}
+
+.board-list-link {
+    margin-top: 44px;
+    margin-bottom: 16px;
 }
