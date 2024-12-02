@@ -22,10 +22,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable() // CSRF 비활성화
+                .csrf().disable()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/board/list").hasAuthority("ROLE_ADMIN")
+//                        .requestMatchers("/admin/board/list").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/board/write").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/board/*").authenticated()
