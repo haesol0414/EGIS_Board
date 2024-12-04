@@ -7,12 +7,14 @@ import com.example.board.service.UserService;
 import com.example.board.service.security.JwtProvider;
 import com.example.board.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,11 +31,11 @@ public class UserServiceImpl implements UserService {
 
     // 로그인
     @Override
-    public String login(LoginDTO loginDTO) {
+    public Map<String, Object> login(LoginDTO loginDTO) {
         UserVO user = userMapper.findByUserId(loginDTO.getUserId());
 
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            return null;
+            throw new BadCredentialsException("아이디 또는 비밀번호가 잘못되었습니다.");
         }
 
         // 권한 설정
@@ -41,8 +43,15 @@ public class UserServiceImpl implements UserService {
                 new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
         );
 
-        // 로그인 성공 시 JWT 생성 후 반환
-        return jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
+        // JWT 생성
+        String token = jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
+
+        return Map.of(
+                "token", token,
+                "userId", user.getUserId(),
+                "username", user.getUserName(),
+                "role", user.getRole().name()
+        );
     }
 
     // 회원 가입

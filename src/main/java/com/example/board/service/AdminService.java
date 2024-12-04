@@ -1,6 +1,7 @@
 package com.example.board.service;
 
-public interface AdminService {
+import java.util.Map;
 
-    getAdminBoardList
+public interface AdminService {
+    Map<String, Object> getAdminBoardList(String filter, String keyword, int size, int offset);
 }

@@ -80,14 +80,18 @@
                                 <td class="row write-date">
                                     <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                 </td>
-                                <td class="row update-date">
-                                    <c:choose>
-                                        <c:when test="${not empty board.updatedAt}">
+                                <c:choose>
+                                    <c:when test="${not empty board.updatedAt}">
+                                        <td class="row update-date">
                                             <fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                                        </c:when>
-                                        <c:otherwise>-</c:otherwise>
-                                    </c:choose>
-                                </td>
+                                        </td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td class="row">
+                                            -
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
                                 <td class="row view-count">${board.viewCnt}</td>
                             </tr>
                         </c:forEach>

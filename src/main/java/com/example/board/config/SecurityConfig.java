@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,13 +26,20 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/admin/board/list").hasAuthority("ROLE_ADMIN")
+                        // 인증 불필요한 경로
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/list").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/{boardNo}").permitAll()
+                        // 인증이 필요한 경로
+                        .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/board/write").authenticated()
+                        .requestMatchers("/board/edit/*").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/board/write").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/board/*").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/board/*").authenticated()
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+                .addFilterBefore(jwtAuthenticationFilter, SecurityContextPersistenceFilter.class);
 
         return httpSecurity.build();
     }

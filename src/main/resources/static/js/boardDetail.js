@@ -1,5 +1,5 @@
 import * as Modal from './utils/modal.js';
-import { getUserInfoFromToken } from "./utils/authUtils.js";
+import {getCurrentUserFromStorage} from './utils/authUtils.js';
 
 $(document).ready(function () {
     Modal.initializeModalElements();
@@ -14,24 +14,26 @@ $(document).ready(function () {
     const $deleteModal = $("#deleteModal");
     const $confirmDeleteBtn = $("#confirm-btn");
     const $denyDeleteBtn = $("#deny-btn");
-    const $writerBtnDiv = $(".writer-btns");
+    const $writerBtnBox = $(".writer-btns");
     const $fileDownloadBtn = $(".file-download");
     const $writerId = $("#writer").data("writerid");
 
-    const userInfo = getUserInfoFromToken(token);
 
-
-    // 로그인유저 == 작성자인지 확인
     const initializeUI = () => {
+        const user = getCurrentUserFromStorage();
 
-        if (userInfo != null) {
-            if (userInfo.userId === $writerId) {
-                $writerBtnDiv.show();
+        if (user.isLoggedIn) {
+            // 로그인 상태
+            if (user.userId === $writerId || user.role === 'ADMIN') {
+                // 로그인 유저 == 작성자 또는 관리자일 때
+                $writerBtnBox.show();
             } else {
-                $writerBtnDiv.hide();
+                $writerBtnBox.hide();
             }
+            $replyBtn.show();
         } else {
-            $writerBtnDiv.hide();
+            // 비회원 상태
+            $writerBtnBox.hide();
             $replyBtn.hide();
         }
     };
@@ -44,7 +46,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: `/board/${boardNo}/edit`,
+            url: `/board/edit/${boardNo}`,
             type: "GET",
             success: function (res) {
             },
@@ -65,9 +67,6 @@ $(document).ready(function () {
         $.ajax({
             url: `/api/board/${boardNo}`,
             type: 'DELETE',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
             success: function (res) {
                 Modal.openAlertModal("게시글이 삭제되었습니다.", "/");
             },
@@ -124,10 +123,11 @@ $(document).ready(function () {
         });
     });
 
-    // 삭제 모달 열기/닫기
+    // 삭제 확인용 모달 열기/닫기
     const openDeleteModal = () => $deleteModal.show();
     const closeDeleteModal = () => $deleteModal.hide();
 
+    /* 이벤트 바인딩 */
     // 수정하기 버튼
     $modifyBtn.on("click", function (event) {
         event.preventDefault();

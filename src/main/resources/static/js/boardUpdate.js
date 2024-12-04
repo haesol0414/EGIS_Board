@@ -3,20 +3,17 @@ import * as Modal from './utils/modal.js';
 $(document).ready(function () {
     Modal.initializeModalElements();
 
-    const token = sessionStorage.getItem("token");
-    const boardNo = window.location.pathname.match(/\/board\/(\d+)/)?.[1];
+    const boardNo = window.location.pathname.match(/\/board\/edit\/(\d+)/)?.[1];
+    let newFiles = []; // 새로 추가된 파일 저장
+    let retainedFileIds = []; // 유지할 기존 파일 ID 저장
+    let removedFileIds = []; // 삭제할 파일 ID 저장
+    const maxFiles = 5; // 최대 첨부파일 개수
 
     const $updateForm = $(".update-form");
     const $fileInput = $("#file-input");
     const $fileList = $(".file-list");
     const $cancelBtn = $("#cancel-btn");
     const $clearFileBtn = $("#clear-btn");
-
-    let newFiles = []; // 새로 추가된 파일 저장
-    let retainedFileIds = []; // 유지할 기존 파일 ID 저장
-    let removedFileIds = []; // 삭제할 파일 ID 저장
-    const maxFiles = 5; // 최대 첨부파일 개수
-
 
     // 게시글 수정 데이터 생성
     const getUpdatedBoardData = () => {
@@ -57,7 +54,6 @@ $(document).ready(function () {
             type: "PATCH",
             processData: false,
             contentType: false,
-            headers: {Authorization: `Bearer ${token}`},
             data: formData,
             success: function () {
                 Modal.openAlertModal("게시글이 수정되었습니다.", "/");
@@ -67,7 +63,6 @@ $(document).ready(function () {
             },
         });
     };
-
 
     // 기존 파일 ID 수집
     $fileList.find("li").each(function () {

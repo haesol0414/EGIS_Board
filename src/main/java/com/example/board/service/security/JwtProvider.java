@@ -108,4 +108,23 @@ public class JwtProvider {
             return e.getClaims();
         }
     }
+
+
+//    // 토큰에서 권한 추출
+//    public String getRoleFromToken(String token) {
+//        Claims claims = parseClaims(token);
+//        return claims.get("role", String.class); // role 클레임 값 반환
+//    }
+//
+//    // 토큰에서 사용자 이름 추출
+//    public String getUsernameFromToken(String token) {
+//        Claims claims = parseClaims(token);
+//        return claims.get("userName", String.class); // "userName" 클레임에서 값 추출
+//    }
+//
+//    // 토큰에서 사용자 아이디 추출
+//    public String getUserIdFromToken(String token) {
+//        Claims claims = parseClaims(token);
+//        return claims.getSubject(); // "sub" 클레임 값을 반환
+//    }
 }

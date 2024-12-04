@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="styleSheet" value="/resources/css/boardDetail.css" />
+<c:set var="styleSheet" value="/resources/css/boardDetail.css"/>
 <%@ include file="layout/header.jsp" %>
 <div id="global-wrap">
     <main>
@@ -9,7 +9,7 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 상세</h1>
             </div>
-                <a href="/board/list?page=${currentPage}&filter=${filter}&keyword=${keyword}" class="btn board-list-link">목록가기</a>
+            <a href="/board/list?page=${currentPage}&filter=${filter}&keyword=${keyword}" class="btn board-list-link">목록가기</a>
             <div>
                 <table class="board-detail-table">
                     <tr>
@@ -73,7 +73,7 @@
                 <a href="/board/reply/${board.boardNo}" class="btn reply-link">답글 달기</a>
                 <div class="writer-btns">
                     <button class="btn" id="delete-btn">삭제하기</button>
-                    <button class="btn" id="modify-btn" onclick="location.href='/board/${board.boardNo}/edit'">수정하기
+                    <button class="btn" id="modify-btn" onclick="location.href='/board/edit/${board.boardNo}'">수정하기
                     </button>
                 </div>
             </div>

@@ -119,7 +119,7 @@ public class BoardController {
     }
 
     // 게시글 수정 페이지
-    @GetMapping("/{boardNo}/edit")
+    @GetMapping("/edit/{boardNo}")
     public String getBoardUpdateForm(@PathVariable(name = "boardNo") Long boardNo, Model model) {
         try {
             // 기존 게시글 불러오기

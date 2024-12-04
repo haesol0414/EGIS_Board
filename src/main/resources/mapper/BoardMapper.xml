@@ -30,7 +30,6 @@
     <select id="selectBoardTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM board
-        WHERE deleted_yn = 'N'
     </select>
     <!-- 게시글 상세조회 -->
     <select id="selectBoardDetail" parameterType="long" resultType="com.example.board.vo.BoardVO">

@@ -60,21 +60,13 @@
                             <tr>
                                 <td class="row board-num">${board.boardNo}</td>
                                 <td class="row subject">
-                                    <c:choose>
-                                        <c:when test="${board.deletedYn == 'Y'}">
-                                            <c:if test="${board.groupDep > 0}">
-                                                <span style="margin-left: ${board.groupDep * 30}px;">  </span>
-                                            </c:if>
-                                            <span class="deleted-board">${board.subject}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:if test="${board.groupDep > 0}">
-                                                <span class="reply-prefix"
-                                                      style="margin-left: ${board.groupDep * 30}px;">RE: </span>
-                                            </c:if>
-                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <c:if test="${board.groupDep > 0}">
+                                        <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
+                                    </c:if>
+                                    <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+                                       class="${board.deletedYn == 'Y' ? 'deleted-board' : ''}">
+                                            ${board.subject}
+                                    </a>
                                 </td>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
                                 <td class="row write-date">

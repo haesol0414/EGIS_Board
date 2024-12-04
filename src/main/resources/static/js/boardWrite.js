@@ -1,26 +1,22 @@
 import * as Modal from "./utils/modal.js";
+import {getCurrentUserFromStorage} from './utils/authUtils.js';
 
 $(document).ready(function () {
     Modal.initializeModalElements();
 
-    const token = sessionStorage.getItem('token');
-    const decodedToken = jwt_decode(token);
-    const loggedInUserId = decodedToken.sub;
-    const userName = decodedToken.userName;
+    const user = getCurrentUserFromStorage();
+    const maxFiles = 5; // 최대 파일 개수
+    let filesArr = []; // 파일 배열
+    let fileNo = 0; // 파일 고유 ID
 
-    const $fileList = $('.file-list'); // 파일 리스트 컨테이너
+    const $fileList = $('.file-list');
     const $writerEl = $("#writer");
     const $writeSubmitBtn = $("#write-submit");
     const $replySubmitBtn = $("#reply-submit");
 
-
-    let filesArr = []; // 파일 배열
-    let fileNo = 0; // 파일 고유 ID
-    const maxFiles = 5; // 최대 파일 개수
-
     // 작성자 정보 초기화
     const initializeWriterInfo = () => {
-        $writerEl.text(`${userName} (@${loggedInUserId})`);
+        $writerEl.text(`${user.username} (@${user.userId})`);
     };
 
     // 첨부파일 추가
@@ -106,7 +102,6 @@ $(document).ready(function () {
                 type: "POST",
                 processData: false,
                 contentType: false,
-                headers: {Authorization: `Bearer ${token}`},
                 data: formData,
                 success: function (res) {
                     Modal.openAlertModal(res.message, `/board/${res.boardNo}`);
@@ -118,7 +113,7 @@ $(document).ready(function () {
         }
     };
 
-    // 이벤트 바인딩
+    /* 이벤트 바인딩 */
     $fileList.on("change", "input[type='file']", function () {
         addFile($(this));
     });
@@ -130,15 +125,14 @@ $(document).ready(function () {
 
     $writeSubmitBtn.on("click", function (event) {
         event.preventDefault();
+
         handleFormSubmit("/api/board/write", "boardCreateDTO");
     });
 
     $replySubmitBtn.on("click", function (event) {
         event.preventDefault();
-        // const parentBoardNo = $("#parent-data").data("board-no");
-        // 현재 URL 경로에서 boardNo 추출
-        const url = window.location.pathname; // "/board/reply/12345"
-        const parentBoardNo = url.split("/").pop(); // URL의 마지막 부분 추출
+        const url = window.location.pathname;
+        const parentBoardNo = url.split("/").pop();
 
         console.log(parentBoardNo);
         handleFormSubmit(`/api/board/reply/${parentBoardNo}`, "boardReplyDTO");

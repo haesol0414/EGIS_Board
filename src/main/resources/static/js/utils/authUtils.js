@@ -1,21 +1,8 @@
-export const getUserInfoFromToken = (token) => {
-    try {
-        if (!token) {
-            return null;
-        }
+// 로컬스토리지에서 사용자 정보 가져오기
+export const getCurrentUserFromStorage = () => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) return null; // 데이터가 없으면 null 반환
 
-        const decodedToken = jwt_decode(token);
-        if(decodedToken) {
-            console.log('디코딩된 토큰: ', decodedToken);
-            const userId = decodedToken.sub;
-            const userName = decodedToken.userName;
-            const role = decodedToken.role;
-            const exp = decodedToken.exp;
-
-            return { userId, userName, role, exp };
-        }
-    } catch (error) {
-        console.error("토큰 디코딩 중 오류 발생:", error.message);
-        return null;
-    }
+    const { isLoggedIn, username, userId, role } = JSON.parse(currentUser);
+    return { isLoggedIn, username, userId, role }; // 필요한 값 반환
 };

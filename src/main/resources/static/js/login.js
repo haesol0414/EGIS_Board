@@ -8,7 +8,7 @@ $(document).ready(function () {
     const $passwordInput = $("#form-pw");
     const $errorMsg = $("#error-msg");
 
-    // 로그인 처리
+    // 로그인 입력값 처리
     const handleLogin = (event) => {
         event.preventDefault();
 
@@ -25,22 +25,24 @@ $(document).ready(function () {
         sendLoginRequest(loginData);
     };
 
-    // 로그인 요청 및 처리
+    // 로그인 API 호출
     const sendLoginRequest = (loginData) => {
         $.ajax({
             url: "/api/users/login",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(loginData),
-            success: (token) => {
-                sessionStorage.setItem("token", token);
+            success: (res) => {
+                localStorage.setItem("currentUser", JSON.stringify(res));
+
                 Modal.openAlertModal("로그인 성공", "/");
             },
             error: (xhr) => {
-                if (xhr.status === 401) {
-                    $errorMsg.text(xhr.responseText).show();
+                if (xhr.status === 401 || xhr.status === 500) {
+                    const errorMsg = xhr.responseJSON?.msg || "서버 오류 발생";
+                    $errorMsg.text(errorMsg).show();
                 } else {
-                    alert("서버 오류 발생");
+                    alert("알 수 없는 오류 발생");
                 }
             },
         });

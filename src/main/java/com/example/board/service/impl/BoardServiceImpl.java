@@ -78,7 +78,6 @@ public class BoardServiceImpl implements BoardService {
         return result;
     }
 
-
     // 게시글 상세 조회
     @Transactional(readOnly = true)
     public BoardDTO getBoardDetail(Long boardNo) {
