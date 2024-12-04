@@ -43,11 +43,12 @@ public class UserServiceImpl implements UserService {
                 new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
         );
 
-        // JWT 생성
-        String token = jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
+        // JWT 및 만료 시간 생성
+        Map<String, Object> tokenResponse = jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
 
         return Map.of(
-                "token", token,
+                "token", tokenResponse.get("token"),
+                "expiresAt", tokenResponse.get("expiresAt"),
                 "userId", user.getUserId(),
                 "username", user.getUserName(),
                 "role", user.getRole().name()
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
     // 회원 가입
     @Override
     public int signUp(SignUpDTO signUpDTO) {
-        //패스워드 암호화
+        // 패스워드 암호화
         String encodedPassword = passwordEncoder.encode(signUpDTO.getPassword());
 
         // 암호화된 패스워드를 포함한 User 객체 생성

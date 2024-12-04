@@ -3,6 +3,7 @@ import {getCurrentUserFromStorage} from './utils/authUtils.js';
 
 $(document).ready(function () {
     Modal.initializeModalElements();
+
     const user = getCurrentUserFromStorage();
 
     const $logoutBtn = $("#logout-btn");

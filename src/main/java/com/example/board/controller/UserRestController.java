@@ -5,7 +5,6 @@ import com.example.board.dto.request.SignUpDTO;
 import com.example.board.service.UserService;
 
 import com.example.board.service.security.JwtProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,22 +12,18 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserRestController {
     private final UserService userService;
-    private final JwtProvider jwtProvider;
 
     @Autowired
-    public UserRestController(UserService userService, JwtProvider jwtProvider) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.jwtProvider = jwtProvider;
     }
 
     // 로그인
@@ -39,12 +34,12 @@ public class UserRestController {
             Map<String, Object> loginResponse = userService.login(loginDTO);
 
             // HttpOnly 쿠키 설정
-            String token = (String) loginResponse.get("token");
+            String token = (String) loginResponse.get("token"); // 수정: tokenResponse -> token
             ResponseCookie cookie = ResponseCookie.from("Authorization", token)
                     .httpOnly(true) // JavaScript에서 접근 불가
                     .secure(false) // HTTPS 환경에서는 true로 설정
                     .path("/") // 모든 경로에서 쿠키 전송
-                    .maxAge(30 * 60)
+                    .maxAge(30 * 60) // 30분
                     .build();
 
             // 응답 생성
@@ -54,7 +49,8 @@ public class UserRestController {
                             "isLoggedIn", true,
                             "userId", loginResponse.get("userId"),
                             "username", loginResponse.get("username"),
-                            "role", loginResponse.get("role")
+                            "role", loginResponse.get("role"),
+                            "expiresAt", loginResponse.get("expiresAt") // 만료 시간 포함
                     ));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(

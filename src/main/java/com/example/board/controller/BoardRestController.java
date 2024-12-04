@@ -3,7 +3,9 @@ package com.example.board.controller;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.dto.request.BoardReplyDTO;
+import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.response.FileDTO;
+import com.example.board.security.SecurityUtil;
 import com.example.board.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +34,12 @@ import java.util.*;
 @Slf4j
 public class BoardRestController {
     private final BoardService boardService;
+    private final SecurityUtil securityUtil;
 
     @Autowired
-    public BoardRestController(BoardService boardService) {
+    public BoardRestController(BoardService boardService, SecurityUtil securityUtil) {
         this.boardService = boardService;
+        this.securityUtil = securityUtil;
     }
 
     // 게시글 작성
@@ -70,9 +74,8 @@ public class BoardRestController {
                                                         @RequestPart("boardReplyDTO") BoardReplyDTO boardReplyDTO,
                                                         @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         try {
-            // 로그인 유저
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            boardReplyDTO.setCreateUserId(authentication.getName());
+            // 현재 로그인 유저를 작성자로 설정
+            boardReplyDTO.setCreateUserId(securityUtil.getLoggedInUserId());
 
             // 답글 작성 서비스 호출
             Long replyNo = boardService.addReply(parentBoardNo, boardReplyDTO, files);
@@ -96,15 +99,19 @@ public class BoardRestController {
                                               @RequestPart("boardUpdateDTO") BoardUpdateDTO boardUpdateDTO,
                                               @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         try {
-            // 로그인 유저
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            boardUpdateDTO.setUpdateUserId(authentication.getName());
+            // 게시글 작성자 확인
+            BoardDTO board = boardService.getBoardDetail(boardNo);
+            if (!board.getCreateUserId().equals(securityUtil.getLoggedInUserId()) && !securityUtil.isAdmin()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자 또는 관리자만 수정할 수 있습니다.");
+            }
+
+            boardUpdateDTO.setUpdateUserId(securityUtil.getLoggedInUserId());
             boardUpdateDTO.setUpdatedAt(new Date());
 
             // 업데이트 서비스 호출
             boardService.updateBoard(boardNo, boardUpdateDTO, files);
 
-            return ResponseEntity.ok("수정이 완료되었습니다.");
+            return ResponseEntity.ok("게시글이 수정되었습니다.");
         } catch (Exception e) {
             log.error("게시글 수정 중 오류 발생: boardNo = {}", boardNo, e);
 
@@ -117,6 +124,14 @@ public class BoardRestController {
     @DeleteMapping("/board/{boardNo}")
     public ResponseEntity<String> deleteBoard(@PathVariable(name = "boardNo") Long boardNo) {
         try {
+            // 게시글 작성자 확인
+            BoardDTO board = boardService.getBoardDetail(boardNo);
+
+
+            if (!board.getCreateUserId().equals(securityUtil.getLoggedInUserId()) && !securityUtil.isAdmin()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자 또는 관리자만 삭제할 수 있습니다.");
+            }
+
             boardService.deleteBoard(boardNo);
 
             return ResponseEntity.ok("삭제 완료되었습니다.");

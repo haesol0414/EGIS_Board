@@ -1,12 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.service.AdminService;
-import com.example.board.service.BoardService;
-import com.example.board.service.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +12,14 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
-    private final JwtProvider jwtProvider;
 
     @Autowired
-    public AdminController(AdminService adminService, JwtProvider jwtProvider) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.jwtProvider = jwtProvider;
     }
 
     // (관리자) 게시글 목록 조회 페이지
-    @GetMapping("/board/list")
+    @GetMapping("/board")
     public String getAdminBoardList(
             @RequestParam(value = "filter", required = false, defaultValue = "subject") String filter,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,

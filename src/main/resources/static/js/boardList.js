@@ -1,3 +1,5 @@
+import {getCurrentUserFromStorage} from "./utils/authUtils.js";
+
 $(document).ready(function () {
     const filterMap = {
         "제목": "subject",
@@ -14,13 +16,22 @@ $(document).ready(function () {
     const $dropbtnContent = $('.dropbtn_content');
     const $dropdownContent = $('.dropdown-content');
     const $form = $('form');
+    const $adminBtn = $('#admin-btn');
 
-    // *** 2024.12.04
-    // <a id="admin-link" href="/admin/board/list">Admin</a>
-    // currentUser의 role이 ROLE_ADMIN 일 경우 관리자 페이지 가기 버튼 보이고
-    // adminBoardList에서 휴지통 아이콘 모아서 삭제된 게시글만 보이게
-    // boardDetail에서 현재 유저의 롤이 관리자일경우 수정하기, 삭제하기 버튼 다 보이게 추가하고
-    // 컨트롤러 수정/삭제에서 권한관련 기능 추가하기
+    const fetchUI = () => {
+        const user = getCurrentUserFromStorage();
+
+        if (user && user.role) {
+            if (user.role === "ADMIN") {
+                $adminBtn.show();
+            } else {
+                $adminBtn.hide();
+            }
+        } else {
+            $adminBtn.hide();
+        }
+    }
+
 
     // 기본 드롭다운 값 설정
     $dropbtnContent.text(defaultFilterText);
@@ -71,4 +82,6 @@ $(document).ready(function () {
             $form.submit();
         }
     });
+
+    fetchUI();
 });

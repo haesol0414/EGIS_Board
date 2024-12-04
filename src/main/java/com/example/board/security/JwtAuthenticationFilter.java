@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 @Slf4j
@@ -32,7 +31,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // 쿠키에서 토큰 추출
         String token = resolveTokenFromCookies(httpRequest);
-        log.debug("Extracted Token from Cookie: {}", token);
 
         // 토큰 유효성 검사 및 인증 설정
         if (token != null && jwtTokenProvider.validateToken(token)) {
@@ -48,9 +46,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    /**
-     * 쿠키에서 JWT 토큰 추출
-     */
+    // 쿠키에서 토큰 추출 메서드
     private String resolveTokenFromCookies(HttpServletRequest request) {
         if (request.getCookies() != null) {
             return Arrays.stream(request.getCookies())

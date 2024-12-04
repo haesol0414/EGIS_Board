@@ -9,7 +9,16 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 상세</h1>
             </div>
-            <a href="/board/list?page=${currentPage}&filter=${filter}&keyword=${keyword}" class="btn board-list-link">목록가기</a>
+            <%
+                String referer = request.getHeader("Referer");
+                String boardListUrl = referer != null && referer.contains("/admin/board")
+                        ? "/admin/board"
+                        : "/board";
+            %>
+            <a href="<%= boardListUrl %>?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+               class="board-list-link">
+                <i class="fas fa-arrow-left"></i> 게시글 목록
+            </a>
             <div>
                 <table class="board-detail-table">
                     <tr>
@@ -25,6 +34,9 @@
                                 <span class="reply-prefix">RE: </span>
                             </c:if>
                             ${board.subject}
+                            <c:if test="${board.deletedYn == 'Y'}">
+                                <span class="deleted-subject">(삭제된 게시글)</span>
+                            </c:if>
                         </td>
                     </tr>
                     <tr>
@@ -70,12 +82,15 @@
                 </table>
             </div>
             <div class="btns-box">
-                <a href="/board/reply/${board.boardNo}" class="btn reply-link">답글 달기</a>
-                <div class="writer-btns">
-                    <button class="btn" id="delete-btn">삭제하기</button>
-                    <button class="btn" id="modify-btn" onclick="location.href='/board/edit/${board.boardNo}'">수정하기
-                    </button>
-                </div>
+                <c:if test="${board.deletedYn == 'N'}">
+                    <a href="/board/reply/${board.boardNo}" class="btn reply-link">답글 달기</a>
+                    <div class="writer-btns">
+                        <button class="btn" id="delete-btn">삭제하기</button>
+                        <button class="btn" id="modify-btn" onclick="location.href='/board/edit/${board.boardNo}'">
+                            수정하기
+                        </button>
+                    </div>
+                </c:if>
             </div>
         </div>
         <!-- 삭제 확인 모달 -->

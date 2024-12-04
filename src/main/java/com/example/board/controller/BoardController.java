@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.response.FileDTO;
+import com.example.board.security.SecurityUtil;
 import com.example.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,16 @@ import java.util.Map;
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
+    private final SecurityUtil securityUtil;
 
     @Autowired
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, SecurityUtil securityUtil) {
         this.boardService = boardService;
+        this.securityUtil = securityUtil;
     }
 
     // 게시글 목록 조회 페이지
-    @GetMapping("/list")
+    @GetMapping
     public String getBoardList(
             @RequestParam(value = "filter", required = false, defaultValue = "subject") String filter,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -90,12 +93,22 @@ public class BoardController {
                                  @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
                                  Model model) {
         try {
-            // 조회수 증가
-            boardService.updateViewCnt(boardNo);
-
-            // 상세 데이터 받아오기
+            // 게시글 상세 데이터 가져오기
             BoardDTO boardDetail = boardService.getBoardDetail(boardNo);
+
+            System.out.println(securityUtil.isAdmin());
+            // 삭제된 게시글 처리
+            if ("Y".equals(boardDetail.getDeletedYn()) && !securityUtil.isAdmin()) {
+                model.addAttribute("errorMessage", "삭제된 게시글입니다.");
+                return "error";
+            } else {
+                // 조회수 증가 (삭제되지 않은 경우에만)
+                boardService.updateViewCnt(boardNo);
+            }
+
+            // 게시글 정보 추가
             model.addAttribute("board", boardDetail);
+            model.addAttribute("isAdmin", securityUtil.isAdmin()); // 관리자 여부 추가
 
             // 파일 데이터 가져오기
             List<FileDTO> files = boardService.getFilesByBoardNo(boardNo);
@@ -103,17 +116,15 @@ public class BoardController {
                 model.addAttribute("files", files);
             }
 
-            // 목록 가기 버튼용 페이지 정보 및 검색 조건 추가
+            // 페이지 및 검색 정보 추가
             model.addAttribute("currentPage", page);
             model.addAttribute("filter", filter);
             model.addAttribute("keyword", keyword);
-
 
             return "boardDetail";
         } catch (Exception e) {
             log.error("게시글 상세 페이지 로드 중 오류 발생: boardNo = {}", boardNo, e);
             model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
-
             return "error";
         }
     }

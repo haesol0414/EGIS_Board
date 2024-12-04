@@ -113,7 +113,8 @@
 }
 
 .update-date {
-    color: #637f64;
+    color: #748e75;
+    font-weight: 600;
 }
 
 .file-name {
@@ -136,6 +137,24 @@
 }
 
 .board-list-link {
-    margin-top: 44px;
-    margin-bottom: 16px;
+    margin-top: 46px;
+    margin-bottom: 18px;
+    margin-left: 6px;
+    font-size: 15px;
+    color: #666666;
+    font-weight: 500;
+}
+
+.board-list-link i {
+    color: #666666;
+}
+
+.board-list-link:hover, .board-list-link i:hover {
+    color: var(--text-color);
+}
+
+.deleted-subject {
+    margin-left: 8px;
+    color: red;
+    font-size: 13px;
 }

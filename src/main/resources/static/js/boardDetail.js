@@ -4,7 +4,6 @@ import {getCurrentUserFromStorage} from './utils/authUtils.js';
 $(document).ready(function () {
     Modal.initializeModalElements();
 
-    const token = sessionStorage.getItem("token");
     const pathSegments = window.location.pathname.split('/');
     const boardNo = pathSegments[pathSegments.length - 1];
 
@@ -70,8 +69,14 @@ $(document).ready(function () {
             success: function (res) {
                 Modal.openAlertModal("게시글이 삭제되었습니다.", "/");
             },
-            error: function (xhr, status, error) {
-                alert("삭제 중 에러가 발생했습니다: " + xhr.responseText);
+            error: function (xhr) {
+                if (xhr.status === 403) {
+                    alert('작성자 또는 관리자만 수정할 수 있습니다');
+                } else if (xhr.status === 500) {
+                    alert('서버 오류가 발생했습니다.');
+                } else {
+                    alert('요청 처리 중 문제가 발생했습니다.');
+                }
             },
         });
     };

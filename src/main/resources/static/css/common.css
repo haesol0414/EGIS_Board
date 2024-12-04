@@ -240,9 +240,3 @@ footer {
     border-radius: 4px;
     font-weight: 600;
 }
-
-.deleted-board {
-    color: red;
-    user-select: none;
-    font-size: 14px;
-}

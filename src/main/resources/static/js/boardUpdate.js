@@ -4,10 +4,10 @@ $(document).ready(function () {
     Modal.initializeModalElements();
 
     const boardNo = window.location.pathname.match(/\/board\/edit\/(\d+)/)?.[1];
+    const maxFiles = 5; // 최대 첨부파일 개수
     let newFiles = []; // 새로 추가된 파일 저장
     let retainedFileIds = []; // 유지할 기존 파일 ID 저장
     let removedFileIds = []; // 삭제할 파일 ID 저장
-    const maxFiles = 5; // 최대 첨부파일 개수
 
     const $updateForm = $(".update-form");
     const $fileInput = $("#file-input");
@@ -55,11 +55,17 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             data: formData,
-            success: function () {
-                Modal.openAlertModal("게시글이 수정되었습니다.", "/");
+            success: function (res) {
+                Modal.openAlertModal("게시글이 수정되었습니다.", `/board/${boardNo}`);
             },
-            error: function () {
-                alert("수정 중 오류가 발생했습니다.");
+            error: function (xhr) {
+                if (xhr.status === 403) {
+                    alert('작성자 또는 관리자만 수정할 수 있습니다');
+                } else if (xhr.status === 500) {
+                    alert('서버 오류가 발생했습니다.');
+                } else {
+                    alert('요청 처리 중 문제가 발생했습니다.');
+                }
             },
         });
     };
@@ -73,29 +79,33 @@ $(document).ready(function () {
     });
 
     // 첨부파일 추가
+    // 첨부파일 추가
     $fileInput.off("change").on("change", function () {
         const currentFiles = Array.from($fileInput[0].files);
-
-        const existingFileCount = newFiles.filter(f => f !== null).length;
-
+        // 현재 추가된 새 파일의 개수
+        const existingNewFileCount = newFiles.filter((f) => f !== null).length;
+        // 기존 파일의 개수
+        const existingFileCount = retainedFileIds.length;
+        // 총 파일 개수 계산
+        const totalFileCount = existingNewFileCount + existingFileCount;
         // 추가 가능 파일 수 계산
-        const remainFileCount = maxFiles - existingFileCount;
+        const remainFileCount = maxFiles - totalFileCount;
 
         if (currentFiles.length > remainFileCount) {
-            alert(`첨부파일은 최대 ${maxFiles}개까지 가능합니다.`);
+            alert(`첨부파일은 최대 ${maxFiles}개까지 가능합니다. 현재 ${existingFileCount}개의 파일이 있습니다.`);
             $fileInput.val(""); // 입력 초기화
             return;
         }
 
         currentFiles.forEach((file) => {
             // 중복 파일 확인
-            if (newFiles.some(f => f && f.name === file.name && f.size === file.size)) {
+            if (newFiles.some((f) => f && f.name === file.name && f.size === file.size)) {
                 alert(`"${file.name}" 파일은 이미 추가되었습니다.`);
                 return;
             }
 
             newFiles.push(file); // 파일 추가
-            const fileIndex = newFiles.filter(f => f !== null).length - 1;
+            const fileIndex = newFiles.filter((f) => f !== null).length - 1;
 
             // 파일 리스트 요소 추가
             const fileElement = `
@@ -105,12 +115,11 @@ $(document).ready(function () {
             </li>
         `;
             $fileList.append(fileElement);
-
-            console.log(`파일 추가됨: ${file.name} (index: ${fileIndex})`);
         });
 
         $fileInput.val(""); // 파일 입력 초기화
     });
+
 
     // 첨부파일 삭제
     $fileList.on("click", ".clear-file", function () {

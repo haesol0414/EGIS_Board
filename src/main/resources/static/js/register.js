@@ -2,8 +2,9 @@ import * as Modal from './utils/modal.js';
 
 $(document).ready(function () {
     Modal.initializeModalElements();
-    let isUserIdChecked = false;
+
     const idPattern = /^[a-z0-9]+$/;
+    let isUserIdChecked = false;
 
     const $signUpFrom = $("form")
     const $formId = $("#form-id");
@@ -13,7 +14,6 @@ $(document).ready(function () {
     const $idCheckBtn = $("#id-check-btn");
     const $positiveMsg = $("#positive-msg");
     const $errorMsg = $("#error-msg");
-
 
     // 아이디 중복 체크 API
     const checkUserId = () => {

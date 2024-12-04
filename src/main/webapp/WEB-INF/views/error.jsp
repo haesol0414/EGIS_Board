@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,6 +16,7 @@
             height: 100vh;
             background-color: #f8f9fa;
         }
+
         .error-container {
             text-align: center;
             background: #ffffff;
@@ -24,27 +25,31 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .error-container h1 {
-            color: #dc3545;
+            color: #e15c68;
             font-size: 24px;
         }
+
         .error-container p {
             font-size: 18px;
-            color: #333;
-            margin: 15px 0;
+            color: #666666;
+            margin: 20px 0;
         }
+
         .error-container a {
             display: inline-block;
             margin-top: 15px;
             padding: 10px 20px;
             color: #fff;
-            background-color: #007bff;
+            background-color: #A5D6A7;
             text-decoration: none;
             border-radius: 5px;
             font-size: 16px;
         }
+
         .error-container a:hover {
-            background-color: #0056b3;
+            background-color: #666666;
         }
     </style>
 </head>

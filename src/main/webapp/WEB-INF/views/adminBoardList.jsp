@@ -6,7 +6,7 @@
 <div id="global-wrap">
     <main>
         <div class="main-container" id="board-list-wrap">
-            <h1 class="board-title">게시판</h1>
+            <h1 class="board-title">[관리자] 게시글 관리</h1>
             <div class="board-top">
                 <div class="search">
                     <div class="dropdown">
@@ -21,8 +21,8 @@
                             <a href="#" data-value="writer">작성자명</a>
                         </div>
                     </div>
-                    <form action="/board/list" method="get" style="display: inline;">
-                        <input type="hidden" name="filter" value="${filter}"> <!-- 기본값 설정 -->
+                    <form action="/admin/board" method="get" style="display: inline;">
+                        <input type="hidden" name="filter" value="${filter}">
                         <input class="search-input" name="keyword" value="${keyword}" placeholder="검색어 입력">
                         <button id="search-btn" class="search-btn">
                             <i class="fas fa-search"></i>
@@ -30,20 +30,20 @@
                     </form>
                 </div>
                 <div class="board-right">
-                    <a href="/board/write" id="write-btn" class="write-btn">
-                        <i class="fas fa-pencil-alt"></i>
+                    <a href="/board" id="list-btn" class="list-btn">
+                        <i class="fas fa-list"></i>
                     </a>
                 </div>
             </div>
             <table class="board-table">
                 <thead>
                 <tr>
-                    <th class="col board-num">No.</th>
-                    <th class="col subject">제목</th>
-                    <th class="col writer">작성자</th>
-                    <th class="col write-date">작성일</th>
-                    <th class="col update-date">최근 수정일</th>
-                    <th class="col view-count">조회수</th>
+                    <th class="col board-num" style="background-color: #f2f2f2 !important;">No.</th>
+                    <th class="col subject" style="background-color: #f2f2f2 !important;">제목</th>
+                    <th class="col writer" style="background-color: #f2f2f2 !important;">작성자</th>
+                    <th class="col write-date" style="background-color: #f2f2f2 !important;">작성일</th>
+                    <th class="col update-date" style="background-color: #f2f2f2 !important;">최근 수정일</th>
+                    <th class="col view-count" style="background-color: #f2f2f2 !important;">조회수</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,27 +59,38 @@
                         <c:forEach var="board" items="${boardList}">
                             <tr>
                                 <td class="row board-num">${board.boardNo}</td>
-                                <td class="row subject">
-                                    <c:if test="${board.groupDep > 0}">
-                                        <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
-                                    </c:if>
-                                    <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
-                                       class="${board.deletedYn == 'Y' ? 'deleted-board' : ''}">
-                                            ${board.subject}
-                                    </a>
-                                </td>
+                                <c:if test="${board.deletedYn == 'Y'}">
+                                    <td class="row subject deleted">
+                                        <c:if test="${board.groupDep > 0}">
+                                            <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
+                                        </c:if>
+                                        <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
+                                    </td>
+                                </c:if>
+                                <c:if test="${board.deletedYn != 'Y'}">
+                                    <td class="row subject">
+                                        <c:if test="${board.groupDep > 0}">
+                                            <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
+                                        </c:if>
+                                        <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
+                                    </td>
+                                </c:if>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
                                 <td class="row write-date">
                                     <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                 </td>
-                                <td class="row update-date">
-                                    <c:choose>
-                                        <c:when test="${not empty board.updatedAt}">
+                                <c:choose>
+                                    <c:when test="${not empty board.updatedAt}">
+                                        <td class="row update-date">
                                             <fmt:formatDate value="${board.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                                        </c:when>
-                                        <c:otherwise>-</c:otherwise>
-                                    </c:choose>
-                                </td>
+                                        </td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td class="row">
+                                            -
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
                                 <td class="row view-count">${board.viewCnt}</td>
                             </tr>
                         </c:forEach>

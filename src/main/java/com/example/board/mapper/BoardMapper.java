@@ -30,13 +30,14 @@ public interface BoardMapper {
     // 게시글 수정
     void updateBoard(BoardVO updatedBoard);
 
-    // 게시글 삭제
+    // 게시글&첨부파일 삭제
     void deleteBoard(@Param("boardNo") Long boardNo);
+    void deleteAttachmentsByBoardNo(@Param("boardNo") Long boardNo);
 
     // 조회수 증가
     void updateViewCnt(@Param("boardNo") Long boardNo);
 
-    // 삽입 위치 확인
+    // 게시글 삽입 위치 확인
     Integer findNextGroupOrd(@Param("groupNo") Integer groupNo,
                              @Param("groupOrd") Integer groupOrd,
                              @Param("groupDep") Integer groupDep);

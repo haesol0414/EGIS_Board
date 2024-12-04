@@ -11,7 +11,7 @@
                 <div class="search">
                     <div class="dropdown">
                         <button class="dropbtn">
-                            <span class="dropbtn_content">${filter}</span> <!-- 기본값 -->
+                            <span class="dropbtn_content">${filter}</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content">
@@ -21,8 +21,8 @@
                             <a href="#" data-value="writer">작성자명</a>
                         </div>
                     </div>
-                    <form action="/board/list" method="get" style="display: inline;">
-                        <input type="hidden" name="filter" value="${filter}"> <!-- 기본값 설정 -->
+                    <form action="/board" method="get" style="display: inline;">
+                        <input type="hidden" name="filter" value="${filter}">
                         <input class="search-input" name="keyword" value="${keyword}" placeholder="검색어 입력">
                         <button id="search-btn" class="search-btn">
                             <i class="fas fa-search"></i>
@@ -30,6 +30,9 @@
                     </form>
                 </div>
                 <div class="board-right">
+                    <a href="/admin/board" id="admin-btn" class="admin-btn">
+                        <i class="fas fa-cogs"></i>
+                    </a>
                     <a href="/board/write" id="write-btn" class="write-btn">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
@@ -59,23 +62,24 @@
                         <c:forEach var="board" items="${boardList}">
                             <tr>
                                 <td class="row board-num">${board.boardNo}</td>
-                                <td class="row subject">
-                                    <c:choose>
-                                        <c:when test="${board.deletedYn == 'Y' and board.hasReplies}">
+                                <c:choose>
+                                    <c:when test="${board.deletedYn == 'Y' and board.hasReplies}">
+                                        <td class="row subject deleted">
                                             <c:if test="${board.groupDep > 0}">
-                                                <span style="margin-left: ${board.groupDep * 30}px;">  </span>
+                                                <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
-                                            <span class="deleted-board">삭제된 게시글입니다.</span>
-                                        </c:when>
-                                        <c:otherwise>
+                                            <a href="/board/${board.boardNo}">원글이 삭제되었습니다.</a>
+                                        </td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td class="row subject">
                                             <c:if test="${board.groupDep > 0}">
-                                                <span class="reply-prefix"
-                                                      style="margin-left: ${board.groupDep * 30}px;">RE: </span>
+                                                <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
                                             <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>
                                 <td class="row write-date">
                                     <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>

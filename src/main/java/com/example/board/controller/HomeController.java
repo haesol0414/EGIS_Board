@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String redirectToBoardList() {
-        return "redirect:/board/list";
+        return "redirect:/board";
     }
 }

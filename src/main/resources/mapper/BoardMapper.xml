@@ -51,7 +51,6 @@
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
         WHERE board_no = #{boardNo}
-          AND deleted_yn = 'N'
     </select>
     <!-- 게시글 작성 -->
     <select id="insertBoard" parameterType="com.example.board.vo.BoardVO">
@@ -73,6 +72,12 @@
         UPDATE board
         SET deleted_yn = 'Y'
         WHERE board_no = #{boardNo}
+    </update>
+    <!-- 게시글 내 첨부 파일 삭제 -->
+    <update id="deleteAttachmentsByBoardNo" parameterType="long">
+        UPDATE attachments
+        SET deleted_yn = 'Y'
+        WHERE board_no = #{boardNo};
     </update>
     <!-- 조회수 업데이트 -->
     <update id="updateViewCnt" parameterType="long">
@@ -219,13 +224,11 @@
     </select>
     <!-- 답글 여부 확인 -->
     <select id="checkHasReplies" resultType="boolean">
-        SELECT EXISTS (
-            SELECT 1
-            FROM board
-            WHERE group_no = #{groupNo}
-              AND group_ord > #{groupOrd}
-              AND group_dep > #{groupDep}
-              AND deleted_yn = 'N'
-        )
+        SELECT EXISTS (SELECT 1
+                       FROM board
+                       WHERE group_no = #{groupNo}
+                         AND group_ord > #{groupOrd}
+                         AND group_dep > #{groupDep}
+                         AND deleted_yn = 'N')
     </select>
 </mapper>

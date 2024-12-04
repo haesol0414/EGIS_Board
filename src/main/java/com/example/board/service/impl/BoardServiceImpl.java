@@ -133,6 +133,13 @@ public class BoardServiceImpl implements BoardService {
             throw new IllegalArgumentException("삭제하려는 게시글이 존재하지 않습니다.");
         }
 
+        // 파일 존재 여부 확인
+        List<FileDTO> fileList = getFilesByBoardNo(boardNo);
+        if (!fileList.isEmpty()) {
+            // 파일 삭제
+            boardMapper.deleteAttachmentsByBoardNo(boardNo);
+        }
+
         // 게시글 삭제
         boardMapper.deleteBoard(boardNo);
     }
@@ -221,7 +228,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
-    // 파일 조회
+    // 게시글 파일들 조회
     @Transactional(readOnly = true)
     public List<FileDTO> getFilesByBoardNo(Long boardNo) {
         List<FileVO> fileList = boardMapper.selectFilesByBoardNo(boardNo);

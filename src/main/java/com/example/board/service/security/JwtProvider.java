@@ -9,6 +9,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,21 +34,29 @@ public class JwtProvider {
     }
 
     // AccessToken 생성 메서드
-    public String generateToken(String userId, String userName, Collection<? extends GrantedAuthority> roles) {
+    public Map<String, Object> generateToken(String userId, String userName, Collection<? extends GrantedAuthority> roles) {
         long now = System.currentTimeMillis();
-        Date accessTokenExpiresIn = new Date(now + JwtConstant.ACCESS_TOKEN_EXPIRE_TIME);
+        long expirationTime = now + JwtConstant.ACCESS_TOKEN_EXPIRE_TIME; // 만료 시간 계산
+        Date accessTokenExpiresIn = new Date(expirationTime);
 
         String roleClaims = roles.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        return Jwts.builder()
+        // JWT 생성
+        String token = Jwts.builder()
                 .setSubject(userId)
                 .setExpiration(accessTokenExpiresIn)
                 .claim("userName", userName)
                 .claim("role", roleClaims)
                 .signWith(this.key)
                 .compact();
+
+        // JWT와 만료 시간 반환
+        return Map.of(
+                "token", token,
+                "expiresAt", expirationTime
+        );
     }
 
     // 인증 객체 생성
@@ -108,23 +117,4 @@ public class JwtProvider {
             return e.getClaims();
         }
     }
-
-
-//    // 토큰에서 권한 추출
-//    public String getRoleFromToken(String token) {
-//        Claims claims = parseClaims(token);
-//        return claims.get("role", String.class); // role 클레임 값 반환
-//    }
-//
-//    // 토큰에서 사용자 이름 추출
-//    public String getUsernameFromToken(String token) {
-//        Claims claims = parseClaims(token);
-//        return claims.get("userName", String.class); // "userName" 클레임에서 값 추출
-//    }
-//
-//    // 토큰에서 사용자 아이디 추출
-//    public String getUserIdFromToken(String token) {
-//        Claims claims = parseClaims(token);
-//        return claims.getSubject(); // "sub" 클레임 값을 반환
-//    }
 }
