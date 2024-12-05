@@ -26,6 +26,8 @@
     max-width: 100%;
     margin-bottom: 6px;
     color: var(--text-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+
 }
 
 .board-detail-table tr {
@@ -139,20 +141,25 @@
 .board-list-link {
     margin-top: 46px;
     margin-bottom: 18px;
-    margin-left: 6px;
+    margin-left: 1px;
     font-size: 15px;
     color: #666666;
     font-weight: 500;
+    width: 100px;
+    border: 1px solid #cccccc;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    padding: 8px;
 }
 
 .board-list-link i {
-    color: #666666;
+    color: #8c8c8c;
     margin-right: 5px;
 }
 
-.board-list-link:hover, .board-list-link i:hover {
-    text-decoration: underline;
-}
+/*.board-list-link:hover {*/
+/*    color: var(--text-color);*/
+/*}*/
 
 .deleted-subject {
     margin-left: 8px;

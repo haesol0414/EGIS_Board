@@ -20,10 +20,10 @@
         .error-container {
             text-align: center;
             background: #ffffff;
-            border: 1px solid #ccc;
+            border: 1px solid #f1f1f1;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .error-container h1 {
@@ -42,6 +42,7 @@
             margin-top: 15px;
             padding: 10px 20px;
             color: #fff;
+            font-weight: bold;
             background-color: #A5D6A7;
             text-decoration: none;
             border-radius: 5px;
@@ -49,7 +50,7 @@
         }
 
         .error-container a:hover {
-            background-color: #666666;
+            background-color: #e2eeda;
         }
     </style>
 </head>
