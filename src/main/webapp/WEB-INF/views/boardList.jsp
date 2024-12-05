@@ -60,7 +60,7 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="board" items="${boardList}">
-                            <tr>
+                            <tr class="${board.isNotice == 'Y' ? 'notice-row' : ''}">
                                 <td class="row board-num">${board.boardNo}</td>
                                 <c:choose>
                                     <c:when test="${board.deletedYn == 'Y' and board.hasReplies}">
@@ -76,7 +76,13 @@
                                             <c:if test="${board.groupDep > 0}">
                                                 <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
-                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
+                                            <c:if test="${board.isNotice == 'Y'}">
+                                                <span class="notice-prefix">※공지사항※</span>
+                                            </c:if>
+                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+                                               class="${board.isNotice == 'Y' ? 'notice' : ''}">
+                                                    ${board.subject}
+                                            </a>
                                         </td>
                                     </c:otherwise>
                                 </c:choose>

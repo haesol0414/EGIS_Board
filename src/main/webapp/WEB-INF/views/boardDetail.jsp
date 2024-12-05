@@ -17,7 +17,7 @@
             %>
             <a href="<%= boardListUrl %>?page=${currentPage}&filter=${filter}&keyword=${keyword}"
                class="board-list-link">
-                <i class="fas fa-arrow-left"></i> 게시글 목록
+                <i class="fas fa-arrow-left"></i>게시글 목록
             </a>
             <div>
                 <table class="board-detail-table">
@@ -29,9 +29,12 @@
                     </tr>
                     <tr>
                         <th class="subject">제목</th>
-                        <td id="subject">
+                        <td id="subject" class="${board.isNotice == 'Y' ? 'bold' : ''}">
                             <c:if test="${board.groupDep > 0}">
                                 <span class="reply-prefix">RE: </span>
+                            </c:if>
+                            <c:if test="${board.isNotice == 'Y'}">
+                                <span class="notice-prefix">※공지사항※</span>
                             </c:if>
                             ${board.subject}
                             <c:if test="${board.deletedYn == 'Y'}">
@@ -83,7 +86,11 @@
             </div>
             <div class="btns-box">
                 <c:if test="${board.deletedYn == 'N'}">
-                    <a href="/board/reply/${board.boardNo}" class="btn reply-link">답글 달기</a>
+                    <a href="/board/reply/${board.boardNo}"
+                       class="btn reply-link"
+                       style="${board.isNotice == 'Y' ? 'visibility: hidden;' : ''}">
+                        답글 달기
+                    </a>
                     <div class="writer-btns">
                         <button class="btn" id="delete-btn">삭제하기</button>
                         <button class="btn" id="modify-btn" onclick="location.href='/board/edit/${board.boardNo}'">

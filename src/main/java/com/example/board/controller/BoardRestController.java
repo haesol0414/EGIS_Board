@@ -3,6 +3,7 @@ package com.example.board.controller;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.dto.request.BoardReplyDTO;
+import com.example.board.dto.request.NoticeDTO;
 import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.response.FileDTO;
 import com.example.board.security.SecurityUtil;
@@ -49,10 +50,23 @@ public class BoardRestController {
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         try {
             // 로그인 유저
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            boardCreateDTO.setCreateUserId(authentication.getName());
+            boardCreateDTO.setCreateUserId(securityUtil.getLoggedInUserId());
 
-            // 게시글 작성 서비스 호출
+            // 공지사항 여부 체크
+            if ("Y".equals(boardCreateDTO.getIsNotice())) {
+                if (!securityUtil.isAdmin()) {
+                    throw new SecurityException("공지사항 작성 권한이 없습니다.");
+                }
+                // 시작일과 종료일 검증
+                if (boardCreateDTO.getStartDate() == null || boardCreateDTO.getEndDate() == null) {
+                    throw new IllegalArgumentException("공지 시작일과 종료일이 필요합니다.");
+                }
+                if (boardCreateDTO.getStartDate().after(boardCreateDTO.getEndDate())) {
+                    throw new IllegalArgumentException("공지 종료일은 시작일보다 늦어야 합니다.");
+                }
+            }
+
+            // 게시글 작성 서비스 호출 (공지사항 포함)
             Long boardNo = boardService.createBoard(boardCreateDTO, files);
 
             Map<String, Object> response = new HashMap<>();
@@ -127,7 +141,6 @@ public class BoardRestController {
             // 게시글 작성자 확인
             BoardDTO board = boardService.getBoardDetail(boardNo);
 
-
             if (!board.getCreateUserId().equals(securityUtil.getLoggedInUserId()) && !securityUtil.isAdmin()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자 또는 관리자만 삭제할 수 있습니다.");
             }
@@ -184,5 +197,18 @@ public class BoardRestController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    // 공지사항 조회
+    @GetMapping("/notice")
+    public ResponseEntity<List<NoticeDTO>> getNotices() {
+//        List<NoticeDTO> notices = boardService.getNotices();
+//
+//        if (notices.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//        return ResponseEntity.ok(notices);
+        return null;
     }
 }

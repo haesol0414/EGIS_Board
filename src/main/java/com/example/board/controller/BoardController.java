@@ -60,6 +60,10 @@ public class BoardController {
     @GetMapping("/write")
     public String showWritePage(Model model) {
         try {
+            if (securityUtil.isAdmin()) {
+                model.addAttribute("isAdmin", true);
+            }
+
             return "boardWrite";
         } catch (Exception e) {
             log.error("게시글 작성 페이지 로드 중 오류 발생", e);

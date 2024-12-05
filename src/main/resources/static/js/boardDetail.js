@@ -21,7 +21,7 @@ $(document).ready(function () {
     const initializeUI = () => {
         const user = getCurrentUserFromStorage();
 
-        if (user.isLoggedIn) {
+        if (user && user.isLoggedIn) {
             // 로그인 상태
             if (user.userId === $writerId || user.role === 'ADMIN') {
                 // 로그인 유저 == 작성자 또는 관리자일 때

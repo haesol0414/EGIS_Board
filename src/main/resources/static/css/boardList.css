@@ -30,7 +30,8 @@
     font-size: 28px;
     font-weight: bold;
     color: #666666;
-    margin: 22px 5px 25px 0;
+    margin: 22px 0;
+    padding-left: 6px;
 }
 
 .board-right {
@@ -42,7 +43,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 40px;
-    margin: 0 auto;
+    margin: 30px auto 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -65,7 +66,6 @@
 
 .search-btn {
     width: 20px;
-
     background-color: transparent;
     border: none;
     outline: none;
@@ -83,7 +83,7 @@
 }
 
 .search-btn:hover i {
-    color: #474747;
+    color: #e2eeda;
 }
 
 .dropbtn {
@@ -123,7 +123,7 @@
 
 .write-btn i, .admin-btn i, .list-btn i {
     position: relative;
-    top: 30px;
+    top: 47px;
     margin-right: 4px;
     font-size: 26px;
     color: #666666;
@@ -163,7 +163,7 @@
     width: 40%;
 }
 
-.row.subject{
+.row.subject {
     text-align: left;
     padding-left: 35px;
 }
@@ -213,7 +213,7 @@
 .pagination {
     display: flex;
     margin-top: 40px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     color: #666666;
     gap: 9px;
     justify-content: center;
@@ -274,4 +274,8 @@
 
 .trash-icon:hover {
     color: #ff0000;
+}
+
+.notice-row {
+    background-color: #f7fcf2;
 }

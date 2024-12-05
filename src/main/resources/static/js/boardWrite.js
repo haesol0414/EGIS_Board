@@ -13,6 +13,16 @@ $(document).ready(function () {
     const $writerEl = $("#writer");
     const $writeSubmitBtn = $("#write-submit");
     const $replySubmitBtn = $("#reply-submit");
+    const $noticeCheckBox = $("#is-notice");
+
+    // 공지사항 체크박스 클릭 시 날짜 입력 필드 토글
+    $noticeCheckBox.on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#date-fields').show();
+        } else {
+            $('#date-fields').hide();
+        }
+    });
 
     // 작성자 정보 초기화
     const initializeWriterInfo = () => {
@@ -81,8 +91,39 @@ $(document).ready(function () {
 
         const formData = new FormData();
 
-        formData.append(dtoKey, new Blob([JSON.stringify({subject, contentText})], {type: "application/json"}));
+        // 게시글 데이터 생성
+        const boardData = {
+            subject: subject,
+            contentText: contentText,
+        };
 
+        // 관리자 - 공지사항 관련 데이터 추가 (체크된 경우에만)
+        if (user.role === "ADMIN" && $noticeCheckBox.is(":checked")) {
+            const startDate = $("#start-date").val();
+            const endDate = $("#end-date").val();
+
+            if (!startDate || !endDate) {
+                alert("공지 시작일과 종료일을 입력해주세요.");
+                return null;
+            }
+
+            if (new Date(startDate) >= new Date(endDate)) {
+                alert("공지 종료일은 시작일보다 늦어야 합니다.");
+                return null;
+            }
+
+            // 공지사항 데이터 추가
+            boardData.isNotice = "Y";
+            boardData.startDate = startDate;
+            boardData.endDate = endDate;
+        } else {
+            boardData.isNotice = "N";
+        }
+
+        // `boardCreateDTO`로 데이터 전송
+        formData.append(dtoKey, new Blob([JSON.stringify(boardData)], {type: "application/json"}));
+
+        // 첨부파일 추가
         filesArr.forEach((file) => {
             if (file) {
                 formData.append("files", file);

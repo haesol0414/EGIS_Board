@@ -72,7 +72,11 @@
                                         <c:if test="${board.groupDep > 0}">
                                             <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
                                         </c:if>
-                                        <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">${board.subject}</a>
+                                        <c:if test="${board.isNotice == 'Y'}">
+                                            <span class="notice-prefix">※공지사항※</span>
+                                        </c:if>
+                                        <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+                                           class="${board.isNotice == 'Y' ? 'bold' : ''}">${board.subject}</a>
                                     </td>
                                 </c:if>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>

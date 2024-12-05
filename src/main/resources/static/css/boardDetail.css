@@ -147,14 +147,20 @@
 
 .board-list-link i {
     color: #666666;
+    margin-right: 5px;
 }
 
 .board-list-link:hover, .board-list-link i:hover {
-    color: var(--text-color);
+    text-decoration: underline;
 }
 
 .deleted-subject {
     margin-left: 8px;
     color: red;
     font-size: 13px;
+}
+
+
+.detail-notice {
+    font-weight: bold;
 }

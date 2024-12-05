@@ -46,7 +46,7 @@ main {
     height: 100%;
     border-radius: 15px;
     margin: 0 auto;
-    border: 1px solid #dddddd;
+    border: 1px solid #e7e7e7;
 }
 
 /* 헤더 */
@@ -54,7 +54,7 @@ header {
     display: flex;
     align-items: center;
     min-height: 100px;
-    box-shadow: 0 0 4px 0 #666666 inset;
+    box-shadow: 0 0 4px 0 #c8d3c1 inset;
 }
 
 .header-container {
@@ -127,8 +127,8 @@ header {
 /* 푸터 */
 footer {
     padding: 40px 0;
-    background-color: #666666;
-    box-shadow: 0 0 3px 0 #666666 inset;
+    background-color: #cfdbc7;
+    box-shadow: 0 0 3px 0 #cfdbc7 inset;
 }
 
 .footer-container {
@@ -239,4 +239,24 @@ footer {
     border: 1px solid #A5D6A7;
     border-radius: 4px;
     font-weight: 600;
+}
+
+.notice-prefix {
+    color: #ffffff;
+    font-size: 14px;
+    background-color: #f2736e;
+    margin-right: 5px;
+    padding: 2px;
+    border: 2px solid #f2736e;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.notice {
+    font-weight: bold;
+    animation: blink 1s 2;
+}
+
+.bold {
+    font-weight: bold;
 }

@@ -9,6 +9,22 @@
                 <h1 class="board-title">${parent != null ? "답글 작성" : "게시글 작성"}</h1>
             </div>
             <form class="write-form">
+                <c:if test="${isAdmin and parent == null}">
+                    <div class="notice-check">
+                        <input type="checkbox" id="is-notice" name="is-notice" value="Y">
+                        <label for="is-notice">공지</label>
+                    </div>
+                    <div id="date-fields" style="display: none;">
+                        <div class="start-date">
+                            <label for="start-date">공지 시작일 : </label>
+                            <input type="date" id="start-date" name="start_date">
+                        </div>
+                        <div class="end-date">
+                            <label for="end-date">공지 종료일 : </label>
+                            <input type="date" id="end-date" name="end_date">
+                        </div>
+                    </div>
+                </c:if>
                 <table>
                     <tr>
                         <c:if test="${parent != null}">

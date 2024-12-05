@@ -6,7 +6,7 @@ export const getCurrentUserFromStorage = () => {
     if (!currentUser) return null; // 데이터가 없으면 null 반환
 
     const {isLoggedIn, username, userId, role, expiresAt} = JSON.parse(currentUser);
-    return {isLoggedIn, username, userId, role, expiresAt}; // 필요한 값 반환
+    return {isLoggedIn, username, userId, role, expiresAt};
 };
 
 // 토큰 유효성 확인
@@ -25,7 +25,7 @@ export const checkTokenValidity = () => {
             localStorage.removeItem("currentUser");
 
             // 알림 표시 및 리다이렉트
-            Modal.openAlertModal("세션이 만료되었습니다. 다시 로그인해주세요.", "/login");
+            Modal.openAlertModal("세션이 만료되었습니다.<br>다시 로그인해주세요.", "/login");
         }
     }
 };

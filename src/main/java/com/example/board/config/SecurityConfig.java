@@ -26,10 +26,6 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        // 인증 불필요한 경로
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/list").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/{boardNo}").permitAll()
                         // 인증이 필요한 경로
                         .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/board/write").authenticated()
@@ -37,6 +33,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/board/*").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/board/*").authenticated()
+                        // 인증 불필요한 경로
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/list").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/*").permitAll()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, SecurityContextPersistenceFilter.class);

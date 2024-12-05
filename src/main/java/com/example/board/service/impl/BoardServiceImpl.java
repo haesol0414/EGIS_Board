@@ -1,6 +1,7 @@
 package com.example.board.service.impl;
 
 import com.example.board.dto.request.BoardReplyDTO;
+import com.example.board.dto.request.NoticeDTO;
 import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
@@ -33,6 +34,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 목록 조회 (페이징 처리)
+    @Override
     @Transactional(readOnly = true)
     public Map<String, Object> getBoardList(String filter, String keyword, int size, int offset) {
         List<BoardVO> boards;
@@ -79,6 +81,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 상세 조회
+    @Override
     @Transactional(readOnly = true)
     public BoardDTO getBoardDetail(Long boardNo) {
         // VO 객체 조회
@@ -89,13 +92,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 작성
+    @Override
     @Transactional
     public Long createBoard(BoardCreateDTO boardCreateDTO, List<MultipartFile> files) {
-        // DTO → VO 변환 후 insert
+        // DTO → VO 변환
         BoardVO newBoard = modelMapper.map(boardCreateDTO, BoardVO.class);
-        Long boardNo = boardMapper.insertBoard(newBoard);
 
-        System.out.println(files);
+        // 게시글 작성
+        Long boardNo = boardMapper.insertBoard(newBoard);
 
         // 파일이 존재할 경우 업로드 처리
         if (files != null && !files.isEmpty()) {
@@ -107,6 +111,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     // 게시글 수정
+    @Override
     @Transactional
     public void updateBoard(Long boardNo, BoardUpdateDTO boardUpdateDTO, List<MultipartFile> files) {
         BoardVO updatedBoard = modelMapper.map(boardUpdateDTO, BoardVO.class);
@@ -125,6 +130,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 삭제
+    @Override
     @Transactional
     public void deleteBoard(Long boardNo) {
         // 삭제 대상 게시글 정보 가져오기
@@ -145,12 +151,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 조회수 증가
+    @Override
     @Transactional
     public void updateViewCnt(Long boardNo) {
         boardMapper.updateViewCnt(boardNo);
     }
 
     // 답글 작성
+    @Override
     @Transactional
     public Long addReply(Long parentBoardNo, BoardReplyDTO boardReplyDTO, List<MultipartFile> files) {
         // 부모 글 정보 조회
@@ -194,6 +202,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 파일 저장
+    @Override
     @Transactional
     public void uploadFiles(List<MultipartFile> files, Long boardNo) {
         List<FileVO> fileVOList = new ArrayList<>();
@@ -229,6 +238,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 게시글 파일들 조회
+    @Override
     @Transactional(readOnly = true)
     public List<FileDTO> getFilesByBoardNo(Long boardNo) {
         List<FileVO> fileList = boardMapper.selectFilesByBoardNo(boardNo);
@@ -244,6 +254,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 파일 상세 정보 조회
+    @Override
     public FileDTO getFileDetails(Long attachmentId) {
         FileVO fileVO = boardMapper.selectFileById(attachmentId);
         if (fileVO == null) {
@@ -251,5 +262,13 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return modelMapper.map(fileVO, FileDTO.class);
+    }
+
+    // 공지사항 조회
+    @Override
+    @Transactional
+    public List<NoticeDTO> getNotices() {
+//        return boardMapper.findNotices(); // 공지사항 조회 쿼리 실행
+        return null;
     }
 }

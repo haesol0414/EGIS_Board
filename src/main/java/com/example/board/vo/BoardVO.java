@@ -23,5 +23,8 @@ public class BoardVO {
     private Integer groupNo;
     private Integer groupOrd;
     private Integer groupDep;
+    private String isNotice;
+    private Date startDate;
+    private Date endDate;
 }
 
