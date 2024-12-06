@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.mapper.BoardMapper">
-    <!-- 게시글 목록조회 -->
+    <!-- 일반 게시글 목록조회 -->
     <select id="selectBoardList" parameterType="map" resultType="com.example.board.vo.BoardVO">
         SELECT b.board_no       AS boardNo,
                b.create_user_id AS createUserId,
@@ -17,13 +17,11 @@
                b.deleted_yn     AS deletedYn,
                b.group_no       AS groupNo,
                b.group_ord      AS groupOrd,
-               b.group_dep      AS groupDep,
-               b.is_notice      AS isNotice,
-               b.start_date     AS startDate,
-               b.end_date       AS endDate
+               b.group_dep      AS groupDep
         FROM board b
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
+        WHERE is_notice = 'N'
         ORDER BY b.is_notice DESC,
                  group_no DESC,
                  group_ord ASC,
@@ -238,5 +236,27 @@
                          AND group_ord > #{groupOrd}
                          AND group_dep > #{groupDep}
                          AND deleted_yn = 'N')
+    </select>
+    <!-- 공지사항 리스트 -->
+    <select id="findNotices" resultType="com.example.board.vo.BoardVO">
+        SELECT b.board_no       AS boardNo,
+               b.create_user_id AS createUserId,
+               cu.user_name     AS createUserName,
+               b.update_user_id AS updateUserId,
+               uu.user_name     AS updateUserName,
+               b.subject,
+               b.content_text   AS contentText,
+               b.view_cnt       AS viewCnt,
+               b.created_at     AS createdAt,
+               b.updated_at     AS updatedAt,
+               b.deleted_yn     AS deletedYn,
+               b.is_notice      AS isNotice,
+               b.start_date     AS startDate,
+               b.end_date       AS endDate
+        FROM board b
+                 LEFT JOIN users cu ON b.create_user_id = cu.user_id
+                 LEFT JOIN users uu ON b.update_user_id = uu.user_id
+        WHERE is_notice = 'Y' AND (end_date IS NULL OR end_date >= NOW())
+        ORDER BY created_at ASC
     </select>
 </mapper>

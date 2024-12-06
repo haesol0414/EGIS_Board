@@ -66,4 +66,7 @@ public interface BoardMapper {
 
     // 답글 여부 확인
     boolean checkHasReplies(@Param("groupNo") Integer groupNo, @Param("groupOrd") Integer groupOrd, @Param("groupDep") Integer groupDep);
+
+    // 공지사항
+    List<BoardVO> findNotices();
 }

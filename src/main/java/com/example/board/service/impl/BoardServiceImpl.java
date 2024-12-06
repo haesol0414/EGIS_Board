@@ -1,7 +1,6 @@
 package com.example.board.service.impl;
 
 import com.example.board.dto.request.BoardReplyDTO;
-import com.example.board.dto.request.NoticeDTO;
 import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
@@ -267,8 +266,11 @@ public class BoardServiceImpl implements BoardService {
     // 공지사항 조회
     @Override
     @Transactional
-    public List<NoticeDTO> getNotices() {
-//        return boardMapper.findNotices(); // 공지사항 조회 쿼리 실행
-        return null;
+    public List<BoardDTO> getNoticeList() {
+        List<BoardVO> notices = boardMapper.findNotices();
+
+        return notices.stream()
+                .map(notice -> modelMapper.map(notice, BoardDTO.class))
+                .collect(Collectors.toList());
     }
 }

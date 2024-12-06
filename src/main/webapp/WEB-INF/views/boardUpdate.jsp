@@ -9,6 +9,7 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 수정</h1>
             </div>
+
             <form class="update-form">
                 <table>
                     <tr>

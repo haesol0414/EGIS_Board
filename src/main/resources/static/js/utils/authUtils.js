@@ -25,7 +25,7 @@ export const checkTokenValidity = () => {
             localStorage.removeItem("currentUser");
 
             // 알림 표시 및 리다이렉트
-            Modal.openAlertModal(`세션이 만료되었습니다.\n 다시 로그인해주세요.`, "/login");
+            Modal.openAlertModal("세션이 만료되었습니다. 다시 로그인해주세요.", "/login");
         }
     }
 };

@@ -47,6 +47,33 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:if test="${not empty noticeList}">
+                    <c:forEach var="notice" items="${noticeList}">
+                        <tr>
+                            <td class="row board-num">${notice.boardNo}</td>
+                            <td class="row subject">
+                                <span class="notice-prefix">※공지사항※</span>
+                                <a href="/board/${notice.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+                                   class="${notice.deletedYn == 'Y' ? 'deleted-notice' : 'notice'}">
+                                        ${notice.subject}
+                                </a>
+                            </td>
+                            <td class="row writer">${notice.createUserName}(@${notice.createUserId})</td>
+                            <td class="row write-date">
+                                <fmt:formatDate value="${notice.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </td>
+                            <td class="row update-date">
+                                <c:if test="${not empty notice.updatedAt}">
+                                    <fmt:formatDate value="${notice.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                </c:if>
+                                <c:if test="${empty notice.updatedAt}">
+                                    -
+                                </c:if>
+                            </td>
+                            <td class="row view-count">${notice.viewCnt}</td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
                 <c:choose>
                     <c:when test="${empty boardList}">
                         <tr>
@@ -72,11 +99,8 @@
                                         <c:if test="${board.groupDep > 0}">
                                             <span style="margin-left: ${board.groupDep * 30}px;" class="reply-prefix">RE: </span>
                                         </c:if>
-                                        <c:if test="${board.isNotice == 'Y'}">
-                                            <span class="notice-prefix">※공지사항※</span>
-                                        </c:if>
                                         <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
-                                           class="${board.isNotice == 'Y' ? 'bold' : ''}">${board.subject}</a>
+                                        >${board.subject}</a>
                                     </td>
                                 </c:if>
                                 <td class="row writer">${board.createUserName}(@${board.createUserId})</td>

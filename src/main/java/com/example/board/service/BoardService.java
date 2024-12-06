@@ -3,7 +3,6 @@ package com.example.board.service;
 import com.example.board.dto.request.BoardCreateDTO;
 import com.example.board.dto.request.BoardUpdateDTO;
 import com.example.board.dto.request.BoardReplyDTO;
-import com.example.board.dto.request.NoticeDTO;
 import com.example.board.dto.response.BoardDTO;
 import com.example.board.dto.response.FileDTO;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,5 +42,5 @@ public interface BoardService {
     FileDTO getFileDetails(Long attachmentId);
     
     // 공지사항 조회
-    List<NoticeDTO> getNotices();
+    List<BoardDTO> getNoticeList();
 }

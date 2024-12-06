@@ -37,6 +37,10 @@
                                 <span class="notice-prefix">※공지사항※</span>
                             </c:if>
                             ${board.subject}
+                            <c:if test="${board.isNotice == 'Y' and board.startDate != null and board.endDate != null}">
+                                <span>(※ <fmt:formatDate value="${board.startDate}" pattern="yyyy-MM-dd"/>
+                                ~ <fmt:formatDate value="${board.endDate}" pattern="yyyy-MM-dd"/> ※)</span>
+                                </c:if>
                             <c:if test="${board.deletedYn == 'Y'}">
                                 <span class="deleted-subject">(삭제된 게시글)</span>
                             </c:if>

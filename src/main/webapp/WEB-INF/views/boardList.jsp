@@ -50,6 +50,37 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!-- 공지사항 렌더링 -->
+                <c:if test="${not empty noticeList}">
+                    <c:forEach var="notice" items="${noticeList}">
+                        <c:if test="${notice.deletedYn == 'N'}">
+                            <tr class="notice-row">
+                                <td class="row board-num">${notice.boardNo}</td>
+                                <td class="row subject">
+                                    <span class="notice-prefix">※공지사항※</span>
+                                    <a href="/board/${notice.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
+                                       class="notice">
+                                            ${notice.subject}
+                                    </a>
+                                </td>
+                                <td class="row writer">${notice.createUserName}(@${notice.createUserId})</td>
+                                <td class="row write-date">
+                                    <fmt:formatDate value="${notice.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                </td>
+                                <td class="row update-date">
+                                    <c:if test="${not empty notice.updatedAt}">
+                                        <fmt:formatDate value="${notice.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                    </c:if>
+                                    <c:if test="${empty notice.updatedAt}">
+                                        -
+                                    </c:if>
+                                </td>
+                                <td class="row view-count">${notice.viewCnt}</td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+                <!-- 일반 게시글 렌더링 -->
                 <c:choose>
                     <c:when test="${empty boardList}">
                         <tr>
@@ -60,27 +91,26 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="board" items="${boardList}">
-                            <tr class="${board.isNotice == 'Y' ? 'notice-row' : ''}">
+                            <tr>
                                 <td class="row board-num">${board.boardNo}</td>
                                 <c:choose>
                                     <c:when test="${board.deletedYn == 'Y' and board.hasReplies}">
                                         <td class="row subject deleted">
                                             <c:if test="${board.groupDep > 0}">
-                                                <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
+                                                <span class="reply-prefix"
+                                                      style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
-                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">원글이 삭제되었습니다.</a>
+                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">원글이
+                                                삭제되었습니다.</a>
                                         </td>
                                     </c:when>
                                     <c:otherwise>
                                         <td class="row subject">
                                             <c:if test="${board.groupDep > 0}">
-                                                <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
+                                                <span class="reply-prefix"
+                                                      style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
-                                            <c:if test="${board.isNotice == 'Y'}">
-                                                <span class="notice-prefix">※공지사항※</span>
-                                            </c:if>
-                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}"
-                                               class="${board.isNotice == 'Y' ? 'notice' : ''}">
+                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">
                                                     ${board.subject}
                                             </a>
                                         </td>
@@ -108,6 +138,7 @@
                     </c:otherwise>
                 </c:choose>
                 </tbody>
+
             </table>
             <%-- 페이지네이션 --%>
             <div class="pagination">

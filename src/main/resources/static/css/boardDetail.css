@@ -27,7 +27,6 @@
     margin-bottom: 6px;
     color: var(--text-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
-
 }
 
 .board-detail-table tr {
@@ -124,7 +123,7 @@
 }
 
 .file-download {
-    all:unset;
+    all: unset;
     position: relative;
     left: 10px;
     top: 1px;
@@ -175,7 +174,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 60px auto;
     border: 1px solid #ccc;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
 }

@@ -40,7 +40,14 @@ public class BoardController {
         try {
             int offset = (page - 1) * size;
 
-            // 목록 조회 서비스 호출
+            // 공지사항 조회 서비스 호출
+            List<BoardDTO> noticeList = boardService.getNoticeList();
+
+            if (!noticeList.isEmpty()) {
+                model.addAttribute("noticeList", noticeList); // 공지사항 추가
+            }
+
+            // 게시글 목록 조회 서비스 호출
             Map<String, Object> boards = boardService.getBoardList(filter, keyword, size, offset);
 
             model.addAllAttributes(Map.of(
@@ -57,6 +64,7 @@ public class BoardController {
             return "error";
         }
     }
+
 
     // 게시글 작성 페이지
     @GetMapping("/write")
@@ -141,6 +149,10 @@ public class BoardController {
             // 기존 게시글 불러오기
             BoardDTO boardDetail = boardService.getBoardDetail(boardNo);
             model.addAttribute("board", boardDetail);
+
+            if (securityUtil.isAdmin()) {
+                model.addAttribute("isAdmin", true);
+            }
 
             // 첨부파일 불러오기
             List<FileDTO> files = boardService.getFilesByBoardNo(boardNo);

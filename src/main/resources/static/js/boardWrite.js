@@ -105,20 +105,20 @@ $(document).ready(function () {
             const startDate = $("#start-date").val();
             const endDate = $("#end-date").val();
 
-            if (!startDate || !endDate) {
-                alert("공지 시작일과 종료일을 입력해주세요.");
+            if ((startDate && !endDate) || (!startDate && endDate)) {
+                alert("시작일과 종료일을 모두 입력해주세요");
                 return null;
             }
 
-            if (new Date(startDate) >= new Date(endDate)) {
+            if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
                 alert("공지 종료일은 시작일보다 늦어야 합니다.");
                 return null;
             }
 
             // 공지사항 데이터 추가
             boardData.isNotice = "Y";
-            boardData.startDate = startDate;
-            boardData.endDate = endDate;
+            boardData.startDate = startDate || null;
+            boardData.endDate = endDate || null;
         } else {
             boardData.isNotice = "N";
         }

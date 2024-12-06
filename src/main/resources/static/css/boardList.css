@@ -183,6 +183,10 @@
     color: red
 }
 
+.deleted-notice {
+    color: red;
+    font-size: 14px;
+}
 
 .writer {
     width: 11%;

@@ -14,6 +14,17 @@ $(document).ready(function () {
     const $fileList = $(".file-list");
     const $cancelBtn = $("#cancel-btn");
     const $clearFileBtn = $("#clear-btn");
+    const $noticeCheckBox = $("#is-notice");
+
+    // 공지사항 체크박스 클릭 시 날짜 입력 필드 토글
+    $noticeCheckBox.on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#date-fields').show();
+        } else {
+            $('#date-fields').hide();
+        }
+    });
+
 
     // 게시글 수정 데이터 생성
     const getUpdatedBoardData = () => {
