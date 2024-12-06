@@ -113,7 +113,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void updateBoard(Long boardNo, BoardUpdateDTO boardUpdateDTO, List<MultipartFile> files) {
+        // DTO → VO 변환
         BoardVO updatedBoard = modelMapper.map(boardUpdateDTO, BoardVO.class);
+
+        // 게시글 수정
         boardMapper.updateBoard(updatedBoard);
 
         // 삭제된 파일 처리

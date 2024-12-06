@@ -15,4 +15,7 @@ public class BoardUpdateDTO {
     private String contentText;
     private Date updatedAt;
     private List<Long> removedFileIds;
+    private String isNotice;
+    private Date startDate;
+    private Date endDate;
 }

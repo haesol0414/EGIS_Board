@@ -116,6 +116,17 @@ public class BoardRestController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자 또는 관리자만 수정할 수 있습니다.");
             }
 
+            if ("Y".equals(boardUpdateDTO.getIsNotice())) {
+                if (!securityUtil.isAdmin()) {
+                    throw new SecurityException("공지사항 작성 권한이 없습니다.");
+                }
+                if (boardUpdateDTO.getStartDate() != null && boardUpdateDTO.getEndDate() != null) {
+                    if (boardUpdateDTO.getStartDate().after(boardUpdateDTO.getEndDate())) {
+                        throw new IllegalArgumentException("공지 종료일은 시작일보다 늦어야 합니다.");
+                    }
+                }
+            }
+
             boardUpdateDTO.setUpdateUserId(securityUtil.getLoggedInUserId());
             boardUpdateDTO.setUpdatedAt(new Date());
 

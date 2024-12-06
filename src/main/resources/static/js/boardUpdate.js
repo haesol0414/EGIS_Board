@@ -13,7 +13,6 @@ $(document).ready(function () {
     const $fileInput = $("#file-input");
     const $fileList = $(".file-list");
     const $cancelBtn = $("#cancel-btn");
-    const $clearFileBtn = $("#clear-btn");
     const $noticeCheckBox = $("#is-notice");
 
     // 공지사항 체크박스 클릭 시 날짜 입력 필드 토글
@@ -25,12 +24,26 @@ $(document).ready(function () {
         }
     });
 
-
     // 게시글 수정 데이터 생성
     const getUpdatedBoardData = () => {
+        const formData = new FormData();
+
         const subject = $("#subject").val().trim();
         const contentText = $("#content").val().trim();
-        const formData = new FormData();
+        const startDate = $("#start-date").val();
+        const endDate = $("#end-date").val();
+        const isNoticeChecked = $noticeCheckBox.is(":checked"); // 공지 체크 여부
+
+
+        if ((startDate && !endDate) || (!startDate && endDate)) {
+            alert("시작일과 종료일을 모두 입력해주세요");
+            return null;
+        }
+
+        if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
+            alert("공지 종료일은 시작일보다 늦어야 합니다.");
+            return null;
+        }
 
         if (!subject || !contentText) {
             alert("제목과 내용을 입력하세요.");
@@ -41,6 +54,9 @@ $(document).ready(function () {
             boardNo: boardNo,
             subject: subject,
             contentText: contentText,
+            isNotice: isNoticeChecked ? "Y" : "N",
+            startDate: startDate ? startDate : null,
+            endDate: endDate ? endDate : null,
             removedFileIds: removedFileIds,
         };
 
@@ -85,10 +101,7 @@ $(document).ready(function () {
     $fileList.find("li").each(function () {
         const fileId = $(this).data("file-id");
         if (fileId) retainedFileIds.push(fileId);
-
-        console.log(fileId);
     });
-
 
     // 첨부파일 추가
     $fileInput.off("change").on("change", function () {

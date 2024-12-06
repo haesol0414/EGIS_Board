@@ -9,7 +9,24 @@
             <div class="board-top">
                 <h1 class="board-title">게시글 수정</h1>
             </div>
-
+            <c:if test="${isAdmin and board.isNotice == 'Y'}">
+                <div class="notice-check">
+                    <input type="checkbox" id="is-notice" name="is-notice" value="Y" checked>
+                    <label for="is-notice">공지</label>
+                </div>
+                <div id="date-fields">
+                    <div class="start-date">
+                        <label for="start-date">공지 시작일 : </label>
+                        <input type="date" id="start-date" name="start_date"
+                               value="<fmt:formatDate value='${board.startDate}' pattern='yyyy-MM-dd' />">
+                    </div>
+                    <div class="end-date">
+                        <label for="end-date">공지 종료일 : </label>
+                        <input type="date" id="end-date" name="end_date"
+                               value="<fmt:formatDate value='${board.endDate}' pattern='yyyy-MM-dd' />">
+                    </div>
+                </div>
+            </c:if>
             <form class="update-form">
                 <table>
                     <tr>
