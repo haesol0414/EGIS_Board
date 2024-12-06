@@ -43,11 +43,13 @@ public class BoardController {
             // 목록 조회 서비스 호출
             Map<String, Object> boards = boardService.getBoardList(filter, keyword, size, offset);
 
-            model.addAttribute("boardList", boards.get("boardList"));
-            model.addAttribute("totalPages", boards.get("totalPages"));
-            model.addAttribute("currentPage", page);
-            model.addAttribute("filter", filter);
-            model.addAttribute("keyword", keyword);
+            model.addAllAttributes(Map.of(
+                    "boardList", boards.get("boardList"),
+                    "totalPages", boards.get("totalPages"),
+                    "currentPage", page,
+                    "filter", filter,
+                    "keyword", keyword
+            ));
 
             return "boardList";
         } catch (Exception e) {
@@ -100,19 +102,15 @@ public class BoardController {
             // 게시글 상세 데이터 가져오기
             BoardDTO boardDetail = boardService.getBoardDetail(boardNo);
 
-            System.out.println(securityUtil.isAdmin());
             // 삭제된 게시글 처리
             if ("Y".equals(boardDetail.getDeletedYn()) && !securityUtil.isAdmin()) {
-                model.addAttribute("errorMessage", "삭제된 게시글입니다.");
-                return "error";
+                model.addAllAttributes(Map.of("currentPage", page, "filter", filter, "keyword", keyword));
+
+                return "deletedBoard";
             } else {
                 // 조회수 증가 (삭제되지 않은 경우에만)
                 boardService.updateViewCnt(boardNo);
             }
-
-            // 게시글 정보 추가
-            model.addAttribute("board", boardDetail);
-            model.addAttribute("isAdmin", securityUtil.isAdmin()); // 관리자 여부 추가
 
             // 파일 데이터 가져오기
             List<FileDTO> files = boardService.getFilesByBoardNo(boardNo);
@@ -120,10 +118,13 @@ public class BoardController {
                 model.addAttribute("files", files);
             }
 
-            // 페이지 및 검색 정보 추가
-            model.addAttribute("currentPage", page);
-            model.addAttribute("filter", filter);
-            model.addAttribute("keyword", keyword);
+            model.addAllAttributes(Map.of(
+                    "currentPage", page,
+                    "filter", filter,
+                    "keyword", keyword,
+                    "board", boardDetail,
+                    "isAdmin", securityUtil.isAdmin()
+            ));
 
             return "boardDetail";
         } catch (Exception e) {

@@ -45,8 +45,11 @@ $(document).ready(function () {
             if (validateFile(file)) {
                 filesArr.push(file);
 
+                const fileURL = URL.createObjectURL(file); // 파일 URL 생성
+
                 const $fileBox = $(`
                     <div id="file${fileNo}" class="filebox">
+                        ${file.type.startsWith('image/') ? `<img src="${fileURL}" alt="${file.name}" class="thumbnail" />` : ''}
                         <p class="name">${file.name}</p>
                         <button type="button" class="clear-file" data-file-id="${fileNo}">×</button>
                     </div>

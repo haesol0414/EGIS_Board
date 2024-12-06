@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
@@ -69,9 +67,10 @@ public class BoardRestController {
             // 게시글 작성 서비스 호출 (공지사항 포함)
             Long boardNo = boardService.createBoard(boardCreateDTO, files);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "게시글 작성이 완료되었습니다.");
-            response.put("boardNo", boardNo);
+            Map<String, Object> response = Map.of(
+                    "message", "게시글 작성이 완료되었습니다.",
+                    "boardNo", boardNo
+            );
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -94,9 +93,10 @@ public class BoardRestController {
             // 답글 작성 서비스 호출
             Long replyNo = boardService.addReply(parentBoardNo, boardReplyDTO, files);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "답글 작성이 완료되었습니다.");
-            response.put("boardNo", replyNo);
+            Map<String, Object> response = Map.of(
+                    "message", "답글 작성이 완료되었습니다.",
+                    "boardNo", replyNo
+            );
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {

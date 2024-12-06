@@ -32,7 +32,6 @@ $(document).ready(function () {
         }
     }
 
-
     // 기본 드롭다운 값 설정
     $dropbtnContent.text(defaultFilterText);
     $form.find('input[name="filter"]').val(defaultFilterValue);

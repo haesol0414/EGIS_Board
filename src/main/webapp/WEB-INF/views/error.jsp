@@ -33,8 +33,9 @@
 
         .error-container p {
             font-size: 18px;
-            color: #666666;
+            color: #767676;
             margin: 20px 0;
+            font-weight: bold;
         }
 
         .error-container a {

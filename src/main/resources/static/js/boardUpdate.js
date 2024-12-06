@@ -78,7 +78,7 @@ $(document).ready(function () {
         console.log(fileId);
     });
 
-    // 첨부파일 추가
+
     // 첨부파일 추가
     $fileInput.off("change").on("change", function () {
         const currentFiles = Array.from($fileInput[0].files);
@@ -92,24 +92,22 @@ $(document).ready(function () {
         const remainFileCount = maxFiles - totalFileCount;
 
         if (currentFiles.length > remainFileCount) {
-            alert(`첨부파일은 최대 ${maxFiles}개까지 가능합니다. 현재 ${existingFileCount}개의 파일이 있습니다.`);
+            alert(`첨부파일은 최대 ${maxFiles}개까지 가능합니다.`);
             $fileInput.val(""); // 입력 초기화
             return;
         }
 
         currentFiles.forEach((file) => {
-            // 중복 파일 확인
-            if (newFiles.some((f) => f && f.name === file.name && f.size === file.size)) {
-                alert(`"${file.name}" 파일은 이미 추가되었습니다.`);
-                return;
-            }
-
             newFiles.push(file); // 파일 추가
             const fileIndex = newFiles.filter((f) => f !== null).length - 1;
 
+            // 파일 URL 생성 (이미지일 경우 썸네일 생성)
+            const fileURL = file.type.startsWith("image/") ? URL.createObjectURL(file) : null;
+
             // 파일 리스트 요소 추가
             const fileElement = `
-            <li data-new-file-index="${fileIndex}">
+            <li data-new-file-index="${fileIndex}" class="file-box">
+                ${fileURL ? `<img src="${fileURL}" alt="${file.name}" class="thumbnail" />` : ''}
                 <span class="file-name">${file.name}</span>
                 <button class="clear-file" type="button" data-new-file-index="${fileIndex}">×</button>
             </li>

@@ -6,7 +6,7 @@
 }
 
 .board-top {
-    margin: 20px auto 40px 5px;
+    margin: 20px auto 45px 5px;
 }
 
 .board-title {
@@ -157,10 +157,6 @@
     margin-right: 5px;
 }
 
-/*.board-list-link:hover {*/
-/*    color: var(--text-color);*/
-/*}*/
-
 .deleted-subject {
     margin-left: 8px;
     color: red;
@@ -169,5 +165,29 @@
 
 
 .detail-notice {
+    font-weight: bold;
+}
+
+.deleted-board {
+    width: 100%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 40px auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+}
+
+.deleted-board i {
+    font-size: 100px;
+    color: #666666;
+    margin-bottom: 40px;
+}
+
+.deleted-board p {
+    font-size: 24px;
+    color: #666666;
     font-weight: bold;
 }

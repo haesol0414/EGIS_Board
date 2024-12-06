@@ -68,7 +68,7 @@
                                             <c:if test="${board.groupDep > 0}">
                                                 <span class="reply-prefix" style="margin-left: ${board.groupDep * 30}px;">RE: </span>
                                             </c:if>
-                                            <a href="/board/${board.boardNo}">원글이 삭제되었습니다.</a>
+                                            <a href="/board/${board.boardNo}?page=${currentPage}&filter=${filter}&keyword=${keyword}">원글이 삭제되었습니다.</a>
                                         </td>
                                     </c:when>
                                     <c:otherwise>

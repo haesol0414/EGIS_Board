@@ -9,4 +9,9 @@ public class HomeController {
     public String redirectToBoardList() {
         return "redirect:/board";
     }
+
+    @GetMapping("/test")
+    public String deletedBoardPage() {
+        return "deletedBoard";
+    }
 }

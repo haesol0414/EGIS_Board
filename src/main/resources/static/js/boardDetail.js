@@ -17,7 +17,6 @@ $(document).ready(function () {
     const $fileDownloadBtn = $(".file-download");
     const $writerId = $("#writer").data("writerid");
 
-
     const initializeUI = () => {
         const user = getCurrentUserFromStorage();
 

@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class BoardCreateDTO {
     private String createUserId;

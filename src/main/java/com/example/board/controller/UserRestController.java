@@ -4,7 +4,6 @@ import com.example.board.dto.request.LoginDTO;
 import com.example.board.dto.request.SignUpDTO;
 import com.example.board.service.UserService;
 
-import com.example.board.service.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,9 +35,9 @@ public class UserRestController {
             // HttpOnly 쿠키 설정
             String token = (String) loginResponse.get("token"); // 수정: tokenResponse -> token
             ResponseCookie cookie = ResponseCookie.from("Authorization", token)
-                    .httpOnly(true) // JavaScript에서 접근 불가
-                    .secure(false) // HTTPS 환경에서는 true로 설정
-                    .path("/") // 모든 경로에서 쿠키 전송
+                    .httpOnly(true)         // JavaScript에서 접근 불가
+                    .secure(false)          // HTTPS 환경에서는 true로 설정
+                    .path("/")              // 모든 경로에서 쿠키 전송
                     .maxAge(30 * 60) // 30분
                     .build();
 
@@ -98,39 +97,8 @@ public class UserRestController {
                     .body("문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
     }
-
-//    // 회원 정보
-//    @GetMapping("/me")
-//    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
-//        // 쿠키에서 JWT 추출
-//        String token = Arrays.stream(request.getCookies())
-//                .filter(cookie -> "Authorization".equals(cookie.getName()))
-//                .map(Cookie::getValue)
-//                .findFirst()
-//                .orElse(null);
-//
-//        // 비회원 상태 처리
-//        if (token == null || !jwtProvider.validateToken(token)) {
-//            return ResponseEntity.ok(Map.of(
-//                    "isLoggedIn", false,
-//                    "message", "비회원 상태입니다."
-//            ));
-//        }
-//
-//        // JWT에서 사용자 정보 추출
-//        String username = jwtProvider.getUsernameFromToken(token);
-//        String role = jwtProvider.getRoleFromToken(token);
-//        String userId = jwtProvider.getUserIdFromToken(token);
-//
-//        // 회원 상태 처리
-//        return ResponseEntity.ok(Map.of(
-//                "isLoggedIn", true,
-//                "userId", userId,
-//                "username", username,
-//                "role", role
-//        ));
-//    }
-
+    
+    // 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         // 쿠키 무효화
