@@ -180,12 +180,16 @@
 }
 
 .row.subject.deleted a:hover {
-    color: red
+    color: red;
 }
 
 .deleted-notice {
     color: red;
     font-size: 14px;
+}
+
+.deleted-notice:hover {
+    color: red !important;
 }
 
 .writer {
