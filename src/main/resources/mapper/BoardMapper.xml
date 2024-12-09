@@ -206,17 +206,15 @@
                deleted_yn
         FROM attachments
         WHERE board_no = #{boardNo}
-          AND deleted_yn = 'N';
     </select>
-    <!--  첨부파일 삭제  -->
-    <update id="deleteFilesByIds" parameterType="java.util.List">
-        UPDATE attachments
-        SET deleted_yn = 'Y'
+    <!--  첨부파일 개별 삭제  -->
+    <delete id="deleteFilesByIds" parameterType="java.util.List">
+        DELETE FROM attachments
         WHERE attachment_id IN
         <foreach item="deletedFileIds" collection="list" open="(" separator="," close=")">
             #{deletedFileIds}
         </foreach>
-    </update>
+    </delete>
     <!-- 파일 아이디로 파일 조회  -->
     <select id="selectFileById" parameterType="long" resultType="com.example.board.vo.FileVO">
         SELECT attachment_id,

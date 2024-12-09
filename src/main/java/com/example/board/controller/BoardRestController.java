@@ -177,7 +177,7 @@ public class BoardRestController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            // 파일 삭제 여부 확인
+            // 삭제된 파일 다운로드 불가 처리
             if ("Y".equals(fileDTO.getDeletedYn())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(null);

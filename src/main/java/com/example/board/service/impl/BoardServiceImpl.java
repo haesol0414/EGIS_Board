@@ -121,7 +121,6 @@ public class BoardServiceImpl implements BoardService {
 
         // 삭제된 파일 처리
         if (boardUpdateDTO.getRemovedFileIds() != null && !boardUpdateDTO.getRemovedFileIds().isEmpty()) {
-            System.out.println(boardUpdateDTO.getRemovedFileIds());
             boardMapper.deleteFilesByIds(boardUpdateDTO.getRemovedFileIds());
         }
 
