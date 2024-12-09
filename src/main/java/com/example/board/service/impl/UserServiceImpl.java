@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
                 new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
         );
 
-        // JWT 및 만료 시간 생성
+        // JWT 토큰 생성
         Map<String, Object> tokenResponse = jwtProvider.generateToken(user.getUserId(), user.getUserName(), authorities);
 
         return Map.of(

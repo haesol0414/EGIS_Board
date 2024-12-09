@@ -118,7 +118,7 @@ public class BoardRestController {
 
             if ("Y".equals(boardUpdateDTO.getIsNotice())) {
                 if (!securityUtil.isAdmin()) {
-                    throw new SecurityException("공지사항 작성 권한이 없습니다.");
+                    throw new SecurityException("공지사항 수정 권한이 없습니다.");
                 }
                 if (boardUpdateDTO.getStartDate() != null && boardUpdateDTO.getEndDate() != null) {
                     if (boardUpdateDTO.getStartDate().after(boardUpdateDTO.getEndDate())) {

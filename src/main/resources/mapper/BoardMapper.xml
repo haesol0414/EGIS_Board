@@ -241,6 +241,7 @@
     </select>
     <!-- 공지사항 리스트 -->
     <select id="findNotices" resultType="com.example.board.vo.BoardVO">
+        <![CDATA[
         SELECT b.board_no       AS boardNo,
                b.create_user_id AS createUserId,
                cu.user_name     AS createUserName,
@@ -258,7 +259,10 @@
         FROM board b
                  LEFT JOIN users cu ON b.create_user_id = cu.user_id
                  LEFT JOIN users uu ON b.update_user_id = uu.user_id
-        WHERE is_notice = 'Y' AND (end_date IS NULL OR end_date >= NOW())
+        WHERE is_notice = 'Y'
+          AND (end_date IS NULL OR end_date >= NOW())
+          AND (start_date IS NULL OR start_date <= NOW())
         ORDER BY created_at ASC
+        ]]>
     </select>
 </mapper>

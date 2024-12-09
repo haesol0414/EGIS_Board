@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
                 .authorizeHttpRequests(auth -> auth
                         // 인증이 필요한 경로
-                        .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/board/write").authenticated()
                         .requestMatchers("/board/edit/*").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/board/*").authenticated()
