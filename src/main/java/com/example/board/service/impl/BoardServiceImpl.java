@@ -211,8 +211,17 @@ public class BoardServiceImpl implements BoardService {
         for (MultipartFile file : files) {
             try {
                 String originFileName = file.getOriginalFilename();
-                String savedFileName = UUID.randomUUID() + "_" + originFileName;
-                String filePath = "D:\\uploads\\" + savedFileName;
+                // 확장자 추출
+                String fileExtension = "";
+                if (originFileName != null && originFileName.contains(".")) {
+                    fileExtension = originFileName.substring(originFileName.lastIndexOf("."));
+                }
+
+                // 고유 파일 이름 생성
+                String savedFileName = UUID.randomUUID().toString();
+
+                // 최종 파일 경로 생성
+                String filePath = "D:\\uploads\\" + savedFileName + fileExtension;
 
                 // 파일 저장
                 Files.copy(file.getInputStream(), Paths.get(filePath));
